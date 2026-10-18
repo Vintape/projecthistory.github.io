@@ -1281,10 +1281,29 @@
     }
 
     @media (max-width: 520px) {
-      .cultures-grid-3x2, .relics-shelf-grid, .quiz-options-grid, .hero-stats-grid { grid-template-columns: 1fr; }
+      .cultures-grid-3x2, .relics-shelf-grid, .hero-stats-grid { grid-template-columns: 1fr; }
+      .quiz-options-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
       .search-box-wrap { width: 100%; min-width: 0; }
       .brand-logo__tagline { display: none; }
-      .top-header { margin-bottom: 16px; }
+      .top-header {
+        margin-bottom: 14px;
+        padding: 6px 10px;
+        gap: 6px;
+      }
+      .brand-logo { gap: 6px; }
+      .brand-logo__svg { width: 28px; height: 28px; }
+      .header-actions { gap: 4px; }
+      .action-chip {
+        padding: 6px;
+        min-width: 32px;
+        height: 32px;
+        font-size: 13px;
+      }
+      .mobile-burger-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+      }
     }
   </style>
 </head>
