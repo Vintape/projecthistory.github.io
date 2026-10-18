@@ -2184,7 +2184,7 @@
             ctx.resume().catch(() => {});
           }
 
-          // 1-сэмпловый немой буфер
+          // 1-сэмпловый немой буфер Web Audio API — гарантирует разблокировку аудиопотока без побочных эффектов
           if (ctx && !isAudioUnlocked) {
             try {
               const buffer = ctx.createBuffer(1, 1, 22050);
@@ -2193,15 +2193,6 @@
               source.connect(ctx.destination);
               source.start(0);
               isAudioUnlocked = true;
-            } catch (e) {}
-          }
-
-          // Разблокировка SpeechSynthesis на iOS
-          if ('speechSynthesis' in window) {
-            try {
-              const warmup = new SpeechSynthesisUtterance(' ');
-              warmup.volume = 0.01;
-              window.speechSynthesis.speak(warmup);
             } catch (e) {}
           }
 
@@ -2230,28 +2221,78 @@
           resolveRuVoice();
         }
 
-        // 2. Безопасное воспроизведение речи (Hardened SpeechSynthesis)
+        // 2. Управление состоянием диктора и кнопки
+        let isSpeakingState = false;
+
+        function updateVoiceButtonUi(speaking) {
+          const btn = document.getElementById('voiceGreetingSpeakerBtn');
+          if (!btn) return;
+          if (speaking) {
+            btn.innerHTML = '<span>⏹️</span> Остановить диктора';
+            btn.classList.add('is-speaking');
+            btn.style.background = '#881337';
+            btn.style.borderColor = '#fb7185';
+          } else {
+            btn.innerHTML = '<span>🗣️</span> Слушать голос';
+            btn.classList.remove('is-speaking');
+            btn.style.background = 'var(--ruby)';
+            btn.style.borderColor = 'var(--ruby)';
+          }
+        }
+
+        // Принудительная немедленная остановка диктора (вызывается при любом переходе по сайту)
+        function stopSpeech() {
+          if ('speechSynthesis' in window) {
+            try {
+              window.speechSynthesis.cancel();
+            } catch (e) {}
+          }
+          activeSpeechUtterance = null;
+          isSpeakingState = false;
+          updateVoiceButtonUi(false);
+        }
+
+        function isSpeaking() {
+          if ('speechSynthesis' in window && window.speechSynthesis.speaking) {
+            return true;
+          }
+          return isSpeakingState;
+        }
+
+        // Безопасное воспроизведение речи (Hardened SpeechSynthesis с тотальным контролем жизненного цикла)
         function speakSafe(text, onDoneFallback) {
           const ctx = getContext();
           if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
 
           if ('speechSynthesis' in window) {
             try {
-              // Защита от бага WebKit: не вызываем cancel() синхронно перед speak()
-              if (window.speechSynthesis.speaking) {
-                window.speechSynthesis.cancel();
-              }
+              stopSpeech();
+              isSpeakingState = true;
+              updateVoiceButtonUi(true);
 
               setTimeout(() => {
+                if (!isSpeakingState) return; // Защита: если успели остановить во время задержки
                 const utter = new SpeechSynthesisUtterance(text);
                 utter.rate = 0.92;
                 utter.pitch = 1.0;
                 utter.lang = 'ru-RU';
                 if (cachedRuVoice) utter.voice = cachedRuVoice;
 
-                utter.onend = () => { activeSpeechUtterance = null; };
+                utter.onstart = () => {
+                  isSpeakingState = true;
+                  updateVoiceButtonUi(true);
+                };
+
+                utter.onend = () => {
+                  activeSpeechUtterance = null;
+                  isSpeakingState = false;
+                  updateVoiceButtonUi(false);
+                };
+
                 utter.onerror = () => {
                   activeSpeechUtterance = null;
+                  isSpeakingState = false;
+                  updateVoiceButtonUi(false);
                   // Акустический фоллбек при сбое синтезатора
                   playEthnicBell(660, 1.4);
                 };
@@ -2260,10 +2301,15 @@
                 window.speechSynthesis.speak(utter);
               }, 40);
               return;
-            } catch (e) {}
+            } catch (e) {
+              isSpeakingState = false;
+              updateVoiceButtonUi(false);
+            }
           }
 
           // Если синтезатора нет или он сбоит — играем этно-аккорд
+          isSpeakingState = false;
+          updateVoiceButtonUi(false);
           playGusliChord();
           if (onDoneFallback) onDoneFallback();
         }
@@ -2337,14 +2383,14 @@
           const osc = ctx.createOscillator();
           const g = ctx.createGain();
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(700, t);
-          osc.frequency.exponentialRampToValueAtTime(300, t + 0.03);
-          g.gain.setValueAtTime(0.08, t);
-          g.gain.exponentialRampToValueAtTime(0.001, t + 0.03);
+          osc.frequency.setValueAtTime(650, t);
+          osc.frequency.exponentialRampToValueAtTime(320, t + 0.025);
+          g.gain.setValueAtTime(0.04, t);
+          g.gain.exponentialRampToValueAtTime(0.0005, t + 0.025);
           osc.connect(g);
           g.connect(masterGain);
           osc.start(t);
-          osc.stop(t + 0.035);
+          osc.stop(t + 0.03);
         }
 
         function playSuccessTrumpet() {
@@ -2398,6 +2444,8 @@
 
         return {
           speakSafe,
+          stopSpeech,
+          isSpeaking,
           playEthnicBell,
           playGusliChord,
           playUiClick,
@@ -2663,7 +2711,10 @@
         setTimeout(() => toast.classList.remove('is-shown'), 3000);
       }
 
-      function routeTo(screenId) {
+      function routeTo(screenId, isUserNavigation = true) {
+        // Гарантированно глушим диктора при любом переходе по сайту
+        AudioEngine.stopSpeech();
+
         const targetScreen = document.getElementById('screen-' + screenId);
         if (!targetScreen) return;
 
@@ -2684,7 +2735,9 @@
         if (drawer) drawer.classList.remove('is-open');
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        AudioEngine.playUiClick();
+        if (isUserNavigation) {
+          AudioEngine.playUiClick();
+        }
       }
 
       window.routeTo = routeTo;
@@ -2702,6 +2755,9 @@
       // 4. ДИНАМИЧЕСКАЯ НАСТРОЙКА КУЛЬТУРЫ В ЭКСПЕДИЦИИ
       // ========================================================================
       function setupQuestCulture(cultId) {
+        // При смене культуры моментально глушим диктора
+        AudioEngine.stopSpeech();
+
         const data = ETHNO_DATABASE[cultId];
         if (!data) return;
         activeCultureId = cultId;
@@ -2742,6 +2798,9 @@
       window.setupQuestCulture = setupQuestCulture;
 
       function switchQuestStep(stepNum) {
+        // При смене шага экспедиции диктор умолкает
+        AudioEngine.stopSpeech();
+
         activeQuestStep = stepNum;
         document.querySelectorAll('.quest-step-subview').forEach((s, idx) => {
           s.style.display = (idx + 1 === stepNum) ? 'block' : 'none';
@@ -2853,10 +2912,15 @@
         baStage.addEventListener('touchend', () => { isBaDragging = false; });
       }
 
-      // Кнопка голосового приветствия (Dual-Engine Audio)
+      // Кнопка голосового приветствия (Dual-Engine Audio с поддержкой Play/Stop Toggle)
       const voiceSpeakerBtn = document.getElementById('voiceGreetingSpeakerBtn');
       if (voiceSpeakerBtn) {
         voiceSpeakerBtn.addEventListener('click', () => {
+          if (AudioEngine.isSpeaking()) {
+            AudioEngine.stopSpeech();
+            triggerToast('Диктор остановлен');
+            return;
+          }
           const data = ETHNO_DATABASE[activeCultureId] || ETHNO_DATABASE.tatarstan;
           AudioEngine.speakSafe(data.speechText, () => {
             AudioEngine.playEthnicBell(660, 1.5);
@@ -3253,14 +3317,26 @@
       }
 
       // ========================================================================
-      // 14. СТАРТОВАЯ ИНИЦИАЛИЗАЦИЯ
+      // 14. СТАРТОВАЯ ИНИЦИАЛИЗАЦИЯ И ЗАЩИТА ЖИЗНЕННОГО ЦИКЛА
       // ========================================================================
+      // Защита от утечек диктора: гарантированная остановка речи при сворачивании, смене вкладки или истории
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) AudioEngine.stopSpeech();
+      });
+      window.addEventListener('pagehide', () => AudioEngine.stopSpeech());
+      window.addEventListener('popstate', () => AudioEngine.stopSpeech());
+      window.addEventListener('hashchange', () => {
+        AudioEngine.stopSpeech();
+        const hash = window.location.hash.replace('#', '');
+        if (hash) routeTo(hash, true);
+      });
+
       setupQuestCulture('tatarstan');
       renderCulturesCatalog();
       renderRelicsShelf(false);
 
       const startHash = window.location.hash.replace('#', '') || 'hero';
-      routeTo(startHash);
+      routeTo(startHash, false); // Тихий запуск без звука при открытии страницы
     })();
   </script>
 </body>
