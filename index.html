@@ -28,37 +28,41 @@
       --font-slab: 'Montagu Slab', Georgia, serif;
       --font-ui: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-      /* Темная музейная палитра (Default) */
-      --bg-page: #060b17;
-      --bg-surface: #0c152a;
-      --bg-card: #121e3c;
-      --bg-card-hover: #17274e;
-      --bg-glass: rgba(12, 21, 42, 0.88);
-      --border-gold: rgba(212, 175, 55, 0.22);
-      --border-gold-subtle: rgba(212, 175, 55, 0.12);
+      /* Темная музейная палитра (Канон: DESIGN_SYSTEM.md) */
+      --bg-page: #070d1e;
+      --bg-main: #070d1e;
+      --bg-surface: #0b1429;
+      --bg-card: #0e1933;
+      --bg-card-hover: #142347;
+      --bg-glass: rgba(14, 25, 51, 0.88);
+      --border-gold: rgba(201, 156, 82, 0.25);
+      --border-gold-subtle: rgba(201, 156, 82, 0.14);
       --border-light: rgba(255, 255, 255, 0.08);
 
-      --gold: #d4af37;
-      --gold-light: #f3e5ab;
-      --gold-glow: rgba(212, 175, 55, 0.28);
-      --ruby: #c62828;
-      --ruby-dark: #8e0000;
-      --ruby-glow: rgba(198, 40, 40, 0.35);
+      --gold: #c99c52;
+      --gold-light: #f3d08a;
+      --gold-glow: rgba(201, 156, 82, 0.28);
+      --ruby: #c83428;
+      --ruby-dark: #8e1c14;
+      --ruby-glow: rgba(200, 52, 40, 0.35);
+      --cyan: #48cae4;
+      --parchment: #f5eee2;
 
       --text-main: #f8f6f0;
       --text-muted: #a6b4d0;
       --text-dim: #71809e;
 
-      /* Тени */
-      --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.35);
-      --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.45);
-      --shadow-lg: 0 20px 60px rgba(2, 6, 16, 0.65);
+      /* Деликатные субпиксельные тени без размытого пафоса */
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.35);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 16px 40px rgba(2, 6, 16, 0.60);
 
-      /* Скругления */
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 22px;
-      --radius-pill: 999px;
+      /* Скругления строго по дизайн-системе (Blacklist: 4px–10px, исключены пилюли и rounded-3xl) */
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --radius-card: 10px;
+      --radius-pill: 6px; /* Строгий 6px вместо 999px для кнопок и тегов */
 
       --transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
       --max-w: 1360px;
@@ -79,31 +83,33 @@
       --safe-right: env(safe-area-inset-right, 0px);
     }
 
-    /* Светлая историческая тема (Parchment Cream) */
+    /* Светлая историческая тема (Parchment Cream — контраст WCAG AA > 4.8:1) */
     html[data-theme="cream"] {
       --bg-page: #f5eee2;
-      --bg-surface: #fcf9f2;
-      --bg-card: #f2e9dc;
-      --bg-card-hover: #ebe1d2;
-      --bg-glass: rgba(252, 249, 242, 0.92);
-      --border-gold: rgba(179, 139, 36, 0.35);
-      --border-gold-subtle: rgba(179, 139, 36, 0.18);
-      --border-light: rgba(30, 41, 66, 0.1);
+      --bg-main: #f5eee2;
+      --bg-surface: #ede4d3;
+      --bg-card: #fffdf9;
+      --bg-card-hover: #f7efe2;
+      --bg-glass: rgba(255, 253, 249, 0.94);
+      --border-gold: rgba(122, 75, 18, 0.32);
+      --border-gold-subtle: rgba(122, 75, 18, 0.16);
+      --border-light: rgba(45, 32, 16, 0.12);
 
-      --gold: #9c7820;
-      --gold-light: #6e520f;
-      --gold-glow: rgba(156, 120, 32, 0.2);
-      --ruby: #a31d1d;
-      --ruby-dark: #700f0f;
-      --ruby-glow: rgba(163, 29, 29, 0.25);
+      /* Академическая темная бронза/умбра для соответствия WCAG AA */
+      --gold: #7a4b12;
+      --gold-light: #52330a;
+      --gold-glow: rgba(122, 75, 18, 0.18);
+      --ruby: #991b1b;
+      --ruby-dark: #6e1010;
+      --ruby-glow: rgba(153, 27, 27, 0.2);
 
       --text-main: #141c2e;
-      --text-muted: #4e5b75;
-      --text-dim: #7a869e;
+      --text-muted: #3d4a61;
+      --text-dim: #4f5a70;
 
-      --shadow-sm: 0 4px 16px rgba(40, 30, 15, 0.08);
-      --shadow-md: 0 10px 30px rgba(40, 30, 15, 0.12);
-      --shadow-lg: 0 20px 60px rgba(40, 30, 15, 0.18);
+      --shadow-sm: 0 4px 12px rgba(45, 32, 16, 0.06);
+      --shadow-md: 0 8px 24px rgba(45, 32, 16, 0.08);
+      --shadow-lg: 0 16px 40px rgba(45, 32, 16, 0.12);
     }
 
     /* ==========================================================================
@@ -126,6 +132,86 @@
       line-height: 1.55;
       transition: background-color 0.3s ease, color 0.3s ease;
       touch-action: manipulation;
+    }
+
+    /* Музейная атмосфера: легкий изолированный зернистый слой и виньетка */
+    .app-grain-overlay {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      mix-blend-mode: overlay;
+      transform: translateZ(0);
+      will-change: transform;
+    }
+
+    .app-vignette-overlay {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9997;
+      background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(3, 6, 14, 0.72) 100%);
+      transform: translateZ(0);
+    }
+
+    html[data-theme="cream"] .app-grain-overlay {
+      opacity: 0.045;
+      mix-blend-mode: multiply;
+    }
+
+    html[data-theme="cream"] .app-vignette-overlay {
+      background: radial-gradient(circle at 50% 50%, transparent 65%, rgba(68, 48, 24, 0.16) 100%);
+    }
+
+    /* Шрифтовой канон: универсальные историко-музейные классы */
+    .font-monomakh,
+    .hero-epic-title,
+    .splash-title,
+    .heading-display,
+    .brand-logo__title {
+      font-family: var(--font-historical) !important;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-rendering: optimizeLegibility;
+    }
+
+    .font-slab,
+    .museum-inv-number,
+    .museum-era-tag,
+    .timecode-val,
+    .timecode-chip,
+    .ticket-barcode-code,
+    .stat-metric-num,
+    .relic-inv,
+    #ticketPassCodeLabel,
+    #invNumberLabel {
+      font-family: var(--font-slab) !important;
+      font-feature-settings: "lnum" 1, "tnum" 1;
+      letter-spacing: 0.04em;
+    }
+
+    .font-editorial,
+    .editorial-quote,
+    .myth-longread-text,
+    .artifact-story-context {
+      font-family: var(--font-editorial) !important;
+      font-kerning: normal;
+      text-rendering: optimizeLegibility;
+    }
+
+    .gold-badge,
+    .action-chip,
+    .btn-action,
+    .step-pill-btn,
+    .pill-filter-btn {
+      letter-spacing: 0.06em;
     }
 
     /* Контейнер приложения с поддержкой Safe Area Insets */
@@ -728,10 +814,12 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    .culture-item-card:hover, .culture-item-card:active {
+    .culture-item-card:hover, .culture-item-card:active, .culture-item-card:focus-visible {
       transform: translateY(-4px);
       border-color: var(--gold);
       box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4), 0 0 20px var(--gold-glow);
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
     }
 
     .culture-item-card__img-wrap {
@@ -967,15 +1055,15 @@
       cursor: ew-resize;
     }
 
-    /* ШАГ 2: ВИДЕО-БЛОК И ТАЙМКОДЫ */
+    /* ШАГ 2: ВИДЕО-БЛОК, KEN BURNS, ВОЛНОВАЯ ДОРОЖКА И ТАЙМКОДЫ */
     .video-mockup-frame {
       position: relative;
       aspect-ratio: 16 / 9;
       border-radius: var(--radius-md);
       overflow: hidden;
-      border: 2px solid var(--border-gold);
+      border: 1px solid var(--border-gold);
       box-shadow: var(--shadow-lg);
-      background: #040814;
+      background: #03060f;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -985,41 +1073,125 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.75;
+      opacity: 0.82;
       display: block;
+      transition: transform 0.6s ease;
+      will-change: transform;
+    }
+
+    .video-mockup-frame img.ken-burns-active {
+      animation: kenBurnsPan 14s cubic-bezier(0.25, 1, 0.5, 1) infinite alternate;
+    }
+
+    @keyframes kenBurnsPan {
+      0% { transform: scale(1) translate(0, 0); }
+      50% { transform: scale(1.08) translate(-1.2%, 1%); }
+      100% { transform: scale(1.14) translate(1%, -1.2%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .video-mockup-frame img.ken-burns-active {
+        animation: none !important;
+      }
     }
 
     .video-mockup-frame__overlay {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle, transparent 40%, rgba(4, 8, 20, 0.9) 100%);
+      background: radial-gradient(circle, transparent 40%, rgba(3, 6, 15, 0.85) 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 12px;
+      z-index: 8;
     }
 
     .play-circle-trigger {
-      width: 64px;
-      height: 64px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--ruby) 0%, var(--ruby-dark) 100%);
-      border: 2.5px solid #fff;
+      border: 2px solid #fff;
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      box-shadow: 0 0 30px var(--ruby-glow);
+      font-size: 22px;
+      box-shadow: 0 0 24px var(--ruby-glow);
       cursor: pointer;
       transition: var(--transition);
       -webkit-tap-highlight-color: transparent;
     }
 
     .play-circle-trigger:hover, .play-circle-trigger:active {
-      transform: scale(1.1);
-      box-shadow: 0 0 45px var(--ruby-glow);
+      transform: scale(1.08);
+      box-shadow: 0 0 35px var(--ruby-glow);
+    }
+
+    /* Кинематографичные субтитры в плеере */
+    .video-cinematic-subtitle {
+      position: absolute;
+      bottom: 30px;
+      left: 14px;
+      right: 14px;
+      text-align: center;
+      pointer-events: none;
+      z-index: 10;
+      transition: opacity 0.3s ease;
+    }
+
+    .video-cinematic-subtitle__inner {
+      display: inline-block;
+      background: rgba(7, 13, 30, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border-gold-subtle);
+      padding: 6px 16px;
+      border-radius: var(--radius-sm);
+      color: var(--parchment);
+      font-family: var(--font-editorial);
+      font-size: clamp(13px, 1.8vw, 16px);
+      font-style: italic;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Анимированная дорожка эквалайзера Waveform */
+    .video-waveform-strip {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 22px;
+      background: linear-gradient(180deg, transparent 0%, rgba(3, 6, 15, 0.85) 100%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 3px;
+      padding: 0 16px 4px 16px;
+      z-index: 9;
+    }
+
+    .waveform-bar {
+      width: 3px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 1px;
+      opacity: 0.6;
+      transition: height 0.15s ease;
+    }
+
+    .waveform-playing .waveform-bar {
+      animation: waveformBounce 0.8s ease-in-out infinite alternate;
+    }
+    .waveform-playing .waveform-bar:nth-child(2n) { animation-duration: 0.6s; animation-delay: 0.1s; }
+    .waveform-playing .waveform-bar:nth-child(3n) { animation-duration: 0.9s; animation-delay: 0.2s; }
+    .waveform-playing .waveform-bar:nth-child(4n) { animation-duration: 0.7s; animation-delay: 0.15s; }
+    .waveform-playing .waveform-bar:nth-child(5n) { animation-duration: 1.1s; animation-delay: 0.05s; }
+
+    @keyframes waveformBounce {
+      0% { height: 3px; opacity: 0.4; }
+      100% { height: 16px; opacity: 1; background: var(--gold-light); }
     }
 
     .timecodes-strip {
@@ -1033,31 +1205,35 @@
       background: var(--bg-card);
       border: 1px solid var(--border-gold-subtle);
       color: var(--text-muted);
-      padding: 5px 12px;
+      padding: 6px 12px;
       border-radius: var(--radius-pill);
       font-size: 11.5px;
       font-weight: 600;
       cursor: pointer;
       transition: var(--transition);
       -webkit-tap-highlight-color: transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
-    .timecode-chip:hover, .timecode-chip.is-active {
+    .timecode-chip:hover, .timecode-chip.is-active, .timecode-chip:focus-visible {
       background: var(--gold);
       color: #060a14;
+      border-color: var(--gold-light);
     }
 
-    /* ШАГ 3: ЛУПА И АРХЕОЛОГИЧЕСКИЙ КВИЗ */
+    /* ШАГ 3: ЛУПА И АРХЕОЛОГИЧЕСКИЙ КВИЗ (60 FPS С GPU TRANSLATE3D) */
     .loupe-inspect-stage {
       position: relative;
       height: clamp(260px, 38vh, 400px);
       border-radius: var(--radius-md);
       overflow: hidden;
-      border: 2px solid var(--border-gold);
+      border: 1px solid var(--border-gold);
       cursor: crosshair;
       box-shadow: var(--shadow-lg);
       background: #080f1e;
-      touch-action: none; /* Запрет скролла страницы при перемещении лупы пальцем */
+      touch-action: none;
       user-select: none;
       -webkit-user-select: none;
     }
@@ -1074,59 +1250,80 @@
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      border: 3px solid var(--gold);
-      background: radial-gradient(circle, rgba(198, 40, 40, 0.3) 0%, rgba(6, 11, 23, 0.85) 100%);
-      box-shadow: 0 0 30px var(--gold-glow);
+      border: 2.5px solid var(--gold);
+      background: radial-gradient(circle, rgba(200, 52, 40, 0.25) 0%, rgba(7, 13, 30, 0.85) 100%);
+      box-shadow: 0 0 25px var(--gold-glow);
       pointer-events: none;
-      transform: translate(-50%, -50%);
-      top: 50%;
-      left: 50%;
+      top: 0;
+      left: 0;
+      transform: translate3d(-50%, -50%, 0);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.04s linear;
       z-index: 10;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      will-change: transform;
+    }
+
+    .lens-pointer.target-locked {
+      border-color: var(--gold-light) !important;
+      box-shadow: 0 0 35px var(--gold-glow), 0 0 12px #fff !important;
     }
 
     .quiz-options-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
       margin: 18px 0;
     }
 
-    .quiz-option-card {
-      background: var(--bg-card);
-      border: 2px solid var(--border-gold-subtle);
-      border-radius: var(--radius-md);
-      padding: 12px;
-      cursor: pointer;
-      transition: var(--transition);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      -webkit-tap-highlight-color: transparent;
+    @media (min-width: 860px) {
+      .quiz-options-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
-    .quiz-option-card:hover, .quiz-option-card.is-selected {
+    .quiz-option-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+
+    .quiz-option-card:hover, .quiz-option-card.is-selected, .quiz-option-card:focus-visible {
       border-color: var(--gold);
       background: var(--bg-card-hover);
-      box-shadow: 0 0 18px var(--gold-glow);
+      box-shadow: 0 0 16px var(--gold-glow);
       transform: translateY(-2px);
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    .quiz-option-card.is-discovered {
+      border-color: var(--gold-light) !important;
+      box-shadow: 0 0 20px rgba(201, 156, 82, 0.35);
     }
 
     .quiz-option-card.is-correct {
       border-color: #34d399 !important;
-      background: rgba(52, 211, 153, 0.15) !important;
+      background: rgba(52, 211, 153, 0.12) !important;
     }
 
-    .quiz-option-card img {
-      width: 56px;
-      height: 56px;
-      object-fit: contain;
-      border-radius: var(--radius-sm);
+    .quiz-option-academic-desc {
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 6px;
+      margin-top: 2px;
     }
 
     /* ШАГ 4: 3D-ОСМОТР АРТЕФАКТА */
@@ -1142,11 +1339,11 @@
     .artifact-3d-card {
       width: 100%;
       max-width: 380px;
-      border-radius: var(--radius-lg);
-      background: linear-gradient(145deg, #162446 0%, #0d172e 100%);
-      border: 2px solid var(--border-gold);
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 35px var(--gold-glow);
-      padding: 24px;
+      border-radius: var(--radius-card);
+      background: linear-gradient(145deg, #0e1933 0%, #070d1e 100%);
+      border: 1px solid var(--border-gold);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 25px var(--gold-glow);
+      padding: 22px;
       transform-style: preserve-3d;
       transition: transform 0.12s ease-out;
       user-select: none;
@@ -1159,33 +1356,137 @@
       object-fit: cover;
       border-radius: var(--radius-md);
       border: 1px solid var(--border-gold-subtle);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: block;
     }
 
-    /* ШАГ 5: МУЗЕЙНЫЙ БИЛЕТ */
-    .museum-pass-ticket {
-      background: linear-gradient(135deg, #132247 0%, #0a1329 100%);
-      border: 2px dashed var(--gold);
-      border-radius: var(--radius-lg);
-      padding: clamp(20px, 3.5vw, 36px);
-      box-shadow: var(--shadow-lg), 0 0 35px var(--gold-glow);
+    /* ШАГ 5: МУЗЕЙНЫЙ БИЛЕТ С ПЕРФОРАЦИЕЙ И ГОЛОГРАФИЧЕСКОЙ ФОЛЬГОЙ */
+    .museum-authentic-ticket {
+      display: grid;
+      grid-template-columns: 1fr 180px;
+      background: linear-gradient(135deg, #0e1832 0%, #070d1e 100%);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-card);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg), 0 0 24px rgba(201, 156, 82, 0.14);
+    }
+
+    @media (max-width: 680px) {
+      .museum-authentic-ticket {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .ticket-main-body {
+      padding: clamp(18px, 3.2vw, 28px);
       position: relative;
     }
 
-    .museum-pass-ticket::before, .museum-pass-ticket::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      width: 28px;
-      height: 28px;
-      background: var(--bg-surface);
-      border-radius: 50%;
-      transform: translateY(-50%);
+    .ticket-stub-perforation {
+      position: relative;
+      border-left: 2px dashed rgba(201, 156, 82, 0.4);
+      background: rgba(6, 11, 25, 0.5);
+      padding: 18px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
     }
 
-    .museum-pass-ticket::before { left: -15px; border-right: 2px dashed var(--gold); }
-    .museum-pass-ticket::after { right: -15px; border-left: 2px dashed var(--gold); }
+    .ticket-stub-perforation::before,
+    .ticket-stub-perforation::after {
+      content: '';
+      position: absolute;
+      left: -11px;
+      width: 20px;
+      height: 20px;
+      background: var(--bg-surface);
+      border-radius: 50%;
+      border: 1px solid rgba(201, 156, 82, 0.4);
+      z-index: 5;
+    }
+
+    .ticket-stub-perforation::before { top: -11px; }
+    .ticket-stub-perforation::after { bottom: -11px; }
+
+    /* Голографический перелив фольги */
+    .hologram-foil-badge {
+      background: linear-gradient(
+        125deg,
+        #c99c52 0%,
+        #f3d08a 25%,
+        #e28743 45%,
+        #48cae4 65%,
+        #f3d08a 85%,
+        #c99c52 100%
+      );
+      background-size: 250% 250%;
+      animation: foilShimmer 6s linear infinite;
+      color: #060b17;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      display: inline-block;
+      box-shadow: 0 0 15px rgba(243, 208, 138, 0.35);
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
+    @keyframes foilShimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .keeper-secret-code-box {
+      background: rgba(200, 52, 40, 0.12);
+      border: 1px solid rgba(200, 52, 40, 0.35);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      margin-top: 12px;
+      font-size: 11.5px;
+    }
+
+    .ticket-stub-perforation.is-torn {
+      transform: rotate(3deg) translate(6px, 10px);
+      opacity: 0.6;
+      filter: grayscale(0.6);
+      border-left: 2px dashed var(--ruby) !important;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+    }
+
+    /* Модальное окно полевого паспорта этнографа */
+    .field-passport-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 6, 15, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: fadeInModal 0.25s ease;
+    }
+
+    @keyframes fadeInModal {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .field-passport-modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-card);
+      max-width: 500px;
+      width: 100%;
+      padding: clamp(20px, 4vw, 30px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 35px var(--gold-glow);
+      position: relative;
+    }
 
     /* ==========================================================================
        8. ЭТНОАТЛАС И КОЛЛЕКЦИЯ
@@ -1405,6 +1706,10 @@
 </head>
 
 <body>
+  <!-- Музейные атмосферные оверлеи (Zero JS overhead, GPU-композитинг) -->
+  <div class="app-grain-overlay" aria-hidden="true"></div>
+  <div class="app-vignette-overlay" aria-hidden="true"></div>
+
   <div class="app-viewport">
 
     <!-- ========================================================================
@@ -1432,6 +1737,7 @@
         <button class="nav-btn" data-route="atlas">🌐 Этноатлас</button>
         <button class="nav-btn" data-route="folklore">📜 Фольклор</button>
         <button class="nav-btn" data-route="collection">💎 Награды</button>
+        <button class="nav-btn" data-route="workshop">✨ Мастерская</button>
       </nav>
 
       <!-- Действия: Звук, Тема, Режим телефона, Меню -->
@@ -1451,14 +1757,14 @@
           <span class="chip-label">Вид</span>
         </button>
 
-        <button class="mobile-burger-btn" id="mobileMenuOpenBtn" aria-label="Открыть мобильное меню">
+        <button class="mobile-burger-btn" id="mobileMenuOpenBtn" aria-label="Открыть мобильное меню" aria-expanded="false" aria-controls="mobileDrawerMenu">
           ☰
         </button>
       </div>
     </header>
 
     <!-- Выдвижное полноэкранное мобильное меню -->
-    <div class="mobile-drawer" id="mobileDrawerMenu">
+    <div class="mobile-drawer" id="mobileDrawerMenu" role="dialog" aria-modal="true" aria-label="Мобильное меню навигации">
       <button class="mobile-drawer-close" id="mobileDrawerCloseBtn" aria-label="Закрыть меню">✕</button>
       <div class="brand-logo" style="margin-bottom: 20px;">
         <span class="brand-logo__title">АРТЕФАКТ</span>
@@ -1625,21 +1931,38 @@
           <div class="split-layout-2col">
             <!-- Видео-модуль с интерактивными таймкодами -->
             <div>
-              <div class="video-mockup-frame">
+              <div class="video-mockup-frame" id="mythVideoPlayerStage">
                 <img id="videoPlayerPosterImg" src="./images/tatar_shurale.jpg" alt="Кадр из фильма" />
-                <div class="video-mockup-frame__overlay">
+                <div class="video-mockup-frame__overlay" id="videoMockOverlay">
                   <button class="play-circle-trigger" id="videoPlayPauseMockBtn" aria-label="Воспроизвести видео">▶</button>
-                  <span style="font-size:12px; color:var(--gold-light); font-weight:600; letter-spacing:0.06em;" id="videoStatusPillLabel">
-                    Режиссёрская экспозиция (16:9)
+                  <span class="font-slab" style="font-size:12px; color:var(--gold-light); font-weight:600; letter-spacing:0.06em;" id="videoStatusPillLabel">
+                    Режиссёрская экспозиция · 16:9
                   </span>
+                </div>
+                <!-- Кинематографичные субтитры сцены -->
+                <div class="video-cinematic-subtitle" id="videoCinematicSubtitle">
+                  <div class="video-cinematic-subtitle__inner" id="videoSubtitleQuoteText">
+                    «В глухой чаще векового урмана открывается сакральная тропа предков...»
+                  </div>
+                </div>
+                <!-- Анимированный эквалайзер Waveform (24 тактовых столбика) -->
+                <div class="video-waveform-strip" id="videoWaveformStrip" aria-hidden="true">
+                  <div class="waveform-bar"></div><div class="waveform-bar"></div><div class="waveform-bar"></div>
+                  <div class="waveform-bar"></div><div class="waveform-bar"></div><div class="waveform-bar"></div>
+                  <div class="waveform-bar"></div><div class="waveform-bar"></div><div class="waveform-bar"></div>
+                  <div class="waveform-bar"></div><div class="waveform-bar"></div><div class="waveform-bar"></div>
+                  <div class="waveform-bar"></div><div class="waveform-bar"></div><div class="waveform-bar"></div>
+                  <div class="waveform-bar"></div><div class="waveform-bar"></div><div class="waveform-bar"></div>
+                  <div class="waveform-bar"></div><div class="waveform-bar"></div><div class="waveform-bar"></div>
+                  <div class="waveform-bar"></div><div class="waveform-bar"></div><div class="waveform-bar"></div>
                 </div>
               </div>
 
               <div class="timecodes-strip" id="mythVideoTimecodesStrip">
-                <button class="timecode-chip is-active" data-tc="15">00:15 Вход в лес</button>
-                <button class="timecode-chip" data-tc="65">01:05 Встреча с духом</button>
-                <button class="timecode-chip" data-tc="160">02:40 Загадка орнамента</button>
-                <button class="timecode-chip" data-tc="250">04:10 Разгадка кода</button>
+                <button class="timecode-chip font-slab is-active" data-tc="15" aria-label="Таймкод 00:15 Вход в лес"><span class="timecode-val">00:15</span> Вход в лес</button>
+                <button class="timecode-chip font-slab" data-tc="65" aria-label="Таймкод 01:05 Встреча с духом"><span class="timecode-val">01:05</span> Встреча с духом</button>
+                <button class="timecode-chip font-slab" data-tc="160" aria-label="Таймкод 02:40 Загадка орнамента"><span class="timecode-val">02:40</span> Загадка орнамента</button>
+                <button class="timecode-chip font-slab" data-tc="250" aria-label="Таймкод 04:10 Разгадка кода"><span class="timecode-val">04:10</span> Разгадка кода</button>
               </div>
 
               <p id="videoSceneDescriptionText" style="font-size:12.5px; color:var(--text-muted); margin-top:12px; line-height:1.5;">
@@ -1679,8 +2002,13 @@
               <span class="gold-badge">Шаг 03 · Испытание этнографа</span>
               <h3 class="heading-section" style="font-size:var(--font-size-h2);">Найди след мастера</h3>
               <p class="lead-paragraph" id="quizInstructionText">
-                Перед вами старинное полотно с традиционной вышивкой. Используйте сенсорную лупу, чтобы изучить фрагменты ткани и определить ключевой символ.
+                Перед вами подлинный памятник традиционного мастерства. Используйте сенсорную лупу, чтобы изучить фрагменты ткани и идентифицировать канонический элемент узора.
               </p>
+
+              <!-- Индикатор фиксации сакрального следа -->
+              <div id="loupeDiscoveryStatusBanner" style="display:none; background:rgba(201,156,82,0.14); border:1px solid var(--gold); padding:9px 14px; border-radius:var(--radius-sm); margin-bottom:12px; font-size:12px; color:var(--gold-light);">
+                ✦ <strong>Сакральный след зафиксирован:</strong> Изучите бугорчатую филигрань и каплевидные пальметты.
+              </div>
 
               <div class="quiz-options-grid" id="quizOrnamentCards">
                 <!-- Варианты ответов генерируются динамически -->
@@ -1695,8 +2023,8 @@
 
             <!-- Интерактивная зона с сенсорной лупой -->
             <div>
-              <div class="loupe-inspect-stage" id="loupeStageContainer">
-                <img id="loupeCanvasImage" src="./images/v666_45.png" alt="Старинная ткань" />
+              <div class="loupe-inspect-stage" id="loupeStageContainer" role="region" aria-label="Интерактивный холст сенсорной лупы. Водите курсором или пальцем для исследования артефакта" tabindex="0">
+                <img id="loupeCanvasImage" src="./images/v666_45.png" alt="Старинный артефакт в высоком разрешении" />
                 <div class="lens-pointer" id="loupeLensPointer">
                   <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
                     <path d="M40 6L74 40L40 74L6 40L40 6Z" stroke="#fff" stroke-width="3"/>
@@ -1706,7 +2034,7 @@
                 </div>
               </div>
               <p style="font-size:11.5px; color:var(--text-dim); margin-top:8px; text-align:center;">
-                ✦ Водите пальцем или курсором по холсту для наведения лупы
+                ✦ Водите пальцем или курсором по холсту для фиксации сакрального фрагмента (удерживайте 1 сек)
               </p>
             </div>
           </div>
@@ -1720,7 +2048,7 @@
                 <img id="artifact3dPhoto" src="./images/v668_101.png" alt="3D Артефакт" />
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                   <strong style="color:var(--gold); font-size:14px;" id="tiltCardTitle">Казанский тюльпан</strong>
-                  <span style="font-size:11px; background:rgba(212,175,55,0.15); color:var(--gold-light); padding:2px 8px; border-radius:999px;">XIX век</span>
+                  <span style="font-size:11px; background:rgba(201,156,82,0.15); color:var(--gold-light); padding:2px 8px; border-radius:var(--radius-sm);" class="font-slab" id="artifactEraTag">XIX век</span>
                 </div>
                 <p id="tiltCardDesc" style="font-size:12px; color:var(--text-muted); margin-top:6px; line-height:1.5;">
                   Шедевр казанского узорного сафьянного шитья (ичижного шва). Ступенчатый ромб и расцветающий тюльпан.
@@ -1743,7 +2071,7 @@
 
               <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); padding:16px; border-radius:var(--radius-md); margin-bottom:20px;">
                 <strong style="color:var(--gold); font-size:12.5px; display:block; margin-bottom:4px;">Музейное хранение:</strong>
-                <span id="artifactMuseumLocationText" style="font-size:12px; color:var(--text-main);">
+                <span id="artifactMuseumLocationText" style="font-size:12px; color:var(--text-main);" class="font-slab">
                   Национальный музей Республики Татарстан (ул. Кремлёвская, 2) · Инв. № КП-7482/ЭТ
                 </span>
               </div>
@@ -1758,52 +2086,89 @@
         <!-- ПОДЭКРАН ШАГ 5: МУЗЕЙНЫЙ БИЛЕТ И МОСТ В РЕАЛЬНОСТЬ -->
         <div class="quest-step-subview" id="questStepSub5" style="display:none;">
           <div class="split-layout-2col">
-            <div class="museum-pass-ticket">
-              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
-                <div>
-                  <span class="gold-badge" style="margin-bottom:6px;">Именной пропуск</span>
-                  <h3 id="ticketMuseumNameHeading" style="font-family:var(--font-editorial); font-size:clamp(22px, 3.5vw, 30px); color:var(--text-main);">
-                    Национальный музей РТ
-                  </h3>
-                  <span id="ticketCityLabel" style="font-size:12px; color:var(--gold);">г. Казань, ул. Кремлёвская, 2</span>
+            <div class="museum-authentic-ticket" id="museumAuthenticPassWidget">
+              <!-- Тело билета -->
+              <div class="ticket-main-body">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
+                  <div>
+                    <span class="gold-badge" style="margin-bottom:6px;">Именной пропуск исследователя</span>
+                    <h3 id="ticketMuseumNameHeading" class="font-monomakh" style="font-size:clamp(19px, 2.8vw, 26px); color:var(--text-main); line-height:1.2;">
+                      Национальный музей Республики Татарстан
+                    </h3>
+                    <span id="ticketCityLabel" class="font-slab" style="font-size:12px; color:var(--gold); display:block; margin-top:3px;">
+                      г. Казань, ул. Кремлёвская, 2 · Зал этнографии XIX века
+                    </span>
+                  </div>
+                  <div class="hologram-foil-badge font-slab">
+                    ✦ ЛЬГОТА -15%
+                  </div>
                 </div>
-                <div style="background:var(--ruby); color:#fff; font-size:12px; font-weight:700; padding:6px 12px; border-radius:var(--radius-pill);">
-                  -10% СКИДКА
+
+                <div style="display:grid; grid-template-columns:84px 1fr; gap:16px; align-items:center; background:rgba(4,7,17,0.65); padding:14px; border-radius:var(--radius-sm); border:1px solid var(--border-gold-subtle); margin-bottom:14px;">
+                  <!-- QR-код -->
+                  <svg width="84" height="84" viewBox="0 0 100 100" fill="none" style="background:#fff; border-radius:6px; padding:6px; flex-shrink:0;">
+                    <rect x="10" y="10" width="28" height="28" fill="#060b17"/>
+                    <rect x="16" y="16" width="16" height="16" fill="#fff"/>
+                    <rect x="20" y="20" width="8" height="8" fill="#060b17"/>
+                    <rect x="62" y="10" width="28" height="28" fill="#060b17"/>
+                    <rect x="68" y="16" width="16" height="16" fill="#fff"/>
+                    <rect x="72" y="20" width="8" height="8" fill="#060b17"/>
+                    <rect x="10" y="62" width="28" height="28" fill="#060b17"/>
+                    <rect x="16" y="68" width="16" height="16" fill="#fff"/>
+                    <rect x="20" y="72" width="8" height="8" fill="#060b17"/>
+                    <circle cx="50" cy="50" r="10" fill="var(--ruby)"/>
+                    <rect x="46" y="14" width="8" height="8" fill="#060b17"/>
+                    <rect x="62" y="62" width="10" height="10" fill="#060b17"/>
+                    <rect x="76" y="76" width="14" height="14" fill="#060b17"/>
+                  </svg>
+
+                  <div>
+                    <strong style="color:var(--gold-light); font-size:13px; display:block;" id="ticketPassCodeLabel" class="font-slab">Код: #PASS-TAT-2026-X9</strong>
+                    <span style="font-size:11.5px; color:var(--text-muted); line-height:1.45; display:block; margin-top:3px;">
+                      Предъявите цифровой пропуск смотрителю или на кассе музейного филиала для регистрации в реестре исследователей.
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Секретный пароль для смотрителя в зале -->
+                <div class="keeper-secret-code-box">
+                  <span style="color:var(--gold-light); font-weight:700;">Секретный пароль смотрителю зала:</span>
+                  <span id="ticketKeeperSecretWord" class="font-slab" style="color:#fff; letter-spacing:0.08em; margin-left:6px; font-weight:600;">«БЫЛТЫР-1892»</span>
+                  <span style="color:var(--text-muted); display:block; font-size:10.5px; margin-top:2px;">(Назовите смотрителю в зале этнографии и получите памятный физический стикерпак экспедиции)</span>
+                </div>
+
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+                  <button class="action-chip" id="openYandexMapsBtn">
+                    <span>📍</span> Яндекс Карты
+                  </button>
+                  <button class="action-chip" id="simulateGeoCheckinBtn" style="border-color:var(--gold);">
+                    <span>🛰️</span> Спутниковый чекин
+                  </button>
+                  <button class="action-chip" id="exportPassportBtn" style="border-color:var(--gold-light);">
+                    <span>📜</span> Полевой паспорт
+                  </button>
                 </div>
               </div>
 
-              <div style="display:grid; grid-template-columns:84px 1fr; gap:16px; align-items:center; background:rgba(6,11,23,0.6); padding:14px; border-radius:var(--radius-md); border:1px solid var(--border-gold-subtle); margin-bottom:16px;">
-                <!-- QR-код -->
-                <svg width="84" height="84" viewBox="0 0 100 100" fill="none" style="background:#fff; border-radius:8px; padding:6px;">
-                  <rect x="10" y="10" width="28" height="28" fill="#060b17"/>
-                  <rect x="16" y="16" width="16" height="16" fill="#fff"/>
-                  <rect x="20" y="20" width="8" height="8" fill="#060b17"/>
-                  <rect x="62" y="10" width="28" height="28" fill="#060b17"/>
-                  <rect x="68" y="16" width="16" height="16" fill="#fff"/>
-                  <rect x="72" y="20" width="8" height="8" fill="#060b17"/>
-                  <rect x="10" y="62" width="28" height="28" fill="#060b17"/>
-                  <rect x="16" y="68" width="16" height="16" fill="#fff"/>
-                  <rect x="20" y="72" width="8" height="8" fill="#060b17"/>
-                  <circle cx="50" cy="50" r="10" fill="var(--ruby)"/>
-                  <rect x="46" y="14" width="8" height="8" fill="#060b17"/>
-                  <rect x="62" y="62" width="10" height="10" fill="#060b17"/>
-                  <rect x="76" y="76" width="14" height="14" fill="#060b17"/>
-                </svg>
-
-                <div>
-                  <strong style="color:var(--gold-light); font-size:13px; display:block;" id="ticketPassCodeLabel">Код: #PASS-TAT-2026-X9</strong>
-                  <span style="font-size:12px; color:var(--text-muted); line-height:1.4; display:block; margin-top:3px;">
-                    Предъявите QR-код на кассе музея для получения льготного билета исследователя.
-                  </span>
+              <!-- Отрывной корешок контроля -->
+              <div class="ticket-stub-perforation">
+                <span class="font-slab" style="font-size:9.5px; color:var(--gold); letter-spacing:0.12em; text-transform:uppercase;">КОНТРОЛЬ</span>
+                
+                <div style="display:flex; gap:2px; height:44px; align-items:flex-end; opacity:0.85; margin:10px 0;" aria-hidden="true">
+                  <div style="width:3px; height:100%; background:var(--parchment);"></div>
+                  <div style="width:1px; height:80%; background:var(--parchment);"></div>
+                  <div style="width:4px; height:100%; background:var(--parchment);"></div>
+                  <div style="width:2px; height:90%; background:var(--parchment);"></div>
+                  <div style="width:5px; height:100%; background:var(--parchment);"></div>
+                  <div style="width:1px; height:70%; background:var(--parchment);"></div>
+                  <div style="width:3px; height:100%; background:var(--parchment);"></div>
+                  <div style="width:4px; height:85%; background:var(--parchment);"></div>
                 </div>
-              </div>
 
-              <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <button class="action-chip" id="openYandexMapsBtn">
-                  <span>📍</span> Яндекс Карты
-                </button>
-                <button class="action-chip" id="simulateGeoCheckinBtn" style="border-color:var(--gold);">
-                  <span>🛰️</span> Спутниковый чекин
+                <span id="ticketStubSerial" class="font-slab" style="font-size:11px; color:var(--text-muted);">№ 04982-26</span>
+                
+                <button class="action-chip" id="tearOffTicketStubBtn" style="font-size:10px; padding:4px 8px; margin-top:8px; border-color:var(--ruby);">
+                  Оторвать корешок
                 </button>
               </div>
             </div>
@@ -1999,7 +2364,7 @@
           </p>
         </div>
 
-        <div class="resp-grid-2">
+        <div class="resp-grid-2" id="folkloreCardsContainer">
           <!-- Сказ 1 -->
           <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-md); padding:20px; display:flex; gap:16px;">
             <img src="./images/tatar_shurale.jpg" alt="Шурале" style="width:90px; height:110px; object-fit:cover; border-radius:8px; flex-shrink:0;" />
@@ -2073,7 +2438,7 @@
             <span class="gold-badge">Нейро-орнаментика</span>
             <h2 class="heading-section">ИИ-Мастерская оберегов</h2>
             <p class="lead-paragraph">
-              Скомбинируйте традиционные сакральные мотивы народов России для создания уникального цифрового оберега и персональной открытки.
+              Сформируйте цифровой оберег на основе сакральных мотивов из собрания Российского этнографического музея и персональную открытку экспедиции.
             </p>
 
             <label style="font-size:12.5px; font-weight:600; color:var(--gold); display:block; margin-bottom:8px;">
@@ -2116,6 +2481,53 @@
 
   </div> <!-- /.app-viewport -->
 
+  <!-- Модальное окно: Полевой паспорт этнографа -->
+  <div class="field-passport-modal-backdrop" id="fieldPassportModal" role="dialog" aria-modal="true" aria-labelledby="passportModalTitle" style="display:none;">
+    <div class="field-passport-modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+        <div>
+          <span class="gold-badge">Российский этнографический союз</span>
+          <h3 id="passportModalTitle" class="font-monomakh" style="font-size:22px; color:var(--text-main); margin-top:4px;">
+            Полевой паспорт этнографа
+          </h3>
+        </div>
+        <button class="action-chip" id="closePassportModalBtn" aria-label="Закрыть паспорт" style="padding:4px 10px;">✕</button>
+      </div>
+      
+      <div style="background:rgba(4,7,17,0.7); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-sm); padding:16px; margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px; margin-bottom:8px;">
+          <span style="font-size:12px; color:var(--text-muted);">Исследователь:</span>
+          <strong id="passportResearcherName" class="font-slab" style="color:var(--gold-light); font-size:12px;">Следопыт Артефакта</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px; margin-bottom:8px;">
+          <span style="font-size:12px; color:var(--text-muted);">Регион экспедиции:</span>
+          <strong id="passportCultureTitle" class="font-slab" style="color:var(--text-main); font-size:12px;">Татарстан</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px; margin-bottom:8px;">
+          <span style="font-size:12px; color:var(--text-muted);">Открытый артефакт:</span>
+          <strong id="passportArtifactName" class="font-slab" style="color:var(--text-main); font-size:12px;">Казанское нагрудное хасите</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px; margin-bottom:8px;">
+          <span style="font-size:12px; color:var(--text-muted);">Музейный архив:</span>
+          <span id="passportMuseumSource" style="color:var(--gold); font-size:11px; text-align:right; max-width:65%;">Национальный музей РТ</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-top:8px;">
+          <span style="font-size:12px; color:var(--text-muted);">Статус верификации:</span>
+          <span style="color:#34d399; font-size:12px; font-weight:700;">✓ СЛЕД ВЕРИФИЦИРОВАН</span>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <button class="btn-action btn-action--gold" id="copyPassportTextBtn" style="flex:1;">
+          📋 Скопировать выписку
+        </button>
+        <button class="action-chip" id="closePassportModalBtn2">
+          Закрыть
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ========================================================================
        НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ (ДЛЯ СМАРТФОНОВ)
        ======================================================================== -->
@@ -2157,6 +2569,9 @@
       const AudioEngine = (function() {
         let audioCtx = null;
         let masterGain = null;
+        let convolverNode = null;
+        let wetGain = null;
+        let dryGain = null;
         let isAudioUnlocked = false;
         let cachedRuVoice = null;
         let activeSpeechUtterance = null; // Защита от GC на iOS WebKit
@@ -2164,17 +2579,61 @@
         let ambientGain = null;
         let isAmbientActive = false;
 
+        // Генерация импульсного отклика каменного сводчатого зала (2.2 сек, T60 decay)
+        function createStoneHallImpulse(ctx, duration = 2.2, decay = 2.6) {
+          const sampleRate = ctx.sampleRate;
+          const length = Math.floor(sampleRate * duration);
+          const impulse = ctx.createBuffer(2, length, sampleRate);
+          const left = impulse.getChannelData(0);
+          const right = impulse.getChannelData(1);
+
+          for (let i = 0; i < length; i++) {
+            const t = i / sampleRate;
+            const envelope = Math.exp(-t * decay);
+            left[i] = (Math.random() * 2 - 1) * envelope;
+            right[i] = (Math.random() * 2 - 1) * envelope;
+          }
+          return impulse;
+        }
+
         function getContext() {
           if (!audioCtx) {
             const AudioContextClass = window.AudioContext || window.webkitAudioContext;
             if (AudioContextClass) {
               audioCtx = new AudioContextClass();
               masterGain = audioCtx.createGain();
-              masterGain.gain.setValueAtTime(0.8, audioCtx.currentTime);
+              masterGain.gain.setValueAtTime(0.85, audioCtx.currentTime);
               masterGain.connect(audioCtx.destination);
+
+              // Инициализация ревербератора каменного сводчатого зала
+              try {
+                convolverNode = audioCtx.createConvolver();
+                convolverNode.buffer = createStoneHallImpulse(audioCtx, 2.2, 2.6);
+
+                wetGain = audioCtx.createGain();
+                wetGain.gain.setValueAtTime(0.30, audioCtx.currentTime); // 30% акустики зала
+
+                dryGain = audioCtx.createGain();
+                dryGain.gain.setValueAtTime(0.85, audioCtx.currentTime);
+
+                convolverNode.connect(wetGain);
+                wetGain.connect(masterGain);
+                dryGain.connect(masterGain);
+              } catch (e) {
+                convolverNode = null;
+              }
             }
           }
           return audioCtx;
+        }
+
+        function routeThroughHall(sourceNode) {
+          if (dryGain && convolverNode) {
+            sourceNode.connect(dryGain);
+            sourceNode.connect(convolverNode);
+          } else if (masterGain) {
+            sourceNode.connect(masterGain);
+          }
         }
 
         // 1. Аппаратная разблокировка звука по первому жесту (iOS Audio Gesture Policy)
@@ -2184,7 +2643,6 @@
             ctx.resume().catch(() => {});
           }
 
-          // 1-сэмпловый немой буфер Web Audio API — гарантирует разблокировку аудиопотока без побочных эффектов
           if (ctx && !isAudioUnlocked) {
             try {
               const buffer = ctx.createBuffer(1, 1, 22050);
@@ -2240,8 +2698,17 @@
           }
         }
 
+        let activeAudioElement = null;
+
         // Принудительная немедленная остановка диктора (вызывается при любом переходе по сайту)
         function stopSpeech() {
+          if (activeAudioElement) {
+            try {
+              activeAudioElement.pause();
+              activeAudioElement.currentTime = 0;
+            } catch (e) {}
+            activeAudioElement = null;
+          }
           if ('speechSynthesis' in window) {
             try {
               window.speechSynthesis.cancel();
@@ -2250,16 +2717,65 @@
           activeSpeechUtterance = null;
           isSpeakingState = false;
           updateVoiceButtonUi(false);
+          if (ambientGain && isAmbientActive && audioCtx) {
+            try {
+              ambientGain.gain.cancelScheduledValues(audioCtx.currentTime);
+              ambientGain.gain.setValueAtTime(ambientGain.gain.value, audioCtx.currentTime);
+              ambientGain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 0.3);
+            } catch(e) {}
+          }
         }
 
         function isSpeaking() {
+          if (activeAudioElement && !activeAudioElement.paused) return true;
           if ('speechSynthesis' in window && window.speechSynthesis.speaking) {
             return true;
           }
           return isSpeakingState;
         }
 
-        // Безопасное воспроизведение речи (Hardened SpeechSynthesis с тотальным контролем жизненного цикла)
+        // Воспроизведение студийного голоса Gemini TTS (из папки ./audio)
+        function playPreRenderedVoice(cultureId, fallbackText, onDone) {
+          stopSpeech();
+          const audioPath = `./audio/${cultureId}.mp3`;
+          const audio = new Audio(audioPath);
+          activeAudioElement = audio;
+          isSpeakingState = true;
+          updateVoiceButtonUi(true);
+
+          if (ambientGain && isAmbientActive && audioCtx) {
+            try {
+              ambientGain.gain.cancelScheduledValues(audioCtx.currentTime);
+              ambientGain.gain.setValueAtTime(ambientGain.gain.value, audioCtx.currentTime);
+              ambientGain.gain.linearRampToValueAtTime(0.015, audioCtx.currentTime + 0.3);
+            } catch(e) {}
+          }
+
+          audio.onended = () => {
+            activeAudioElement = null;
+            isSpeakingState = false;
+            updateVoiceButtonUi(false);
+            if (ambientGain && isAmbientActive && audioCtx) {
+              try {
+                ambientGain.gain.cancelScheduledValues(audioCtx.currentTime);
+                ambientGain.gain.setValueAtTime(ambientGain.gain.value, audioCtx.currentTime);
+                ambientGain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 0.5);
+              } catch(e) {}
+            }
+            if (onDone) onDone();
+          };
+
+          audio.onerror = () => {
+            activeAudioElement = null;
+            speakSafe(fallbackText, onDone);
+          };
+
+          audio.play().catch(() => {
+            speakSafe(fallbackText, onDone);
+          });
+        }
+
+        // Безопасное синхронное воспроизведение речи (iOS WebKit совместимо, без setTimeout)
         function speakSafe(text, onDoneFallback) {
           const ctx = getContext();
           if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
@@ -2270,36 +2786,55 @@
               isSpeakingState = true;
               updateVoiceButtonUi(true);
 
-              setTimeout(() => {
-                if (!isSpeakingState) return; // Защита: если успели остановить во время задержки
-                const utter = new SpeechSynthesisUtterance(text);
-                utter.rate = 0.92;
-                utter.pitch = 1.0;
-                utter.lang = 'ru-RU';
-                if (cachedRuVoice) utter.voice = cachedRuVoice;
+              const utter = new SpeechSynthesisUtterance(text);
+              utter.rate = 0.92;
+              utter.pitch = 1.0;
+              utter.lang = 'ru-RU';
+              if (cachedRuVoice) utter.voice = cachedRuVoice;
 
-                utter.onstart = () => {
-                  isSpeakingState = true;
-                  updateVoiceButtonUi(true);
-                };
+              const restoreAmbient = () => {
+                if (ambientGain && isAmbientActive && audioCtx) {
+                  try {
+                    ambientGain.gain.cancelScheduledValues(audioCtx.currentTime);
+                    ambientGain.gain.setValueAtTime(ambientGain.gain.value, audioCtx.currentTime);
+                    ambientGain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 0.5);
+                  } catch(e) {}
+                }
+              };
 
-                utter.onend = () => {
-                  activeSpeechUtterance = null;
-                  isSpeakingState = false;
-                  updateVoiceButtonUi(false);
-                };
+              utter.onstart = () => {
+                isSpeakingState = true;
+                updateVoiceButtonUi(true);
+                // Audio Ducking: приглушаем фоновый эмбиент на время речи
+                if (ambientGain && isAmbientActive && audioCtx) {
+                  try {
+                    ambientGain.gain.cancelScheduledValues(audioCtx.currentTime);
+                    ambientGain.gain.setValueAtTime(ambientGain.gain.value, audioCtx.currentTime);
+                    ambientGain.gain.linearRampToValueAtTime(0.015, audioCtx.currentTime + 0.3);
+                  } catch(e) {}
+                }
+              };
 
-                utter.onerror = () => {
-                  activeSpeechUtterance = null;
-                  isSpeakingState = false;
-                  updateVoiceButtonUi(false);
-                  // Акустический фоллбек при сбое синтезатора
-                  playEthnicBell(660, 1.4);
-                };
+              utter.onend = () => {
+                activeSpeechUtterance = null;
+                isSpeakingState = false;
+                updateVoiceButtonUi(false);
+                restoreAmbient();
+                if (onDoneFallback) onDoneFallback();
+              };
 
-                activeSpeechUtterance = utter; // Сильная ссылка во избежание GC
-                window.speechSynthesis.speak(utter);
-              }, 40);
+              utter.onerror = () => {
+                activeSpeechUtterance = null;
+                isSpeakingState = false;
+                updateVoiceButtonUi(false);
+                restoreAmbient();
+                playEthnicBell(660, 1.4);
+                if (onDoneFallback) onDoneFallback();
+              };
+
+              activeSpeechUtterance = utter;
+              // Синхронный вызов speak в рамках жеста пользователя (решает блокировку iOS Safari)
+              window.speechSynthesis.speak(utter);
               return;
             } catch (e) {
               isSpeakingState = false;
@@ -2314,9 +2849,9 @@
           if (onDoneFallback) onDoneFallback();
         }
 
-        // 3. Процедурные этно-инструменты
-        // а) Валдайский колокол / шаманские подвески
-        function playEthnicBell(freq = 880, duration = 1.6) {
+        // 3. Процедурные этно-инструменты с реверберацией зала и микро-расстройкой
+        // а) Валдайский колокол / сакральные подвески
+        function playEthnicBell(freq = 880, duration = 1.8) {
           const ctx = getContext();
           if (!ctx) return;
           if (ctx.state === 'suspended') ctx.resume().catch(() => {});
@@ -2332,24 +2867,30 @@
             const osc = ctx.createOscillator();
             const g = ctx.createGain();
             osc.type = 'sine';
+            // Микро-расстройка (humanize detune ±6 центов)
+            osc.detune.setValueAtTime((Math.random() - 0.5) * 12, t);
             osc.frequency.setValueAtTime(freq * p.ratio, t);
+
             g.gain.setValueAtTime(0.2 * p.g, t);
             g.gain.exponentialRampToValueAtTime(0.0001, t + p.d);
+
             osc.connect(g);
-            g.connect(masterGain);
+            routeThroughHall(g);
+
             osc.start(t);
             osc.stop(t + p.d + 0.05);
           });
         }
 
         // б) Гусли / перебор струн
-        function playGusliPluck(freq = 293.66, delay = 0, duration = 1.2) {
+        function playGusliPluck(freq = 293.66, delay = 0, duration = 1.3) {
           const ctx = getContext();
           if (!ctx) return;
-          const t = ctx.currentTime + delay;
+          const t = ctx.currentTime + Math.max(0, delay);
 
           const osc = ctx.createOscillator();
           osc.type = 'triangle';
+          osc.detune.setValueAtTime((Math.random() - 0.5) * 8, t);
           osc.frequency.setValueAtTime(freq, t);
 
           const filter = ctx.createBiquadFilter();
@@ -2364,7 +2905,7 @@
 
           osc.connect(filter);
           filter.connect(env);
-          env.connect(masterGain);
+          routeThroughHall(env);
 
           osc.start(t);
           osc.stop(t + duration + 0.05);
@@ -2372,7 +2913,10 @@
 
         function playGusliChord() {
           const scale = [293.66, 369.99, 440.00, 587.33, 739.99]; // D-мажорная пентатоника
-          scale.forEach((f, i) => playGusliPluck(f, i * 0.06));
+          scale.forEach((f, i) => {
+            const humanDelay = i * 0.065 + (Math.random() * 0.012 - 0.006);
+            playGusliPluck(f, humanDelay);
+          });
         }
 
         // в) UI Звуки
@@ -2428,6 +2972,8 @@
             return true;
           } else {
             if (ambientGain) {
+              ambientGain.gain.cancelScheduledValues(ctx.currentTime);
+              ambientGain.gain.setValueAtTime(ambientGain.gain.value, ctx.currentTime);
               ambientGain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
               setTimeout(() => {
                 if (ambientOsc) {
@@ -2443,6 +2989,8 @@
         }
 
         return {
+          getContext,
+          playPreRenderedVoice,
           speakSafe,
           stopSpeech,
           isSpeaking,
@@ -2461,7 +3009,7 @@
         tatarstan: {
           id: 'tatarstan',
           category: 'russia',
-          sub: '✦ 01 / 07 · Поволжье и Урал',
+          sub: '✦ 01 / 08 · Поволжье и Урал',
           title: 'Татарстан',
           lead: 'Перекрёсток цивилизаций Востока и Запада, великое наследие Волжской Булгарии, виртуозная кожаная мозаика и поэзия древнего урмана.',
           greeting: '«Исәнмесез! Рәхим итегез!»',
@@ -2470,19 +3018,47 @@
           imgArchive: './images/kazan_archive_19th.jpg',
           mythTitle: 'Легенда о Шурале',
           mythCover: './images/tatar_shurale.jpg',
-          artTitle: 'Казанский растительный орнамент',
-          artDesc: 'Шедевр казанского узорного сафьянного шитья (ичижного шва). Ступенчатый ромб и расцветающий тюльпан символизируют пробуждение весенней степи, благословение рода и защиту очага.',
+          artTitle: 'Казанское нагрудное хасите и филигрань',
+          artDesc: 'Шедевр казанского ювелирного искусства XIX века из собрания Национального музея РТ. Бугорчатая филигрань (челтәр) и коранницы-бөтү передавались по наследству как сакральный оберег рода.',
+          era: 'XIX век',
           museumName: 'Национальный музей Республики Татарстан',
           museumCity: 'г. Казань, ул. Кремлёвская, 2',
           museumPassCode: '#PASS-TAT-2026-X9',
           invNumber: 'Инв. № КП-7482/ЭТ · Зал этнографии казанских татар XIX в.',
+          keeperSecretWord: '«БЫЛТЫР-1892»',
+          stubSerial: '№ 04982-26',
           loupeImg: './images/v666_45.png',
-          correctChoice: '1',
+          loupeScannerClue: 'Наведите лупу на центральный филигранный коранник: обратите внимание на объемные металлические капли-напайки и растительные завитки, формирующие трилистники и лотосовидные пальметты.',
+          correctChoice: '2',
           quizOptions: [
-            { id: '1', name: 'Казанский тюльпан', img: './images/v806_41.png' },
-            { id: '2', name: 'Мезенский ромб', img: './images/v806_42.png' },
-            { id: '3', name: 'Северная птица', img: './images/v806_43.png' },
-            { id: '4', name: 'Алтайский вихрь', img: './images/v806_51.png' }
+            {
+              id: '1',
+              name: 'Зооморфный мотив с изображением крылатого барса',
+              img: './images/v806_41.png',
+              isCorrect: false,
+              desc: 'Хотя барс являлся булгарским династическим символом, в ювелирных украшениях казанских татарок XIX века зооморфные образы практически не использовались из-за традиции аниконизма.'
+            },
+            {
+              id: '2',
+              name: 'Бугорчатая филигрань с мотивом тюльпана и пальметты',
+              img: './images/v806_42.png',
+              isCorrect: true,
+              desc: 'Именно объемная бугорчатая филигрань (сырлы челтәр) с тюльпановидными элементами и каплевидными накладками является визитной карточкой казанских мастеров XIX века, символизируя весеннее возрождение и изобилие.'
+            },
+            {
+              id: '3',
+              name: 'Черневой геометрический орнамент «плетенка»',
+              img: './images/v806_43.png',
+              isCorrect: false,
+              desc: 'Сложная ленточная плетенка характерна для скандинавских и древнерусских украшений домонгольского периода, а не для казанского хасите с филигранными бляхами.'
+            },
+            {
+              id: '4',
+              name: 'Перегородчатая полихромная эмаль с солярными знаками',
+              img: './images/v806_51.png',
+              isCorrect: false,
+              desc: 'Техника перегородчатой эмали была распространена в византийском и древнерусском ювелирном деле; татарские хасите декорировались сканью, зернью, чеканкой и сердоликом.'
+            }
           ],
           chapters: {
             story: 'В архаических тюрко-булгарских верованиях Шурале — не просто леший, а строгий страж баланса первозданной природы («урмана»). По поэме Габдуллы Тукая, молодой дровосек перехитрил духа, защемив его пальцы в клине дубового бревна и назвавшись «Былтыр» («В прошлом году»). Традиция учит: дух не трогает того, кто помнит родовой узор и законы леса.',
@@ -2492,10 +3068,258 @@
           }
         },
 
+        pomorye: {
+          id: 'pomorye',
+          category: 'russia',
+          sub: '✦ 02 / 08 · Русский Север и Беломорье',
+          title: 'Поморье',
+          lead: 'Суровое побережье Студёного моря, былинные напевы Пинеги, деревянные шатровые храмы и искусство мореходов.',
+          greeting: '«Поклон да здравие гостям дорогим!»',
+          speechText: 'Поклон да здравие гостям дорогим! Добро пожаловать на Русский Север.',
+          imgModern: './images/pomorye_myth.jpg',
+          imgArchive: './images/v651_126.png',
+          mythTitle: 'Птица Сирин и сказы Белого моря',
+          mythCover: './images/pomorye_myth.jpg',
+          artTitle: 'Мезенский обережный ковш и берестяной туес',
+          artDesc: 'Традиционная двухцветная графичная роспись из сажи и охры XVIII–XIX веков. Солярные огненные кони и уточки выступали мощными оберегами поморских мореходов в ледовых походах.',
+          era: 'XVIII–XIX века',
+          museumName: 'Архангельский краеведческий музей',
+          museumCity: 'г. Архангельск, пл. Ленина, 2',
+          museumPassCode: '#PASS-POM-2026-P3',
+          invNumber: 'Инв. № МК-3341/Д · Зал деревянной пластики Поморья',
+          keeperSecretWord: '«МЕЗЕНЬ-1785»',
+          stubSerial: '№ 01842-26',
+          loupeImg: './images/v651_126.png',
+          loupeScannerClue: 'Наведите сканер на верхний фриз туеса и рукоять ковша: найдите ритмичный поясок из тонких геометрических фигур с удлиненными ногами-палочками, окруженных солярными косыми крестами и спиралями ветра.',
+          correctChoice: '2',
+          quizOptions: [
+            {
+              id: '1',
+              name: 'Птица Сирин в венце',
+              img: './images/v806_41.png',
+              isCorrect: false,
+              desc: 'Образ райской птицы Сирин характерен для пермогорской и северодвинской росписи, но не встречается в лаконичной графической традиции Мезени.'
+            },
+            {
+              id: '2',
+              name: 'Ряд огненных коней-оленей («уточек-коников»)',
+              img: './images/v806_42.png',
+              isCorrect: true,
+              desc: 'Мезенские кони на неестественно тонких ножках с раздвоенными копытцами символизируют бег солнца по небосводу и выступают главными защитниками домашнего очага и промысловиков.'
+            },
+            {
+              id: '3',
+              name: 'Травное древо жизни с тюльпанами',
+              img: './images/v806_43.png',
+              isCorrect: false,
+              desc: 'Растительный орнамент с пышными цветами присущ поволжской (городецкой) и урало-сибирской росписям, в то время как мезенская графика сугубо архаична и схематична.'
+            },
+            {
+              id: '4',
+              name: 'Кукарский плетеный узор',
+              img: './images/v806_51.png',
+              isCorrect: false,
+              desc: 'Сложное кружевное плетение восходит к вятским промыслам и не имеет отношения к северной семантике мезенского деревянного письма.'
+            }
+          ],
+          chapters: {
+            story: 'В поморском понимании «Море — наше поле». Сказы Бориса Шергина и Марфы Крюковой сохранили образ Щепной птицы счастья: вырезанный из соснового бруска оберег подвешивался под матицей поморской избы над самоваром, оберегая дом от дурного глаза.',
+            symbols: 'Красные мезенские кони символизируют восходящее солнце, уточки — закат и покой океана, а солярные кресты — маяки веры.',
+            words: '«Карбас» — мореходная поморская ладья; «Козули» — обрядовые ржаные пряники; «Баить» — сказывать старинные былины нараспев.',
+            rituals: 'Проводы карбасов на промысел: выпекание семейных козуль и установка обетного резного креста на утесе при спасении из ледяного плена.'
+          }
+        },
+
+        yakutia: {
+          id: 'yakutia',
+          category: 'russia',
+          sub: '✦ 03 / 08 · Долина Туймаада и земля Олонхо',
+          title: 'Якутия (Саха)',
+          lead: 'Земля вечной мерзлоты, священных лиственниц, героического эпоса Олонхо и солнечного праздника Ысыах.',
+          greeting: '«Дорообо! Нөрүөн нөргүй!»',
+          speechText: 'Дорообо! Неруен нергуй! Добро пожаловать в Якутию, землю Олонхо.',
+          imgModern: './images/yakutia_myth.jpg',
+          imgArchive: './images/yakutia_myth.jpg',
+          mythTitle: 'Эпос Олонхо и Древо Аал Луук Мас',
+          mythCover: './images/yakutia_myth.jpg',
+          artTitle: 'Сакральный кумысный кубок Чороон',
+          artDesc: 'Монументальный сосуд для священного напитка илгэ, выточенный из цельного массива березы на трех зооморфных ножках. Символ благословения небесных божеств Айыы.',
+          era: 'XIX век',
+          museumName: 'Якутский музей истории и культуры народов Севера им. Ем. Ярославского',
+          museumCity: 'г. Якутск, пр. Ленина, 5/2',
+          museumPassCode: '#PASS-SAH-2026-Y5',
+          invNumber: 'Инв. № ЯГОМ-8941/Э · Зал шедевров Олонхо',
+          keeperSecretWord: '«ОЛОНХО-1906»',
+          stubSerial: '№ 07312-26',
+          loupeImg: './images/yakutia_myth.jpg',
+          loupeScannerClue: 'Наведите сканер на средний и нижний пояса тулова: найдите геометрические насечки, стилизованные под конское копыто, и пояс наклонных параллельных линий, имитирующих гребенку.',
+          correctChoice: '2',
+          quizOptions: [
+            {
+              id: '1',
+              name: 'Лировидный узор «Көҕүөр ойуу» с растительными побегами',
+              img: './images/v806_41.png',
+              isCorrect: false,
+              desc: 'Хотя этот мотив широко известен в традиционном шитье и аппликации по коже, на церемониальных чороонах XIX века он почти не встречается, уступая место строгой ярусной геометрии.'
+            },
+            {
+              id: '2',
+              name: 'Поясной геометрический мотив «Кэрис» и «Тураҕас туйаҕа» (след копытца)',
+              img: './images/v806_42.png',
+              isCorrect: true,
+              desc: 'Истинно каноничный декор кумысной утвари: ярусные врезные насечки «кэрис» маркируют структуру Вселенной, а мотив копытца знаменует благословение божества Дьөһөгөй Айыы.'
+            },
+            {
+              id: '3',
+              name: 'Арабесковая плетенка «Түмүк»',
+              img: './images/v806_43.png',
+              isCorrect: false,
+              desc: 'Сложные переплетенные узловые орнаменты характерны для металлопластики и ювелирного дела Саха, но резчики по дереву не применяли их при оформлении обрядовых сосудов.'
+            },
+            {
+              id: '4',
+              name: 'Солярный круг с лучами «Күн»',
+              img: './images/v806_51.png',
+              isCorrect: false,
+              desc: 'Солярная символика на чороонах передается через цилиндрический объем и круговые концентрические пояса, а не плоской гравировкой лучистого диска.'
+            }
+          ],
+          chapters: {
+            story: 'Великий эпос Олонхо, признанный ЮНЕСКО шедевром человечества. Древо Аал Луук Мас соединяет корнями Нижний мир, стволом — мир людей, а кроной — обитель небесных богов Айыы.',
+            symbols: 'Лировидный узор «көҕүөр ойуу» — образ ростка, пробивающего мерзлоту; девятивершинная коновязь сэргэ как мировая ось.',
+            words: '«Олонхо» — богатырский эпос; «Ысыах» — праздник встречи солнца; «Хомус» — варган, имитирующий звуки природы; «Чорон» — кумысный кубок.',
+            rituals: 'Праздник Ысыах в день летнего солнцестояния: хоровод осуохай, объединяющий сотни людей в едином круге жизни, и обряд кропления огня кумысом.'
+          }
+        },
+
+        caucasus: {
+          id: 'caucasus',
+          category: 'russia',
+          sub: '✦ 04 / 08 · Кавказ и златокузнецы Дагестана',
+          title: 'Кавказ (Дагестан)',
+          lead: 'Горные аулы мастеров-кубачинцев, кавказский нартовский эпос, вековые башни и филигранное чеканное серебро.',
+          greeting: '«Салам алейкум! Мархаба!»',
+          speechText: 'Салам алейкум! Мархаба! Добро пожаловать на Кавказ, в край древних башен и златокузнецов.',
+          imgModern: './images/v785_201.png',
+          imgArchive: './images/v785_201.png',
+          mythTitle: 'Сказание о богатырях Нартах и кузнеце Тлепше',
+          mythCover: './images/v785_201.png',
+          artTitle: 'Кубачинский чеканный серебряный кувшин мучал',
+          artDesc: 'Традиционный водоносный кувшин мучал с растительной гравировкой «мархарай» и чернью XVIII века. Шедевр дагестанского златокузнечного ремесла из собрания ГИМ.',
+          era: 'XVIII век',
+          museumName: 'Государственный исторический музей',
+          museumCity: 'г. Москва, Красная площадь, 1',
+          museumPassCode: '#PASS-CAU-2026-D4',
+          invNumber: 'Инв. № ГИМ-8321/К · Зал традиционного искусства народов Кавказа',
+          keeperSecretWord: '«КУБАЧИ-1840»',
+          stubSerial: '№ 03251-26',
+          loupeImg: './images/v785_201.png',
+          loupeScannerClue: 'Наведите сканер на шейку и тулово кувшина: найдите непрерывный растительный побег «мархарай» со спиралевидными завитками и тонкой штриховой гравировкой фона.',
+          correctChoice: '2',
+          quizOptions: [
+            {
+              id: '1',
+              name: 'Геометрический орнамент с рогами барана',
+              img: './images/v806_41.png',
+              isCorrect: false,
+              desc: 'Ромбические мотивы с рогами («кочкор») характерны для ковроткачества и войлоков кочевых народов, но не для чеканного кубачинского серебра.'
+            },
+            {
+              id: '2',
+              name: 'Растительный спиральный побег «Мархарай» и «Тутта»',
+              img: './images/v806_42.png',
+              isCorrect: true,
+              desc: 'Канонический растительный узор кубачинских мастеров: переплетающиеся стебли и бутоны мархарай олицетворяют цветущий райский сад.'
+            },
+            {
+              id: '3',
+              name: 'Солярная спираль из концентрических колец',
+              img: './images/v806_43.png',
+              isCorrect: false,
+              desc: 'Солярная спираль встречается в древней кобанской бронзе, но в классической кубачинской чеканке XVIII века господствует виртуозная флористика.'
+            },
+            {
+              id: '4',
+              name: 'Зооморфная чеканка с фигурами барсов',
+              img: './images/v806_51.png',
+              isCorrect: false,
+              desc: 'Антропоморфные и зооморфные сцены не наносились на водоносные сосуды горцев из-за религиозных канонов Дагестана.'
+            }
+          ],
+          chapters: {
+            story: 'В нартском эпосе кузнец Тлепш выковал первые железные серпы и оружие для богатырей, остужая сталь в ледниковых струях. В высокогорном ауле Кубачи ювелирное ремесло почиталось как священное таинство передачи огня и серебра.',
+            symbols: 'Орнамент «мархарай» (заросль) символизирует неиссякаемую жизнь, а ветвь «тутта» — процветание рода и чистоту горного источника.',
+            words: '«Мучал» — свадебный водоносный кувшин; «Зирихгеран» — древнее персидское имя Кубачи («кольчужники»); «Нарты» — герои древнего эпоса.',
+            rituals: 'Свадебный обряд: невеста с кувшином мучал отправляется к святому горному источнику, испрашивая изобилия и мира новому дому.'
+          }
+        },
+
+        altai: {
+          id: 'altai',
+          category: 'russia',
+          sub: '✦ 05 / 08 · Пазырыкские курганы и сакральный Алтай',
+          title: 'Горный Алтай',
+          lead: 'Бирюзовая Катунь, священная Белуха (Уч-Сумер), горловое пение кайчы и тайны Пазырыкских курганов скифской эпохи.',
+          greeting: '«Јакшылар! Амыр-менди!»',
+          speechText: 'Якшылар! Амыр-менди! Добро пожаловать на священный Алтай.',
+          imgModern: './images/v668_87.png',
+          imgArchive: './images/v668_87.png',
+          mythTitle: 'Алтайские духи и сказания Пазырыка',
+          mythCover: './images/v668_87.png',
+          artTitle: 'Пазырыкский войлочный ковер со сфинксами',
+          artDesc: 'Древнейший в мире шедевр кочевой войлочной аппликации из Пятого Пазырыкского кургана (V–III вв. до н.э.), сохраненный в вечной мерзлоте. Из собрания Государственного Эрмитажа.',
+          era: 'V–III вв. до н.э.',
+          museumName: 'Государственный Эрмитаж',
+          museumCity: 'г. Санкт-Петербург, Дворцовая наб., 34',
+          museumPassCode: '#PASS-ALT-2026-A5',
+          invNumber: 'Инв. № 1687/93 · Зал кочевников Горного Алтая V–III вв. до н.э.',
+          keeperSecretWord: '«ПАЗЫРЫК-1929»',
+          stubSerial: '№ 05834-26',
+          loupeImg: './images/v668_87.png',
+          loupeScannerClue: 'Наведите сканер на верхний декоративный бордюр полотна. Обратите внимание на повторяющееся существо с телом хищника, крыльями и человеческим ликом в рогатом уборе.',
+          correctChoice: '2',
+          quizOptions: [
+            {
+              id: '1',
+              name: 'Сцена терзания грифона снежным барсом',
+              img: './images/v806_41.png',
+              isCorrect: false,
+              desc: 'Хотя мотив терзания травоядного хищником является каноном скифо-сибирского стиля, на данном бордюре фигура шествует изолированно и не вступает в схватку.'
+            },
+            {
+              id: '2',
+              name: 'Крылатый сфинкс с рогами оленя и растительным хвостом',
+              img: './images/v806_42.png',
+              isCorrect: true,
+              desc: 'Верно. Синкретический образ сочетает переднеазиатскую иконографию сфинкса и алтайскую традицию увенчивать сакральных существ ветвистыми оленьими рогами.'
+            },
+            {
+              id: '3',
+              name: 'Тамгообразный знак дуговидного лука кочевника',
+              img: './images/v806_43.png',
+              isCorrect: false,
+              desc: 'Родовые тамги характерны для более поздней древнетюркской эпохи (VI–X вв. н.э.) и не встречаются в пазырыкской аппликации раннего железного века.'
+            },
+            {
+              id: '4',
+              name: 'Фигура всадника перед Великой Богиней у Древа Жизни',
+              img: './images/v806_51.png',
+              isCorrect: false,
+              desc: 'Эта монументальная сцена занимает центральное поле этого же ковра, однако сканер лупы направлен на орнаментальный фриз с полиморфным существом.'
+            }
+          ],
+          chapters: {
+            story: 'По мировоззрению алтайцев («Ак Јаҥ» — Белая вера), у каждого перевала, целебного источника (аржана) и кедровой рощи есть свой дух-хранитель — Ээзи. Сказители-кайчы часами исполняли героические сказания горловым пением «кай», услаждая слух незримых владык тайги.',
+            symbols: 'Священные ленты «кыйра / дьалама» на перевалах; солярные петроглифы урочища Калбак-Таш и сакральные образы пазырыкского звериного стиля.',
+            words: '«Кай» — горловое пение; «Кайчы» — народный рапсод; «Ээзи» — священный дух места; «Уч-Сумер» — Трехглавая Белуха.',
+            rituals: 'Повязывание лент дьялама на перевале при восходящей луне: произнесение алкыша (благопожелания) роду, земле и небу, окуривание юрты можжевельником (арчыном).'
+          }
+        },
+
         kamchatka: {
           id: 'kamchatka',
           category: 'russia',
-          sub: '✦ 02 / 07 · Земля вулканов и Тихого океана',
+          sub: '✦ 06 / 08 · Земля вулканов и Тихого океана',
           title: 'Камчатка',
           lead: 'Край огнедышащих сопок, первозданной стихии и сакральных обрядов ительменов и коряков.',
           greeting: '«Алегут! Мэчи!»',
@@ -2506,17 +3330,45 @@
           mythCover: './images/v651_124.png',
           artTitle: 'Амулет из моржового клыка и корякская кухлянка',
           artDesc: 'Резная пластика из моржового клыка и меховая мозаика. Фигурка летящего Кутха дарует охотнику неуязвимость в метель и указывает путь сквозь ледяные шторма.',
+          era: 'XIX век',
           museumName: 'Камчатский краевой объединенный музей',
           museumCity: 'г. Петропавловск-Камчатский, ул. Ленинская, 20',
           museumPassCode: '#PASS-KAM-2026-K1',
           invNumber: 'Инв. № ККМ-1120/Э · Коллекция традиционной культуры народов Севера',
+          keeperSecretWord: '«КУТХ-1741»',
+          stubSerial: '№ 02941-26',
           loupeImg: './images/v651_124.png',
-          correctChoice: '3',
+          loupeScannerClue: 'Наведите лупу на центральный медальон: найдите силуэт крылатого демиурга Ворона с солярными кругами из бисера по контуру.',
+          correctChoice: '2',
           quizOptions: [
-            { id: '1', name: 'Казанский тюльпан', img: './images/v806_41.png' },
-            { id: '2', name: 'Мезенский ромб', img: './images/v806_42.png' },
-            { id: '3', name: 'Оберег Ворона Кутха', img: './images/v806_43.png' },
-            { id: '4', name: 'Алтайский вихрь', img: './images/v806_51.png' }
+            {
+              id: '1',
+              name: 'Стилизованный след медвежьей лапы',
+              img: './images/v806_41.png',
+              isCorrect: false,
+              desc: 'Медвежий след наносился на ритуальные весла, но на защитных нагрудных плакетках центром композиции всегда выступал демиург Ворон.'
+            },
+            {
+              id: '2',
+              name: 'Крылатый силуэт Ворона Кутха с солярным нимбом',
+              img: './images/v806_42.png',
+              isCorrect: true,
+              desc: 'Канонический образ первопредка и демиурга Севера, несущего небесный огонь и защищающего от зимней стужи.'
+            },
+            {
+              id: '3',
+              name: 'Геометрическая ступенчатая пирамида',
+              img: './images/v806_43.png',
+              isCorrect: false,
+              desc: 'Ступенчатые мотивы присущи ткачеству Средней Азии, в то время как северные мастера использовали плавную костяную резьбу.'
+            },
+            {
+              id: '4',
+              name: 'Морской конёк с рыбьим хвостом',
+              img: './images/v806_51.png',
+              isCorrect: false,
+              desc: 'Античный мотив гиппокампа, не встречающийся в традиционной культуре коренных народов Камчатки.'
+            }
           ],
           chapters: {
             story: 'Сказания ительменов повествуют о том, как мудрый ворон Кутх на крыльях поднял со дна океана замерзший мыс Камчатку. Своим клювом он расколол скалы, зажег огни вулканов, чтобы согреть первых людей, и пустил по рекам косяки лосося.',
@@ -2526,133 +3378,59 @@
           }
         },
 
-        pomorye: {
-          id: 'pomorye',
-          category: 'russia',
-          sub: '✦ 03 / 07 · Русский Север и Беломорье',
-          title: 'Поморье',
-          lead: 'Суровое побережье Студёного моря, былинные напевы Пинеги, деревянные шатровые храмы и искусство мореходов.',
-          greeting: '«Поклон да здравие гостям дорогим!»',
-          speechText: 'Поклон да здравие гостям дорогим! Добро пожаловать на Русский Север.',
-          imgModern: './images/v651_126.png',
-          imgArchive: './images/v651_126.png',
-          mythTitle: 'Птица Сирин и сказы Белого моря',
-          mythCover: './images/v651_126.png',
-          artTitle: 'Поморская птица счастья и Мезенская прялка',
-          artDesc: 'Щепной голубь из сосны без единого гвоздя и мезенская роспись сажей и охрой: ряды солярных огненных коней и уточек, плывущих сквозь века.',
-          museumName: 'Музей деревянного зодчества «Малые Корелы»',
-          museumCity: 'Архангельская обл., дер. Малые Карелы',
-          museumPassCode: '#PASS-POM-2026-P3',
-          invNumber: 'Инв. № МК-3341/Д · Зал деревянной пластики Поморья',
-          loupeImg: './images/v651_126.png',
-          correctChoice: '2',
-          quizOptions: [
-            { id: '1', name: 'Казанский тюльпан', img: './images/v806_41.png' },
-            { id: '2', name: 'Мезенский огненный конь', img: './images/v806_42.png' },
-            { id: '3', name: 'Оберег Ворона', img: './images/v806_43.png' },
-            { id: '4', name: 'Алтайский вихрь', img: './images/v806_51.png' }
-          ],
-          chapters: {
-            story: 'В поморском понимании «Море — наше поле». Сказы Бориса Шергина и Марфы Крюковой сохранили образ Щепной птицы счастья: вырезанный из соснового бруска оберег подвешивался под матицей поморской избы над самоваром, оберегая дом от дурного глаза.',
-            symbols: 'Красные мезенские кони символизируют восходящее солнце, уточки — закат и покой океана, а солярные кресты — маяки веры.',
-            words: '«Карбас» — мореходная поморская ладья; «Козули» — обрядовые ржаные пряники; «Баить» — сказывать старинные былины нараспев.',
-            rituals: 'Проводы карбасов на промысел: выпекание семейных козуль и установка обетного резного креста на утесе при спасении из ледяного плена.'
-          }
-        },
-
-        altai: {
-          id: 'altai',
-          category: 'russia',
-          sub: '✦ 04 / 07 · Сакральное сердце Сибири',
-          title: 'Горный Алтай',
-          lead: 'Бирюзовая Катунь, священная Белуха (Уч-Сумер), горловое пение кайчы и духи перевалов.',
-          greeting: '«Јакшылар! Амыр-менди!»',
-          speechText: 'Якшылар! Амыр-менди! Добро пожаловать на священный Алтай.',
-          imgModern: './images/v668_87.png',
-          imgArchive: './images/v668_87.png',
-          mythTitle: 'Алтайские духи и Хозяин Тайги',
-          mythCover: './images/v668_87.png',
-          artTitle: 'Священный топшуур и оберег Ээзи',
-          artDesc: 'Двухструнный щипковый топшуур из кедра с волосяными струнами. Музыка топшуура призывала благословение духов Алтая и исцеляла род.',
-          museumName: 'Национальный музей Республики Алтай им. А.В. Анохина',
-          museumCity: 'г. Горно-Алтайск, ул. Чорос-Гуркина, 46',
-          museumPassCode: '#PASS-ALT-2026-A4',
-          invNumber: 'Инв. № НМА-5219/Э · Зал шаманизма и тюркской археологии',
-          loupeImg: './images/v668_87.png',
-          correctChoice: '4',
-          quizOptions: [
-            { id: '1', name: 'Казанский тюльпан', img: './images/v806_41.png' },
-            { id: '2', name: 'Мезенский ромб', img: './images/v806_42.png' },
-            { id: '3', name: 'Оберег Ворона', img: './images/v806_43.png' },
-            { id: '4', name: 'Алтайский солярный вихрь', img: './images/v806_51.png' }
-          ],
-          chapters: {
-            story: 'По мировоззрению алтайцев («Ак Јаҥ» — Белая вера), у каждого перевала, целебного источника (аржана) и кедровой рощи есть свой дух-хранитель — Ээзи. Сказители-кайчы часами исполняли героические сказания горловым пением «кай», услаждая слух незримых владык тайги.',
-            symbols: 'Священные ленты «кыйра / дьалама» на перевалах (белые — чистота помыслов, синие — небо Тенгри); солярные петроглифы урочища Калбак-Таш.',
-            words: '«Кай» — горловое пение; «Кайчы» — народный рапсод; «Ээзи» — священный дух места; «Уч-Сумер» — Трехглавая Белуха.',
-            rituals: 'Повязывание лент дьялама на перевале при восходящей луне: произнесение алкыша (благопожелания) роду, земле и небу, окуривание юрты можжевельником (арчыном).'
-          }
-        },
-
-        yakutia: {
-          id: 'yakutia',
-          category: 'russia',
-          sub: '✦ 05 / 07 · Республика Саха (Якутия)',
-          title: 'Якутия',
-          lead: 'Земля вечной мерзлоты, священных лиственниц, героического эпоса Олонхо и солнечного праздника Ысыах.',
-          greeting: '«Дорообо! Нөрүөн нөргүй!»',
-          speechText: 'Дорообо! Неруен нергуй! Добро пожаловать в Якутию, землю Олонхо.',
-          imgModern: './images/yakutia_myth.jpg',
-          imgArchive: './images/yakutia_myth.jpg',
-          mythTitle: 'Эпос Олонхо и Древо Аал Луук Мас',
-          mythCover: './images/yakutia_myth.jpg',
-          artTitle: 'Серебряный оберег Харысхал и чорон',
-          artDesc: 'Священный серебряный кубок чорон и обереги с лировидным узором — символы изобилия, благодати и вечного возрождения жизни.',
-          museumName: 'Якутский музей истории и культуры народов Севера',
-          museumCity: 'г. Якутск, пр. Ленина, 5/2',
-          museumPassCode: '#PASS-SAH-2026-Y5',
-          invNumber: 'Инв. № ЯГОМ-8941/Э · Зал шедевров Олонхо',
-          loupeImg: './images/yakutia_myth.jpg',
-          correctChoice: '1',
-          quizOptions: [
-            { id: '1', name: 'Якутский лировидный узор', img: './images/v806_41.png' },
-            { id: '2', name: 'Мезенский ромб', img: './images/v806_42.png' },
-            { id: '3', name: 'Оберег Ворона', img: './images/v806_43.png' },
-            { id: '4', name: 'Алтайский вихрь', img: './images/v806_51.png' }
-          ],
-          chapters: {
-            story: 'Великий эпос Олонхо, признанный ЮНЕСКО шедевром человечества. Древо Аал Луук Мас соединяет корнями Нижний мир, стволом — мир людей, а кроной — обитель небесных богов Айыы.',
-            symbols: 'Лировидный узор «көҕүөр ойуу» — образ ростка, пробивающего мерзлоту; девятивершинная коновязь сэргэ как мировая ось.',
-            words: '«Олонхо» — богатырский эпос; «Ысыах» — праздник встречи солнца; «Хомус» — варган, имитирующий звуки природы; «Чорон» — кумысный кубок.',
-            rituals: 'Праздник Ысыах в день летнего солнцестояния: хоровод осуохай, объединяющий сотни людей в едином круге жизни, и обряд кропления огня кумысом.'
-          }
-        },
-
         kazakhstan: {
           id: 'kazakhstan',
           category: 'world',
-          sub: '✦ 06 / 07 · Великая Степь',
+          sub: '✦ 07 / 08 · Великая Степь',
           title: 'Казахстан',
-          lead: 'Бескрайние степные горизонты, сакральные кюи на домбре, войлочные ковры текемет и философия кочевья.',
+          lead: 'Бескрайние степные горизонты, сакральные кюи на домбре, войлочные ковры сырмак и текемет, и философия кочевья.',
           greeting: '«Ассалаумағалейкум! Қош келдіңіз!»',
           speechText: 'Ассалаумалейкум! Кош келдиниз! Добро пожаловать в Казахстан.',
           imgModern: './images/kazakhstan_myth.jpg',
           imgArchive: './images/kazakhstan_myth.jpg',
           mythTitle: 'Легенда о Коркыт-ата и домбре',
           mythCover: './images/kazakhstan_myth.jpg',
-          artTitle: 'Орнамент «Кошкар-муйиз» и текемет',
-          artDesc: 'Архетипический орнамент кочевников в виде рогов барана, украшающий войлочные ковры и пояса батыров как знак силы и плодородия.',
+          artTitle: 'Войлочный ковер сырмак и мотив Кошкар-муйиз',
+          artDesc: 'Архетипический орнамент кочевников в виде рогов барана («кошкар-муйиз»), украшающий войлочные мозаичные ковры сырмак как знак силы, изобилия и плодородия рода.',
+          era: 'XIX век',
           museumName: 'Центральный государственный музей Республики Казахстан',
           museumCity: 'г. Алматы, мкр. Самал-1, д. 44',
           museumPassCode: '#PASS-KAZ-2026-K6',
           invNumber: 'Инв. № ЦГМРК-6102/Э · Зал этнографии кочевых цивилизаций',
+          keeperSecretWord: '«КОРКЫТ-1804»',
+          stubSerial: '№ 06124-26',
           loupeImg: './images/kazakhstan_myth.jpg',
-          correctChoice: '1',
+          loupeScannerClue: 'Наведите лупу на центральное поле сырмака: обратите внимание на зеркально закрученные роговые завитки, символизирующие изобилие отар.',
+          correctChoice: '2',
           quizOptions: [
-            { id: '1', name: 'Орнамент Кошкар-муйиз', img: './images/v806_41.png' },
-            { id: '2', name: 'Мезенский ромб', img: './images/v806_42.png' },
-            { id: '3', name: 'Оберег Ворона', img: './images/v806_43.png' },
-            { id: '4', name: 'Алтайский вихрь', img: './images/v806_51.png' }
+            {
+              id: '1',
+              name: 'Шанырак с расходящимися лучами уыков',
+              img: './images/v806_41.png',
+              isCorrect: false,
+              desc: 'Символ купола юрты помещается в купольных конструкциях, а в текстиле доминирует зооморфная роговая символика.'
+            },
+            {
+              id: '2',
+              name: 'Зооморфный мотив «Кошкар-муйиз» (рога барана)',
+              img: './images/v806_42.png',
+              isCorrect: true,
+              desc: 'Древнейший степной архетип изобилия, силы, жизненной энергии и плодородия рода.'
+            },
+            {
+              id: '3',
+              name: 'Цветочный букет из лилий и гвоздик',
+              img: './images/v806_43.png',
+              isCorrect: false,
+              desc: 'Европейский натюрморт не характерен для семантики номадов Евразии.'
+            },
+            {
+              id: '4',
+              name: 'Морской якорь и волны',
+              img: './images/v806_51.png',
+              isCorrect: false,
+              desc: 'Морские мотивы чужды традиционной степной культуре номадов.'
+            }
           ],
           chapters: {
             story: 'Легендарный мудрец и сказитель Коркыт-ата создал инструмент кобыз из священного дерева. Когда зазвучала музыка, замерло само время, а ветер донес мелодию кюя сквозь столетия.',
@@ -2665,28 +3443,56 @@
         uzbekistan: {
           id: 'uzbekistan',
           category: 'world',
-          sub: '✦ 07 / 07 · Оазисы Шёлкового пути',
+          sub: '✦ 08 / 08 · Оазисы Шёлкового пути',
           title: 'Узбекистан',
-          lead: 'Бирюзовые купола Самарканда и Бухары, резной ганч, сияющий шелк икат и тончайшая вышивка сюзане.',
+          lead: 'Бирюзовые купола Самарканда и Бухары, резной ганч, сияющий шелк икат и шелковое вышитое сюзане.',
           greeting: '«Ассалому алайкум! Хуш келибсиз!»',
           speechText: 'Ассалому алайкум! Хуш келибсиз! Добро пожаловать в Узбекистан.',
           imgModern: './images/Hiva.jpg',
           imgArchive: './images/Hiva.jpg',
           mythTitle: 'Легенда о птице Хумо и мастерах Хивы',
           mythCover: './images/Hiva.jpg',
-          artTitle: 'Риштанская керамика и Сюзане',
-          artDesc: 'Шёлковые панно с мотивами цветущего граната («анор») и лазурные ляганы с минеральной глазурью ишкор.',
+          artTitle: 'Бухарское вышитое сюзане и Риштанская керамика',
+          artDesc: 'Шёлковые панно сюзане с мотивами цветущего граната («анор») и лазурные ляганы с минеральной глазурью ишкор XIX века.',
+          era: 'XIX век',
           museumName: 'Государственный музей искусств Узбекистана',
           museumCity: 'г. Ташкент, пр. Амира Темура, 16',
           museumPassCode: '#PASS-UZB-2026-U7',
           invNumber: 'Инв. № ГМИУ-4410/ДПИ · Зал традиционного текстиля и керамики',
+          keeperSecretWord: '«ХИВА-1873»',
+          stubSerial: '№ 08912-26',
           loupeImg: './images/Hiva.jpg',
-          correctChoice: '1',
+          loupeScannerClue: 'Наведите лупу на центральный медальон сюзане: найдите крупный раскрывающийся плод с алыми зернами внутри.',
+          correctChoice: '2',
           quizOptions: [
-            { id: '1', name: 'Цветущий гранат Анор', img: './images/v806_41.png' },
-            { id: '2', name: 'Мезенский ромб', img: './images/v806_42.png' },
-            { id: '3', name: 'Оберег Ворона', img: './images/v806_43.png' },
-            { id: '4', name: 'Алтайский вихрь', img: './images/v806_51.png' }
+            {
+              id: '1',
+              name: 'Павлиний глаз с лазурной глазурью',
+              img: './images/v806_41.png',
+              isCorrect: false,
+              desc: 'Мотив встречается в фаянсе Ирана, но в бухарском свадебном текстиле центральное место занимает растительная символика плодородия.'
+            },
+            {
+              id: '2',
+              name: 'Цветущий плод граната («Анор») в кольце миндалевидных узоров',
+              img: './images/v806_42.png',
+              isCorrect: true,
+              desc: 'Священный символ плодородия, изобилия, многочисленного потомства и солнечного света в культуре Мавераннахра.'
+            },
+            {
+              id: '3',
+              name: 'Лавровый венок победы',
+              img: './images/v806_43.png',
+              isCorrect: false,
+              desc: 'Античный римский символ, не имеющий отношения к свадебным традициям Шелкового пути.'
+            },
+            {
+              id: '4',
+              name: 'Кедровые шишки в снегу',
+              img: './images/v806_51.png',
+              isCorrect: false,
+              desc: 'Сибирский мотив, чуждый теплым оазисам Бухары и Самарканда.'
+            }
           ],
           chapters: {
             story: 'Легендарная птица счастья Хумо осеняет своими крыльями древние купола Ичан-Калы в Хиве. Мастера веками передавали секреты ручного крашения шелковых нитей икат корой грецкого ореха и мареной.',
@@ -2698,7 +3504,7 @@
       };
 
       /* ========================================================================
-         3. SPA РОУТИНГ И УПРАВЛЕНИЕ ЭКРАНАМИ
+         3. SPA РОУТИНГ И УПРАВЛЕНИЕ ЭКРАНАМИ (С ПОДДЕРЖКОЙ DEEP-LINKING)
          ======================================================================== */
       let activeCultureId = 'tatarstan';
       let activeQuestStep = 1;
@@ -2711,37 +3517,100 @@
         setTimeout(() => toast.classList.remove('is-shown'), 3000);
       }
 
-      function routeTo(screenId, isUserNavigation = true) {
+      function parseRouteHash(hashStr) {
+        const clean = (hashStr || '').replace(/^#/, '');
+        const [screenPart, queryPart] = clean.split('?');
+        const screenId = screenPart || 'hero';
+        const params = new URLSearchParams(queryPart || '');
+        return {
+          screenId,
+          cultureId: params.get('cult'),
+          step: parseInt(params.get('step'), 10) || null
+        };
+      }
+
+      function routeTo(screenTarget, isUserNavigation = true) {
         // Гарантированно глушим диктора при любом переходе по сайту
         AudioEngine.stopSpeech();
+
+        let screenId = screenTarget;
+        if (screenTarget.includes('?') || screenTarget.startsWith('#')) {
+          const parsed = parseRouteHash(screenTarget);
+          screenId = parsed.screenId;
+          if (parsed.cultureId && ETHNO_DATABASE[parsed.cultureId]) {
+            setupQuestCulture(parsed.cultureId, false);
+          }
+          if (parsed.step && parsed.step >= 1 && parsed.step <= 5) {
+            switchQuestStep(parsed.step, false);
+          }
+        }
 
         const targetScreen = document.getElementById('screen-' + screenId);
         if (!targetScreen) return;
 
-        document.querySelectorAll('.screen-view').forEach(s => s.classList.remove('is-visible'));
-        targetScreen.classList.add('is-visible');
+        const updateDOM = () => {
+          document.querySelectorAll('.screen-view').forEach(s => s.classList.remove('is-visible'));
+          targetScreen.classList.add('is-visible');
 
-        // Обновление навигационных кнопок (Десктоп и Мобильный Bottom Bar)
-        document.querySelectorAll('.nav-btn, .bottom-nav-item').forEach(b => {
-          if (b.dataset.route === screenId) {
-            b.classList.add('is-active');
-          } else {
-            b.classList.remove('is-active');
+          // Обновление навигационных кнопок (Десктоп и Мобильный Bottom Bar)
+          document.querySelectorAll('.nav-btn, .bottom-nav-item').forEach(b => {
+            if (b.dataset.route === screenId) {
+              b.classList.add('is-active');
+              b.setAttribute('aria-current', 'page');
+            } else {
+              b.classList.remove('is-active');
+              b.removeAttribute('aria-current');
+            }
+          });
+
+          // Закрытие мобильного меню
+          const drawer = document.getElementById('mobileDrawerMenu');
+          if (drawer) {
+            drawer.classList.remove('is-open');
+            const burger = document.getElementById('mobileMenuOpenBtn');
+            if (burger) burger.setAttribute('aria-expanded', 'false');
           }
-        });
 
-        // Закрытие мобильного меню
-        const drawer = document.getElementById('mobileDrawerMenu');
-        if (drawer) drawer.classList.remove('is-open');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Поддержка View Transitions API
+        if (document.startViewTransition) {
+          document.startViewTransition(updateDOM);
+        } else {
+          updateDOM();
+        }
+
+        // Обновление URL хэша и истории браузера (поддержка кнопки «Назад» и свайпов)
         if (isUserNavigation) {
+          let newHash = '#' + screenId;
+          if (screenId === 'quest') {
+            newHash = `#quest?cult=${activeCultureId}&step=${activeQuestStep}`;
+          }
+          if (window.location.hash !== newHash) {
+            history.pushState({ screen: screenId, cult: activeCultureId, step: activeQuestStep }, '', newHash);
+          }
           AudioEngine.playUiClick();
         }
       }
 
       window.routeTo = routeTo;
       window.AudioEngine = AudioEngine;
+      window.getActiveCultureId = () => activeCultureId;
+      window.getActiveQuestStep = () => activeQuestStep;
+      window.ETHNO_DATABASE = ETHNO_DATABASE;
+
+      // Обработка системных кнопок браузера «Назад / Вперёд»
+      window.addEventListener('popstate', (e) => {
+        const parsed = parseRouteHash(window.location.hash);
+        if (parsed.cultureId && ETHNO_DATABASE[parsed.cultureId]) {
+          setupQuestCulture(parsed.cultureId, false);
+        }
+        if (parsed.step && parsed.step >= 1 && parsed.step <= 5) {
+          switchQuestStep(parsed.step, false);
+        }
+        routeTo(parsed.screenId, false);
+      });
 
       // Слушатели роутинга
       document.querySelectorAll('[data-route]').forEach(btn => {
@@ -2754,7 +3623,7 @@
       // ========================================================================
       // 4. ДИНАМИЧЕСКАЯ НАСТРОЙКА КУЛЬТУРЫ В ЭКСПЕДИЦИИ
       // ========================================================================
-      function setupQuestCulture(cultId) {
+      function setupQuestCulture(cultId, shouldUpdateStep = true) {
         // При смене культуры моментально глушим диктора
         AudioEngine.stopSpeech();
 
@@ -2763,41 +3632,100 @@
         activeCultureId = cultId;
 
         // Обновление заголовков и текстов шага 1
-        document.getElementById('questCultureCategoryBadge').textContent = data.sub;
-        document.getElementById('questCultureMainTitle').innerHTML = `${data.title} <span>· Наследие мастеров</span>`;
-        document.getElementById('questStep1LeadText').textContent = data.lead;
-        document.getElementById('voiceGreetingQuoteText').textContent = data.greeting;
+        const badgeEl = document.getElementById('questCultureCategoryBadge');
+        if (badgeEl) badgeEl.textContent = data.sub;
+        const titleEl = document.getElementById('questCultureMainTitle');
+        if (titleEl) titleEl.innerHTML = `${data.title} <span>· Наследие мастеров</span>`;
+        const leadEl = document.getElementById('questStep1LeadText');
+        if (leadEl) leadEl.textContent = data.lead;
+        const quoteEl = document.getElementById('voiceGreetingQuoteText');
+        if (quoteEl) quoteEl.textContent = data.greeting;
 
         // Картинки Было / Стало
-        document.getElementById('baModernImg').src = data.imgModern;
-        document.getElementById('baArchiveImg').src = data.imgArchive;
+        const modernImg = document.getElementById('baModernImg');
+        if (modernImg) modernImg.src = data.imgModern;
+        const archiveImg = document.getElementById('baArchiveImg');
+        if (archiveImg) archiveImg.src = data.imgArchive;
 
         // Шаг 2: Видео и Миф
-        document.getElementById('videoPlayerPosterImg').src = data.mythCover;
-        document.getElementById('mythTitleHeading').textContent = data.mythTitle;
-        document.getElementById('mythChapterDynamicText').textContent = data.chapters.story;
+        const posterImg = document.getElementById('videoPlayerPosterImg');
+        if (posterImg) {
+          posterImg.src = data.mythCover;
+          posterImg.classList.remove('ken-burns-active');
+        }
+        const waveformStrip = document.getElementById('videoWaveformStrip');
+        if (waveformStrip) waveformStrip.classList.remove('waveform-playing');
+        const playBtn = document.getElementById('videoPlayPauseMockBtn');
+        if (playBtn) playBtn.textContent = '▶';
+        const videoStatus = document.getElementById('videoStatusPillLabel');
+        if (videoStatus) videoStatus.textContent = 'Режиссёрская экспозиция · 16:9';
+
+        const mythTitle = document.getElementById('mythTitleHeading');
+        if (mythTitle) mythTitle.textContent = data.mythTitle;
+        const mythText = document.getElementById('mythChapterDynamicText');
+        if (mythText && data.chapters) mythText.textContent = data.chapters.story;
+
+        // Сброс табов мифа
+        document.querySelectorAll('#mythChaptersPills .pill-filter-btn').forEach((b, i) => {
+          b.classList.toggle('is-active', i === 0);
+        });
 
         // Шаг 3: Лупа и Квиз
-        document.getElementById('loupeCanvasImage').src = data.loupeImg;
+        const loupeImg = document.getElementById('loupeCanvasImage');
+        if (loupeImg) loupeImg.src = data.loupeImg;
         renderQuizOptions(data);
 
+        // Сброс состояния лупы
+        isLoupeDiscovered = false;
+        const loupeLens = document.getElementById('loupeLensPointer');
+        if (loupeLens) loupeLens.classList.remove('target-locked');
+        const discoveryBanner = document.getElementById('loupeDiscoveryStatusBanner');
+        if (discoveryBanner) {
+          discoveryBanner.style.display = 'none';
+          discoveryBanner.innerHTML = `✦ <strong>Сакральный след зафиксирован:</strong> ${data.loupeScannerClue || ''}`;
+        }
+
         // Шаг 4: 3D Артефакт
-        document.getElementById('artifact3dPhoto').src = data.mythCover;
-        document.getElementById('tiltCardTitle').textContent = data.artTitle;
-        document.getElementById('tiltCardDesc').textContent = data.artDesc;
-        document.getElementById('artifactMuseumLocationText').textContent = `${data.museumName} (${data.museumCity}) · ${data.invNumber}`;
+        const art3dPhoto = document.getElementById('artifact3dPhoto');
+        if (art3dPhoto) art3dPhoto.src = data.imgModern || data.mythCover;
+        const tiltTitle = document.getElementById('tiltCardTitle');
+        if (tiltTitle) tiltTitle.textContent = data.artTitle;
+        const tiltDesc = document.getElementById('tiltCardDesc');
+        if (tiltDesc) tiltDesc.textContent = data.artDesc;
+        const museumLoc = document.getElementById('artifactMuseumLocationText');
+        if (museumLoc) museumLoc.textContent = `${data.museumName} (${data.museumCity}) · ${data.invNumber}`;
 
         // Шаг 5: Билет в музей
-        document.getElementById('ticketMuseumNameHeading').textContent = data.museumName;
-        document.getElementById('ticketCityLabel').textContent = data.museumCity;
-        document.getElementById('ticketPassCodeLabel').textContent = `Код: ${data.museumPassCode}`;
+        const tMusName = document.getElementById('ticketMuseumNameHeading');
+        if (tMusName) tMusName.textContent = data.museumName;
+        const tCity = document.getElementById('ticketCityLabel');
+        if (tCity) tCity.textContent = `${data.museumCity} · ${data.invNumber}`;
+        const tPassCode = document.getElementById('ticketPassCodeLabel');
+        if (tPassCode) tPassCode.textContent = `Код: ${data.museumPassCode}`;
+        const tKeeper = document.getElementById('ticketKeeperSecretWord');
+        if (tKeeper) tKeeper.textContent = data.keeperSecretWord || '«БЫЛТЫР-1892»';
+        const tSerial = document.getElementById('ticketStubSerial');
+        if (tSerial) tSerial.textContent = data.stubSerial || '№ 04982-26';
 
-        switchQuestStep(1);
+        // Сброс отрыва корешка
+        const stubPerfor = document.querySelector('.ticket-stub-perforation');
+        if (stubPerfor) stubPerfor.classList.remove('is-torn');
+        const tearBtn = document.getElementById('tearOffTicketStubBtn');
+        if (tearBtn) {
+          tearBtn.textContent = 'Оторвать корешок';
+          tearBtn.disabled = false;
+          tearBtn.style.color = '';
+          tearBtn.style.borderColor = 'var(--ruby)';
+        }
+
+        if (shouldUpdateStep) {
+          switchQuestStep(1, false);
+        }
       }
 
       window.setupQuestCulture = setupQuestCulture;
 
-      function switchQuestStep(stepNum) {
+      function switchQuestStep(stepNum, shouldAudioClick = true) {
         // При смене шага экспедиции диктор умолкает
         AudioEngine.stopSpeech();
 
@@ -2810,14 +3738,21 @@
           btn.classList.toggle('is-active', parseInt(btn.dataset.step, 10) === stepNum);
         });
 
-        AudioEngine.playUiClick();
+        // Обновляем хэш без перезагрузки страницы
+        if (window.location.hash.includes('quest')) {
+          history.replaceState({ screen: 'quest', cult: activeCultureId, step: activeQuestStep }, '', `#quest?cult=${activeCultureId}&step=${activeQuestStep}`);
+        }
+
+        if (shouldAudioClick) {
+          AudioEngine.playUiClick();
+        }
       }
 
       window.switchQuestStep = switchQuestStep;
 
       document.querySelectorAll('#questStepperPillsGroup .step-pill-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          switchQuestStep(parseInt(btn.dataset.step, 10));
+          switchQuestStep(parseInt(btn.dataset.step, 10), true);
         });
       });
 
@@ -2838,7 +3773,7 @@
         });
 
         container.innerHTML = items.map(c => `
-          <div class="culture-item-card" onclick="setupQuestCulture('${c.id}'); routeTo('quest');">
+          <div class="culture-item-card" role="button" tabindex="0" aria-label="Исследовать культуру: ${c.title}" onclick="setupQuestCulture('${c.id}'); routeTo('quest');" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); setupQuestCulture('${c.id}'); routeTo('quest');}">
             <div class="culture-item-card__img-wrap">
               <img src="${c.imgModern}" alt="${c.title}" loading="lazy" />
               <span class="culture-item-card__tag">${c.category === 'russia' ? 'Россия' : 'Шёлковый путь'}</span>
@@ -2922,15 +3857,15 @@
             return;
           }
           const data = ETHNO_DATABASE[activeCultureId] || ETHNO_DATABASE.tatarstan;
-          AudioEngine.speakSafe(data.speechText, () => {
+          AudioEngine.playPreRenderedVoice(activeCultureId, data.speechText, () => {
             AudioEngine.playEthnicBell(660, 1.5);
           });
-          triggerToast(`Живой голос: ${data.greeting}`);
+          triggerToast(`Голос сказителя: ${data.title}`);
         });
       }
 
       // ========================================================================
-      // 7. ИНТЕРАКТИВ ШАГА 2: ТАЙМКОДЫ И ВЫБОР ГЛАВЫ МИФА
+      // 7. ИНТЕРАКТИВ ШАГА 2: ТАЙМКОДЫ, СУБТИТРЫ, КЕН-БЕРНС И WAVEFORM
       // ========================================================================
       document.querySelectorAll('#mythChaptersPills .pill-filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -2946,10 +3881,22 @@
       });
 
       const videoScenes = {
-        15: 'Вход под сень векового дубового леса. Молодой дровосек замечает сакральные узоры на коре деревьев.',
-        65: 'Внезапный порыв ветра. Из чащи возникает силуэт духа-хранителя с длинными узловатыми пальцами.',
-        160: 'Испытание на мудрость: дровосек указывает на орнамент родового пояса, вспоминая завет предков.',
-        250: 'Священный свет заливает урман. Дух признает в человеке хранителя наследия и открывает тропу.'
+        15: {
+          sub: '«В глухой чаще векового урмана открывается сакральная тропа предков...»',
+          desc: 'Вход под сень векового дубового леса. Молодой дровосек замечает сакральные узоры на коре деревьев.'
+        },
+        65: {
+          sub: '«Лесной дух Шурале испытывает путника на знание обычаев родной земли...»',
+          desc: 'Внезапный порыв ветра. Из чащи возникает силуэт духа-хранителя с длинными узловатыми пальцами.'
+        },
+        160: {
+          sub: '«Взгляни на поясной орнамент: в нем зашифрован завет предков о силе и мире...»',
+          desc: 'Испытание на мудрость: дровосек указывает на орнамент родового пояса, вспоминая завет предков.'
+        },
+        250: {
+          sub: '«Сакральный код разгадан. Тропа открыта для истинного хранителя наследия.»',
+          desc: 'Священный свет заливает урман. Дух признает в человеке хранителя наследия и открывает тропу.'
+        }
       };
 
       document.querySelectorAll('#mythVideoTimecodesStrip .timecode-chip').forEach(btn => {
@@ -2957,48 +3904,119 @@
           document.querySelectorAll('#mythVideoTimecodesStrip .timecode-chip').forEach(b => b.classList.remove('is-active'));
           btn.classList.add('is-active');
           const tc = btn.dataset.tc;
-          const desc = videoScenes[tc] || 'Ключевой фрагмент сказания.';
-          document.getElementById('videoSceneDescriptionText').textContent = desc;
+          const scene = videoScenes[tc] || {
+            sub: '«Голос предков звучит сквозь столетия...»',
+            desc: 'Ключевой фрагмент сказания.'
+          };
+
+          const subEl = document.getElementById('videoSubtitleQuoteText');
+          if (subEl) subEl.textContent = scene.sub;
+          const descEl = document.getElementById('videoSceneDescriptionText');
+          if (descEl) descEl.textContent = scene.desc;
+
           AudioEngine.playUiClick();
           triggerToast(`Таймкод: ${btn.textContent}`);
         });
       });
 
       const playPauseBtn = document.getElementById('videoPlayPauseMockBtn');
+      const videoPosterImg = document.getElementById('videoPlayerPosterImg');
+      const videoWaveformStrip = document.getElementById('videoWaveformStrip');
+      const videoStatusLabel = document.getElementById('videoStatusPillLabel');
+
       if (playPauseBtn) {
-        let isPlaying = false;
+        let isVideoPlaying = false;
         playPauseBtn.addEventListener('click', () => {
-          isPlaying = !isPlaying;
-          playPauseBtn.textContent = isPlaying ? '❚❚' : '▶';
-          document.getElementById('videoStatusPillLabel').textContent = isPlaying ? 'Экспозиция воспроизводится' : 'Режиссёрская экспозиция (16:9)';
+          isVideoPlaying = !isVideoPlaying;
+          playPauseBtn.textContent = isVideoPlaying ? '❚❚' : '▶';
+          if (videoStatusLabel) {
+            videoStatusLabel.textContent = isVideoPlaying ? 'Экспозиция воспроизводится · 16:9' : 'Режиссёрская экспозиция · 16:9';
+          }
+          if (videoPosterImg) {
+            videoPosterImg.classList.toggle('ken-burns-active', isVideoPlaying);
+          }
+          if (videoWaveformStrip) {
+            videoWaveformStrip.classList.toggle('waveform-playing', isVideoPlaying);
+          }
+
           AudioEngine.playEthnicBell(520, 1.2);
-          triggerToast(isPlaying ? 'Воспроизведение видеоряда' : 'Видеоряд на паузе');
+          triggerToast(isVideoPlaying ? 'Воспроизведение видеоряда' : 'Видеоряд на паузе');
         });
       }
 
       // ========================================================================
-      // 8. ИНТЕРАКТИВ ШАГА 3: СЕНСОРНАЯ ЛУПА И КВИЗ
+      // 8. ИНТЕРАКТИВ ШАГА 3: СЕНСОРНАЯ ЛУПА И КВИЗ (GPU TRANSLATE3D & DISCOVERY)
       // ========================================================================
       const loupeStage = document.getElementById('loupeStageContainer');
       const loupeLens = document.getElementById('loupeLensPointer');
+      const loupeStatusBanner = document.getElementById('loupeDiscoveryStatusBanner');
+      let cachedLoupeRect = null;
+      let loupeRafId = null;
+      let loupeDiscoveryTimer = null;
+      let isLoupeDiscovered = false;
+
+      function refreshLoupeRect() {
+        if (loupeStage) cachedLoupeRect = loupeStage.getBoundingClientRect();
+      }
 
       function updateLoupeCoords(clientX, clientY, isTouch = false) {
         if (!loupeStage || !loupeLens) return;
-        const rect = loupeStage.getBoundingClientRect();
+        if (!cachedLoupeRect) refreshLoupeRect();
+        const rect = cachedLoupeRect;
         // На тачскрине поднимаем линзу на 55px выше пальца, чтобы палец не заслонял узор
         const offsetY = isTouch ? -55 : 0;
         const x = Math.max(30, Math.min(rect.width - 30, clientX - rect.left));
         const y = Math.max(30, Math.min(rect.height - 30, clientY - rect.top + offsetY));
-        loupeLens.style.left = x + 'px';
-        loupeLens.style.top = y + 'px';
+
+        if (loupeRafId) cancelAnimationFrame(loupeRafId);
+        loupeRafId = requestAnimationFrame(() => {
+          loupeLens.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+        });
+
+        // Проверяем наведение на смысловой центр артефакта
+        const normX = x / rect.width;
+        const normY = y / rect.height;
+        const inCenterHotspot = (normX >= 0.28 && normX <= 0.72 && normY >= 0.22 && normY <= 0.78);
+
+        if (inCenterHotspot && !isLoupeDiscovered) {
+          if (!loupeDiscoveryTimer) {
+            loupeDiscoveryTimer = setTimeout(() => {
+              isLoupeDiscovered = true;
+              loupeLens.classList.add('target-locked');
+              AudioEngine.playEthnicBell(880, 1.4);
+
+              const data = ETHNO_DATABASE[activeCultureId] || ETHNO_DATABASE.tatarstan;
+              if (loupeStatusBanner) {
+                loupeStatusBanner.style.display = 'block';
+                loupeStatusBanner.innerHTML = `✦ <strong>Сакральный след зафиксирован:</strong> ${data.loupeScannerClue || 'Изучите ключевые элементы орнамента.'}`;
+              }
+
+              // Подсвечиваем разгаданный вариант в квизе
+              const targetCard = document.querySelector(`.quiz-option-card[data-opt-id="${data.correctChoice}"]`);
+              if (targetCard) {
+                targetCard.classList.add('is-discovered');
+              }
+              triggerToast('✦ Сакральный фрагмент идентифицирован линзой!');
+            }, 550);
+          }
+        } else {
+          if (loupeDiscoveryTimer && !isLoupeDiscovered) {
+            clearTimeout(loupeDiscoveryTimer);
+            loupeDiscoveryTimer = null;
+          }
+        }
       }
 
       if (loupeStage) {
+        loupeStage.addEventListener('mouseenter', refreshLoupeRect);
+        window.addEventListener('resize', refreshLoupeRect, { passive: true });
+
         loupeStage.addEventListener('mousemove', (e) => {
           updateLoupeCoords(e.clientX, e.clientY, false);
         });
 
         loupeStage.addEventListener('touchstart', (e) => {
+          refreshLoupeRect();
           if (e.touches && e.touches.length > 0) {
             updateLoupeCoords(e.touches[0].clientX, e.touches[0].clientY, true);
           }
@@ -3007,31 +4025,49 @@
         loupeStage.addEventListener('touchmove', (e) => {
           if (e.touches && e.touches.length > 0) {
             updateLoupeCoords(e.touches[0].clientX, e.touches[0].clientY, true);
-            e.preventDefault(); // Защита от вертикального скролла на iOS Safari
           }
-        }, { passive: false });
+        }, { passive: true });
       }
 
-      let selectedQuizOption = '1';
+      let selectedQuizOption = '2';
 
       function renderQuizOptions(cultureData) {
         const grid = document.getElementById('quizOrnamentCards');
         if (!grid || !cultureData.quizOptions) return;
         selectedQuizOption = cultureData.quizOptions[0].id;
 
+        // Обновляем текст инструкции квиза
+        const instrEl = document.getElementById('quizInstructionText');
+        if (instrEl && cultureData.loupeScannerClue) {
+          instrEl.textContent = cultureData.loupeScannerClue;
+        }
+
         grid.innerHTML = cultureData.quizOptions.map((opt, idx) => `
-          <div class="quiz-option-card ${idx === 0 ? 'is-selected' : ''}" data-opt-id="${opt.id}">
-            <img src="${opt.img}" alt="${opt.name}" />
-            <span style="font-size:11px; font-weight:600; color:var(--text-main);">${opt.name}</span>
+          <div class="quiz-option-card ${idx === 0 ? 'is-selected' : ''}" role="button" tabindex="0" aria-label="Вариант узора: ${opt.name}" data-opt-id="${opt.id}">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+              <img src="${opt.img}" alt="${opt.name}" />
+              <strong style="font-size:11.5px; line-height:1.3; color:var(--text-main);">${opt.name}</strong>
+            </div>
+            <div class="quiz-option-academic-desc">
+              ${opt.desc || ''}
+            </div>
           </div>
         `).join('');
 
+        const selectCard = (card) => {
+          grid.querySelectorAll('.quiz-option-card').forEach(c => c.classList.remove('is-selected'));
+          card.classList.add('is-selected');
+          selectedQuizOption = card.dataset.optId;
+          AudioEngine.playUiClick();
+        };
+
         grid.querySelectorAll('.quiz-option-card').forEach(card => {
-          card.addEventListener('click', () => {
-            grid.querySelectorAll('.quiz-option-card').forEach(c => c.classList.remove('is-selected'));
-            card.classList.add('is-selected');
-            selectedQuizOption = card.dataset.optId;
-            AudioEngine.playUiClick();
+          card.addEventListener('click', () => selectCard(card));
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              selectCard(card);
+            }
           });
         });
 
@@ -3044,77 +4080,105 @@
         verifyQuizBtn.addEventListener('click', () => {
           const data = ETHNO_DATABASE[activeCultureId] || ETHNO_DATABASE.tatarstan;
           const fb = document.getElementById('quizFeedbackMessage');
+          const grid = document.getElementById('quizOrnamentCards');
+
           if (selectedQuizOption === data.correctChoice) {
             AudioEngine.playSuccessTrumpet();
+            if (grid) {
+              const correctCard = grid.querySelector(`[data-opt-id="${data.correctChoice}"]`);
+              if (correctCard) correctCard.classList.add('is-correct');
+            }
             if (fb) {
               fb.style.color = '#34d399';
-              fb.textContent = '✦ Блестяще! Сакральный узор опознан. Экспонат разблокирован!';
+              fb.innerHTML = '✦ <strong>Блестяще!</strong> Сакральный орнамент подлинника верифицирован. Артефакт разблокирован в вашей коллекции!';
             }
             triggerToast('✦ Реликвия открыта и добавлена в вашу коллекцию!');
-            setTimeout(() => switchQuestStep(4), 900);
+            setTimeout(() => switchQuestStep(4), 1000);
           } else {
             AudioEngine.playEthnicBell(330, 0.8);
             if (fb) {
               fb.style.color = 'var(--ruby)';
-              fb.textContent = 'Присмотритесь через лупу: обратите внимание на ключевые растительные мотивы.';
+              fb.textContent = 'Присмотритесь через лупу: изучите структуру шва и подсказку этнографа.';
             }
+            triggerToast('Попробуйте ещё раз, исследовав деталь через лупу.');
           }
         });
       }
 
       // ========================================================================
-      // 9. ИНТЕРАКТИВ ШАГА 4: 3D-ОСМОТР АРТЕФАКТА (МЫШЬ + ТАЧ-СВАЙП)
+      // 9. ИНТЕРАКТИВ ШАГА 4: 3D-ОСМОТР АРТЕФАКТА (60 FPS + СПЕКУЛЯРНЫЙ БЛИК)
       // ========================================================================
       const tiltStage = document.getElementById('tiltPerspectiveStage');
       const tiltCard = document.getElementById('tiltArtifactBox');
       const tiltSlider = document.getElementById('tiltRangeSlider');
+      let cachedTiltRect = null;
+      let tiltRafId = null;
 
-      function apply3dAngles(degY, degX) {
+      function refreshTiltRect() {
+        if (tiltStage) cachedTiltRect = tiltStage.getBoundingClientRect();
+      }
+
+      function apply3dAngles(degY, degX, normX = 0, normY = 0) {
         if (!tiltCard) return;
-        tiltCard.style.transform = `rotateY(${degY}deg) rotateX(${degX}deg)`;
-        if (tiltSlider) tiltSlider.value = degY;
+        if (tiltRafId) cancelAnimationFrame(tiltRafId);
+        tiltRafId = requestAnimationFrame(() => {
+          tiltCard.style.transform = `rotateY(${degY}deg) rotateX(${degX}deg)`;
+          // Динамический блик музейного софита (Specular Highlight)
+          const glareX = 50 - normX * 45;
+          const glareY = 50 - normY * 45;
+          tiltCard.style.backgroundImage = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 65%), linear-gradient(145deg, #18284d 0%, #0d172e 100%)`;
+          if (tiltSlider) tiltSlider.value = degY;
+        });
       }
 
       if (tiltStage && tiltCard) {
+        tiltStage.addEventListener('mouseenter', refreshTiltRect);
+        window.addEventListener('resize', refreshTiltRect, { passive: true });
+
         tiltStage.addEventListener('mousemove', (e) => {
-          const rect = tiltStage.getBoundingClientRect();
+          if (!cachedTiltRect) refreshTiltRect();
+          const rect = cachedTiltRect;
           const normX = (e.clientX - rect.left) / rect.width - 0.5;
           const normY = (e.clientY - rect.top) / rect.height - 0.5;
-          apply3dAngles(normX * 36, -normY * 24);
+          apply3dAngles(normX * 36, -normY * 24, normX, normY);
         });
 
         tiltStage.addEventListener('mouseleave', () => {
-          apply3dAngles(0, 0);
+          apply3dAngles(0, 0, 0, 0);
         });
 
         // Сенсорное вращение пальцем на iOS / Android
         let isTiltDragging = false;
-        tiltStage.addEventListener('touchstart', () => { isTiltDragging = true; }, { passive: true });
+        tiltStage.addEventListener('touchstart', () => {
+          refreshTiltRect();
+          isTiltDragging = true;
+        }, { passive: true });
 
         tiltStage.addEventListener('touchmove', (e) => {
           if (isTiltDragging && e.touches && e.touches.length > 0) {
-            const rect = tiltStage.getBoundingClientRect();
+            if (!cachedTiltRect) refreshTiltRect();
+            const rect = cachedTiltRect;
             const normX = (e.touches[0].clientX - rect.left) / rect.width - 0.5;
             const normY = (e.touches[0].clientY - rect.top) / rect.height - 0.5;
-            apply3dAngles(normX * 40, -normY * 26);
-            e.preventDefault();
+            apply3dAngles(normX * 40, -normY * 26, normX, normY);
           }
-        }, { passive: false });
+        }, { passive: true });
 
         tiltStage.addEventListener('touchend', () => {
           isTiltDragging = false;
-          apply3dAngles(0, 0);
+          apply3dAngles(0, 0, 0, 0);
         });
       }
 
       if (tiltSlider) {
         tiltSlider.addEventListener('input', () => {
-          apply3dAngles(parseFloat(tiltSlider.value), 4);
+          const val = parseFloat(tiltSlider.value);
+          apply3dAngles(val, 4, val / 40, 0);
         });
       }
 
       // ========================================================================
-      // 10. ИНТЕРАКТИВ ШАГА 5: МУЗЕЙНЫЙ БИЛЕТ И ЧЕКИН
+      // 10. ИНТЕРАКТИВ ШАГА 5: МУЗЕЙНЫЙ БИЛЕТ, ЧЕКИН, КОРЕШОК И ПАСПОРТ
       // ========================================================================
       const ymapsBtn = document.getElementById('openYandexMapsBtn');
       if (ymapsBtn) {
@@ -3136,6 +4200,156 @@
           }
           triggerToast('📍 Чекин в музее успешен! Начислено +250 баллов этнографа');
         });
+      }
+
+      // Отрывной корешок билета контроля
+      const tearOffBtn = document.getElementById('tearOffTicketStubBtn');
+      const ticketStub = document.querySelector('.ticket-stub-perforation');
+      if (tearOffBtn && ticketStub) {
+        tearOffBtn.addEventListener('click', () => {
+          if (ticketStub.classList.contains('is-torn')) return;
+          ticketStub.classList.add('is-torn');
+          AudioEngine.playEthnicBell(780, 1.2);
+          tearOffBtn.textContent = '✓ Погашен';
+          tearOffBtn.disabled = true;
+          tearOffBtn.style.color = '#34d399';
+          tearOffBtn.style.borderColor = '#34d399';
+          triggerToast('🎟️ Контрольный корешок билета успешно погашен!');
+        });
+      }
+
+      // Полевой паспорт этнографа (Модальное окно)
+      const exportPassportBtn = document.getElementById('exportPassportBtn');
+      const fieldPassportModal = document.getElementById('fieldPassportModal');
+      const closePassportBtn1 = document.getElementById('closePassportModalBtn');
+      const closePassportBtn2 = document.getElementById('closePassportModalBtn2');
+      const copyPassportBtn = document.getElementById('copyPassportTextBtn');
+
+      function openPassportModal() {
+        if (!fieldPassportModal) return;
+        const data = ETHNO_DATABASE[activeCultureId] || ETHNO_DATABASE.tatarstan;
+        document.getElementById('passportCultureTitle').textContent = data.title;
+        document.getElementById('passportArtifactName').textContent = data.artTitle;
+        document.getElementById('passportMuseumSource').textContent = `${data.museumName} (${data.museumCity})`;
+        document.getElementById('passportResearcherName').textContent = `Следопыт Артефакта (${data.stubSerial || '№ 04982-26'})`;
+        fieldPassportModal.style.display = 'flex';
+        AudioEngine.playUiClick();
+      }
+
+      function closePassportModal() {
+        if (!fieldPassportModal) return;
+        fieldPassportModal.style.display = 'none';
+        AudioEngine.playUiClick();
+      }
+
+      if (exportPassportBtn) exportPassportBtn.addEventListener('click', openPassportModal);
+      if (closePassportBtn1) closePassportBtn1.addEventListener('click', closePassportModal);
+      if (closePassportBtn2) closePassportBtn2.addEventListener('click', closePassportModal);
+
+      if (fieldPassportModal) {
+        fieldPassportModal.addEventListener('click', (e) => {
+          if (e.target === fieldPassportModal) closePassportModal();
+        });
+      }
+
+      if (copyPassportBtn) {
+        copyPassportBtn.addEventListener('click', () => {
+          const data = ETHNO_DATABASE[activeCultureId] || ETHNO_DATABASE.tatarstan;
+          const text = `📜 ПОЛЕВОЙ ПАСПОРТ ЭТНОГРАФА\nРегион: ${data.title}\nАртефакт: ${data.artTitle}\nЭпоха: ${data.era || 'XIX век'}\nМузей: ${data.museumName} (${data.museumCity})\nИнв. №: ${data.invNumber}\nСекретный код: ${data.keeperSecretWord}\nВерификация: ВЕРИФИЦИРОВАНО В ЦИФРОВОЙ ПЛАТФОРМЕ АРТЕФАКТ`;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+              triggerToast('📋 Выписка паспорта скопирована в буфер обмена!');
+            }).catch(() => {
+              triggerToast('📋 Выписка готова к отправке!');
+            });
+          } else {
+            triggerToast('📋 Выписка готова к отправке!');
+          }
+        });
+      }
+
+      // ========================================================================
+      // 10.1 ДИНАМИЧЕСКИЙ РЕНДЕРИНГ АНТОЛОГИИ ФОЛЬКЛОРА
+      // ========================================================================
+      const FOLKLORE_ANTHOLOGY = [
+        {
+          id: 'shurale',
+          cultId: 'tatarstan',
+          region: 'Поволжье',
+          title: 'Шурале — Хранитель вековых дубрав',
+          readTime: '4 мин',
+          category: 'Духи природы',
+          synopsis: 'Сказание о лукавом духе татарских лесов с длинными пальцами, который испытывает пугливых путников щекоткой, но отступает перед смекалкой дровосека Былтыра.',
+          moral: 'Победа разума и спокойствия над страхом перед дикой стихией.',
+          characters: ['Шурале', 'Дровосек Былтыр'],
+          museumSource: 'Литературный музей Габдуллы Тукая (Казань)',
+          img: './images/tatar_shurale.jpg'
+        },
+        {
+          id: 'sirin',
+          cultId: 'pomorye',
+          region: 'Поморье',
+          title: 'Птица Сирин и пение Белого Моря',
+          readTime: '3 мин',
+          category: 'Птицы-девы',
+          synopsis: 'Предание о райской деве-птице, прилетающей на северные побережья. Ее напев дарует утешение поморским мореходам в суровые шторма.',
+          moral: 'Надежда и внутренняя крепость духа в испытаниях.',
+          characters: ['Сирин', 'Поморский лоцман'],
+          museumSource: 'Музей деревянного зодчества «Малые Корелы»',
+          img: './images/pomorye_myth.jpg'
+        },
+        {
+          id: 'bayanay',
+          cultId: 'yakutia',
+          region: 'Якутия',
+          title: 'Благословение Байаная — Владыки тайги',
+          readTime: '5 мин',
+          category: 'Покровители',
+          synopsis: 'Якутский эпос о седобородом духе леса, который благоволит лишь тем охотникам, кто бережно относится к зверям и чтит закон тайги.',
+          moral: 'Священное экологическое равновесие человека и природы.',
+          characters: ['Байанай', 'Охотник Бэргэн'],
+          museumSource: 'Музей мамонта и этнографии СВФУ (Якутск)',
+          img: './images/yakutia_myth.jpg'
+        },
+        {
+          id: 'narty',
+          cultId: 'caucasus',
+          region: 'Кавказ',
+          title: 'Сказание о богатырях Нартах и огне Сатаны',
+          readTime: '6 мин',
+          category: 'Героический эпос',
+          synopsis: 'Предание о рождении непобедимого Сасрыквы и мудрой матери Нартов Сатане, хранительнице священного кузнечного очага.',
+          moral: 'Служение родной земле, уважение к старшим и верность клятве.',
+          characters: ['Сатана', 'Сасрыква', 'Кузнец Тлепш'],
+          museumSource: 'Северокавказский филиал Музея Востока',
+          img: './images/v785_201.png'
+        }
+      ];
+
+      function renderFolkloreAnthology() {
+        const container = document.getElementById('folkloreCardsContainer');
+        if (!container) return;
+        container.innerHTML = FOLKLORE_ANTHOLOGY.map(item => `
+          <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-md); padding:20px; display:flex; gap:16px;">
+            <img src="${item.img}" alt="${item.title}" style="width:90px; height:110px; object-fit:cover; border-radius:var(--radius-sm); flex-shrink:0;" />
+            <div style="flex:1;">
+              <span style="font-size:11px; color:var(--gold); font-weight:700;">✦ ${item.region} · ${item.category} · ⏱️ ${item.readTime}</span>
+              <h3 style="font-family:var(--font-editorial); font-size:18px; color:var(--text-main); margin:4px 0 6px 0; line-height:1.25;">${item.title}</h3>
+              <p style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:6px;">
+                ${item.synopsis}
+              </p>
+              <div style="font-size:11px; color:var(--gold-light); margin-bottom:8px;">
+                <strong>Мораль:</strong> ${item.moral}
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <span style="font-size:10.5px; color:var(--text-dim);">${item.museumSource}</span>
+                <button class="action-chip" onclick="setupQuestCulture('${item.cultId}'); routeTo('quest');">
+                  Читать и исследовать →
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
       }
 
       // ========================================================================
@@ -3304,7 +4518,8 @@
 
       if (openDrawerBtn && drawerMenu) {
         openDrawerBtn.addEventListener('click', () => {
-          drawerMenu.classList.add('is-open');
+          const isOpen = drawerMenu.classList.toggle('is-open');
+          openDrawerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
           AudioEngine.playUiClick();
         });
       }
@@ -3312,9 +4527,17 @@
       if (closeDrawerBtn && drawerMenu) {
         closeDrawerBtn.addEventListener('click', () => {
           drawerMenu.classList.remove('is-open');
+          if (openDrawerBtn) openDrawerBtn.setAttribute('aria-expanded', 'false');
           AudioEngine.playUiClick();
         });
       }
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawerMenu && drawerMenu.classList.contains('is-open')) {
+          drawerMenu.classList.remove('is-open');
+          if (openDrawerBtn) openDrawerBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
 
       // ========================================================================
       // 14. СТАРТОВАЯ ИНИЦИАЛИЗАЦИЯ И ЗАЩИТА ЖИЗНЕННОГО ЦИКЛА
@@ -3333,6 +4556,7 @@
 
       setupQuestCulture('tatarstan');
       renderCulturesCatalog();
+      renderFolkloreAnthology();
       renderRelicsShelf(false);
 
       const startHash = window.location.hash.replace('#', '') || 'hero';

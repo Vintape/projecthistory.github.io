@@ -1,0 +1,13 @@
+# Secrets and environment files
+.env
+studio/.env
+*.env.local
+
+# Python cache and venvs
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Drafts and temp generation artifacts
+studio/drafts/temp_*

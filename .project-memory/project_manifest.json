@@ -1,0 +1,60 @@
+{
+  "project_name": "АРТЕФАКТ: История оставляет след (Cultural Heritage Website)",
+  "version": "1.2.0",
+  "architecture_model": "External Multi-Agent Studio with Zero-Runtime-LLM Static Site",
+  "runtime_platform": "GitHub Pages (Vanilla JS ES6+, HTML5, CSS3)",
+  "active_agent_network": [
+    {
+      "id": "creative_lead",
+      "role": "Креативный директор и хранитель музейного стиля",
+      "provider": "Google AI Studio",
+      "model": "gemini-2.5-pro / gemini-4-argon",
+      "memory_file": ".project-memory/DESIGN_SYSTEM.md"
+    },
+    {
+      "id": "ethnographer",
+      "role": "Научный этнограф и архивариус",
+      "provider": "Google AI Studio",
+      "model": "gemini-2.5-flash (Search Grounded)",
+      "memory_file": ".project-memory/ETHNOGRAPHIC_CANON.md"
+    },
+    {
+      "id": "chatgpt_editor",
+      "role": "Литературный редактор и полиглот-фольклорист",
+      "provider": "OpenAI (ChatGPT)",
+      "model": "gpt-4o / gpt-4o-mini",
+      "status": "ready_pending_credits",
+      "memory_file": ".project-memory/ETHNOGRAPHIC_CANON.md"
+    },
+    {
+      "id": "frontend_architect",
+      "role": "Ведущий инженер верстки и Vanilla JS",
+      "provider": "Antigravity Workspace",
+      "model": "Native IDE Subagent",
+      "memory_file": ".project-memory/DESIGN_SYSTEM.md"
+    },
+    {
+      "id": "red_team_critic",
+      "role": "Критик качества, доступности (A11y) и безопасности",
+      "provider": "Antigravity Workspace",
+      "model": "Native IDE Subagent",
+      "memory_file": ".project-memory/AUDIT_DECISIONS.md"
+    }
+  ],
+  "design_tokens": {
+    "colors": {
+      "bg_primary": "#070d1e",
+      "bg_secondary": "#0e1933",
+      "accent_gold": "#c99c52",
+      "accent_ruby": "#c83428",
+      "accent_cyan": "#48cae4",
+      "parchment_cream": "#f5eee2"
+    },
+    "typography": {
+      "display": "Monomakh, serif",
+      "editorial": "Cormorant Garamond, serif",
+      "numbers": "Montagu Slab, serif",
+      "interface": "Montserrat, sans-serif"
+    }
+  }
+}
