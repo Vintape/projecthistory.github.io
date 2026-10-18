@@ -10,6 +10,7 @@
   <meta name="theme-color" content="#070d1e" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,4 96,50 50,96 4,50' stroke='%23d4af37' stroke-width='6' fill='%23060b17'/><circle cx='50' cy='50' r='26' stroke='%23c62828' stroke-width='4' fill='none'/><polygon points='50,30 70,50 50,70 30,50' fill='%23d4af37'/></svg>" />
 
   <!-- Шрифтовой историко-музейный стек (100% поддержка кириллицы) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1243,7 +1244,12 @@
     /* ==========================================================================
        11. АДАПТИВНЫЕ МЕДИА-ЗАПРОСЫ (DESKTOP -> TABLET -> MOBILE)
        ========================================================================== */
-    @media (max-width: 1024px) {
+    @media (max-width: 1240px) {
+      .action-chip .chip-label { display: none; }
+      .action-chip { padding: 8px; min-width: 36px; justify-content: center; }
+    }
+
+    @media (max-width: 1080px) {
       .hero-split-canvas { grid-template-columns: 1fr; }
       .hero-visual-side { min-height: 320px; }
       .cultures-grid-3x2, .relics-shelf-grid, .quiz-options-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1259,17 +1265,6 @@
 
       .top-header {
         padding: 8px 14px;
-      }
-
-      /* Скрытие текстовых подписей кнопок в шапке */
-      .action-chip .chip-label {
-        display: none;
-      }
-
-      .action-chip {
-        padding: 8px;
-        min-width: 36px;
-        justify-content: center;
       }
 
       .hero-text-side { padding: 24px 18px; }
@@ -2589,6 +2584,7 @@
       }
 
       window.routeTo = routeTo;
+      window.AudioEngine = AudioEngine;
 
       // Слушатели роутинга
       document.querySelectorAll('[data-route]').forEach(btn => {
