@@ -1,8 +1,15 @@
 {
   "project_name": "АРТЕФАКТ: История оставляет след (Cultural Heritage Website)",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "architecture_model": "External Multi-Agent Studio with Zero-Runtime-LLM Static Site",
   "runtime_platform": "GitHub Pages (Vanilla JS ES6+, HTML5, CSS3)",
+  "features": [
+    "Procedural Canvas 2D Sacred Ornament Generator with 5 ethnic motifs, 3 symmetry modes and PNG export",
+    "Dual Audio Engine with Khomus/Vargan physical modeling, Valdai bell, Gusli chord, and -75% Audio Ducking",
+    "Dynamic Specular Glare with Mobile Gyroscope DeviceOrientationEvent support",
+    "8 Authentic Museum Folklore Epics & Tales with live category filter tabs",
+    "Zero AI at Client Runtime: 100% offline, privacy-safe, and CDN/GitHub Pages compliant"
+  ],
   "active_agent_network": [
     {
       "id": "creative_lead",
@@ -17,6 +24,38 @@
       "provider": "Google AI Studio",
       "model": "gemini-2.5-flash (Search Grounded)",
       "memory_file": ".project-memory/ETHNOGRAPHIC_CANON.md"
+    },
+    {
+      "id": "grok_storyteller",
+      "role": "Народный сказитель и мастер фольклорного слога",
+      "provider": "OpenRouter Gateway",
+      "model": "x-ai/grok-4.7",
+      "status": "active_verified",
+      "memory_file": ".project-memory/ETHNOGRAPHIC_CANON.md"
+    },
+    {
+      "id": "mistral_academic",
+      "role": "Академический эксперт и фактчекер музейной энциклопедии",
+      "provider": "OpenRouter Gateway",
+      "model": "mistralai/mistral-medium-3-5",
+      "status": "active_verified",
+      "memory_file": ".project-memory/ETHNOGRAPHIC_CANON.md"
+    },
+    {
+      "id": "claude_opus_arbiter",
+      "role": "Верховный этнографический куратор и эссеист академического уровня",
+      "provider": "OpenRouter Gateway",
+      "model": "anthropic/claude-opus-5.5",
+      "status": "active_verified",
+      "memory_file": ".project-memory/ETHNOGRAPHIC_CANON.md"
+    },
+    {
+      "id": "claude_stylist",
+      "role": "Главный литературный редактор и эссеист музейных лонгридов",
+      "provider": "OpenRouter Gateway",
+      "model": "anthropic/claude-sonnet-5.5",
+      "status": "active_verified",
+      "memory_file": ".project-memory/DESIGN_SYSTEM.md"
     },
     {
       "id": "chatgpt_editor",

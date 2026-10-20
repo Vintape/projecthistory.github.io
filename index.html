@@ -2354,97 +2354,50 @@
     <!-- ========================================================================
          ЭКРАН 11: АНТОЛОГИЯ ФОЛЬКЛОРА
          ======================================================================== -->
+    <!-- ========================================================================
+         ЭКРАН 11: АНТОЛОГИЯ ФОЛЬКЛОРА И ЭПОСА
+         ======================================================================== -->
     <section class="screen-view" id="screen-folklore">
       <div class="content-canvas">
-        <div style="margin-bottom:24px;">
-          <span class="gold-badge">Устное народное творчество</span>
-          <h2 class="heading-section">Антология преданий и эпоса</h2>
-          <p class="lead-paragraph">
-            Собрание сказов, былин и космогонических мифов, записанных выдающимися этнографами в экспедициях XIX–XX веков.
-          </p>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-bottom:24px;">
+          <div>
+            <span class="gold-badge">✦ Устное народное творчество</span>
+            <h2 class="heading-section">Антология преданий и эпоса</h2>
+            <p class="lead-paragraph">
+              Собрание сказов, былин и космогонических мифов, записанных выдающимися этнографами в экспедициях XIX–XX веков.
+            </p>
+          </div>
+          <div class="filter-pills" id="folkloreFilterPillsGroup">
+            <button class="pill-filter-btn is-active" data-folk-cat="all">Все сказания (8)</button>
+            <button class="pill-filter-btn" data-folk-cat="epics">Эпосы и богатыри</button>
+            <button class="pill-filter-btn" data-folk-cat="tales">Сказки и мультфильмы</button>
+            <button class="pill-filter-btn" data-folk-cat="nature">Духи природы</button>
+          </div>
         </div>
 
         <div class="resp-grid-2" id="folkloreCardsContainer">
-          <!-- Сказ 1 -->
-          <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-md); padding:20px; display:flex; gap:16px;">
-            <img src="./images/tatar_shurale.jpg" alt="Шурале" style="width:90px; height:110px; object-fit:cover; border-radius:8px; flex-shrink:0;" />
-            <div>
-              <span style="font-size:11px; color:var(--gold); font-weight:700;">✦ Поволжье · Сказ</span>
-              <h3 style="font-family:var(--font-editorial); font-size:19px; color:var(--text-main); margin:4px 0;">Дровосек и Шурале</h3>
-              <p style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:10px;">
-                Классическая поэма Габдуллы Тукая о противостоянии смекалистого дровосека и лесного духа.
-              </p>
-              <button class="action-chip" onclick="setupQuestCulture('tatarstan'); routeTo('quest');">
-                Читать и слушать →
-              </button>
-            </div>
-          </div>
-
-          <!-- Сказ 2 -->
-          <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-md); padding:20px; display:flex; gap:16px;">
-            <img src="./images/v651_124.png" alt="Ворон Кутх" style="width:90px; height:110px; object-fit:cover; border-radius:8px; flex-shrink:0;" />
-            <div>
-              <span style="font-size:11px; color:var(--gold); font-weight:700;">✦ Камчатка · Космогония</span>
-              <h3 style="font-family:var(--font-editorial); font-size:19px; color:var(--text-main); margin:4px 0;">Ворон Кутх и сотворение Земли</h3>
-              <p style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:10px;">
-                Древние сказания ительменов о великом пернатом демиурге, поднявшем сопки из океана.
-              </p>
-              <button class="action-chip" onclick="setupQuestCulture('kamchatka'); routeTo('quest');">
-                Читать и слушать →
-              </button>
-            </div>
-          </div>
-
-          <!-- Сказ 3 -->
-          <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-md); padding:20px; display:flex; gap:16px;">
-            <img src="./images/v651_126.png" alt="Поморье" style="width:90px; height:110px; object-fit:cover; border-radius:8px; flex-shrink:0;" />
-            <div>
-              <span style="font-size:11px; color:var(--gold); font-weight:700;">✦ Русский Север · Былина</span>
-              <h3 style="font-family:var(--font-editorial); font-size:19px; color:var(--text-main); margin:4px 0;">Птица счастья Студёного моря</h3>
-              <p style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:10px;">
-                Сказы Бориса Шергина о поморских кормщиках, щепных птицах и солярных огненных конях.
-              </p>
-              <button class="action-chip" onclick="setupQuestCulture('pomorye'); routeTo('quest');">
-                Читать и слушать →
-              </button>
-            </div>
-          </div>
-
-          <!-- Сказ 4 -->
-          <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-md); padding:20px; display:flex; gap:16px;">
-            <img src="./images/v668_87.png" alt="Алтай" style="width:90px; height:110px; object-fit:cover; border-radius:8px; flex-shrink:0;" />
-            <div>
-              <span style="font-size:11px; color:var(--gold); font-weight:700;">✦ Горный Алтай · Эпос</span>
-              <h3 style="font-family:var(--font-editorial); font-size:19px; color:var(--text-main); margin:4px 0;">Песнь сказителя-кайчы</h3>
-              <p style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:10px;">
-                Горловое пение «кай», двухструнный топшуур и легенды о незримых хранителях священной Белухи.
-              </p>
-              <button class="action-chip" onclick="setupQuestCulture('altai'); routeTo('quest');">
-                Читать и слушать →
-              </button>
-            </div>
-          </div>
+          <!-- Генерируется динамически из FOLKLORE_ANTHOLOGY -->
         </div>
       </div>
     </section>
 
     <!-- ========================================================================
-         ЭКРАН 12: ИИ-МАСТЕРСКАЯ ЦИФРОВЫХ ОБЕРЕГОВ
+         ЭКРАН 12: МАСТЕРСКАЯ САХРАЛЬНЫХ ЦИФРОВЫХ ОБЕРЕГОВ (CANVAS 2D)
          ======================================================================== -->
     <section class="screen-view" id="screen-workshop">
       <div class="content-canvas">
         <div class="split-layout-2col">
           <div>
-            <span class="gold-badge">Нейро-орнаментика</span>
-            <h2 class="heading-section">ИИ-Мастерская оберегов</h2>
+            <span class="gold-badge">✦ Процедурная сакральная орнаментика</span>
+            <h2 class="heading-section">Мастерская оберегов</h2>
             <p class="lead-paragraph">
-              Сформируйте цифровой оберег на основе сакральных мотивов из собрания Российского этнографического музея и персональную открытку экспедиции.
+              Сформируйте подлинный сакральный оберег на основе этнографических мотивов народов России. Процедурный генератор синтезирует вековую геометрию, розеточную симметрию и родовые знаки защиты.
             </p>
 
             <label style="font-size:12.5px; font-weight:600; color:var(--gold); display:block; margin-bottom:8px;">
-              Выберите сакральные мотивы:
+              1. Выберите сакральные мотивы:
             </label>
-            <div class="filter-pills" id="aiMotifsSelectionGroup" style="margin-bottom:20px;">
+            <div class="filter-pills" id="aiMotifsSelectionGroup" style="margin-bottom:18px;">
               <button class="pill-filter-btn is-active" data-motif="Казанский тюльпан">🌷 Тюльпан (Возрождение)</button>
               <button class="pill-filter-btn is-active" data-motif="Мезенский конь">🐎 Мезенский конь (Сила)</button>
               <button class="pill-filter-btn" data-motif="Щепная птица">🕊️ Птица Сирин (Мир)</button>
@@ -2452,25 +2405,53 @@
               <button class="pill-filter-btn" data-motif="Лировидный узор">🌿 Харысхал (Здоровье)</button>
             </div>
 
-            <button class="btn-action btn-action--ruby" id="runAiPostcardGenerationBtn">
-              ✨ Синтезировать оберег
-            </button>
+            <label style="font-size:12.5px; font-weight:600; color:var(--gold); display:block; margin-bottom:8px;">
+              2. Симметрия розетки:
+            </label>
+            <div class="filter-pills" id="aiSymmetrySelectionGroup" style="margin-bottom:18px;">
+              <button class="pill-filter-btn" data-symmetry="8">8 лучей (Земля)</button>
+              <button class="pill-filter-btn is-active" data-symmetry="12">12 лучей (Космос)</button>
+              <button class="pill-filter-btn" data-symmetry="16">16 лучей (Вечность)</button>
+            </div>
+
+            <label style="font-size:12.5px; font-weight:600; color:var(--gold); display:block; margin-bottom:8px;">
+              3. Цветовой канон:
+            </label>
+            <div class="filter-pills" id="aiPaletteSelectionGroup" style="margin-bottom:24px;">
+              <button class="pill-filter-btn is-active" data-palette="gold_sapphire">✨ Золото и сапфир</button>
+              <button class="pill-filter-btn" data-palette="ruby_graphite">🔥 Северная киноварь</button>
+              <button class="pill-filter-btn" data-palette="ochre_linen">📜 Поморский лён</button>
+            </div>
+
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+              <button class="btn-action btn-action--ruby" id="runAiPostcardGenerationBtn" style="flex:1;">
+                ✨ Синтезировать оберег
+              </button>
+            </div>
           </div>
 
-          <!-- Результат генерации открытки -->
-          <div style="background:linear-gradient(145deg, #162446 0%, #0d172e 100%); border:2px solid var(--gold); border-radius:var(--radius-lg); padding:24px; text-align:center; box-shadow:0 15px 40px rgba(0,0,0,0.5);" id="aiPostcardResultCard">
-            <div style="width:100%; height:200px; border-radius:var(--radius-md); overflow:hidden; margin-bottom:16px; border:1px solid var(--border-gold-subtle);">
-              <img id="aiPostcardGeneratedImg" src="./images/cartoon_gems.jpg" alt="Оберег" style="width:100%; height:100%; object-fit:cover;" />
+          <!-- Результат генерации оберега на Canvas -->
+          <div style="background:linear-gradient(145deg, #121c38 0%, #091024 100%); border:1px solid var(--border-gold); border-radius:var(--radius-lg); padding:24px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.6);" id="aiPostcardResultCard">
+            <div style="width:100%; max-width:320px; aspect-ratio:1/1; margin:0 auto 16px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border-gold-subtle); background:#060b18; box-shadow:inset 0 0 30px rgba(0,0,0,0.8), 0 10px 25px rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center;" id="aiOrnamentCanvasContainer">
+              <canvas id="aiOrnamentCanvas" width="600" height="600" style="width:100%; height:100%; display:block;"></canvas>
             </div>
             <h3 id="aiPostcardTitleHeading" style="font-family:var(--font-editorial); font-size:22px; color:var(--gold-light); margin-bottom:6px;">
               Оберег: Казанский тюльпан и Мезенский конь
             </h3>
-            <p id="aiPostcardMeaningText" style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:16px;">
+            <p id="aiPostcardMeaningText" style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:12px;">
               Символизирует весеннее обновление рода, защиту домашнего очага и несокрушимую выдержку в дальних дорогах.
             </p>
-            <button class="action-chip" id="shareAiPostcardBtn" style="width:100%; justify-content:center;">
-              🔗 Скопировать ссылку на оберег
-            </button>
+            <div id="aiPostcardMetadata" style="font-size:11px; color:var(--gold); font-family:var(--font-slab); margin-bottom:16px;">
+              ✦ Сакральный эталон: РЭМ · Сертификат № OBR-2026-X8
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn-action btn-action--gold" id="downloadAiPostcardBtn" style="flex:1; justify-content:center;">
+                📥 Скачать оберег (PNG)
+              </button>
+              <button class="action-chip" id="shareAiPostcardBtn" style="flex:1; justify-content:center;">
+                🔗 Скопировать ссылку
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -2988,6 +2969,38 @@
           }
         }
 
+        // д) Варган / Хомус (резонансный щипок с формантным фильтром полости рта)
+        function playVarganTwang(baseFreq = 105, duration = 1.3) {
+          const ctx = getContext();
+          if (!ctx) return;
+          if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+          const t = ctx.currentTime;
+
+          const osc = ctx.createOscillator();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(baseFreq, t);
+
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.Q.setValueAtTime(12, t);
+          filter.frequency.setValueAtTime(baseFreq * 3.5, t);
+          filter.frequency.exponentialRampToValueAtTime(baseFreq * 8.5, t + 0.08);
+          filter.frequency.exponentialRampToValueAtTime(baseFreq * 5.0, t + 0.28);
+          filter.frequency.exponentialRampToValueAtTime(baseFreq * 2.2, t + duration);
+
+          const env = ctx.createGain();
+          env.gain.setValueAtTime(0.0001, t);
+          env.gain.linearRampToValueAtTime(0.32, t + 0.006);
+          env.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+
+          osc.connect(filter);
+          filter.connect(env);
+          routeThroughHall(env);
+
+          osc.start(t);
+          osc.stop(t + duration + 0.05);
+        }
+
         return {
           getContext,
           playPreRenderedVoice,
@@ -2996,6 +3009,7 @@
           isSpeaking,
           playEthnicBell,
           playGusliChord,
+          playVarganTwang,
           playUiClick,
           playSuccessTrumpet,
           toggleAmbient
@@ -4123,10 +4137,10 @@
         if (tiltRafId) cancelAnimationFrame(tiltRafId);
         tiltRafId = requestAnimationFrame(() => {
           tiltCard.style.transform = `rotateY(${degY}deg) rotateX(${degX}deg)`;
-          // Динамический блик музейного софита (Specular Highlight)
+          // Динамический спекулярный блик музейного софита (Specular Highlight)
           const glareX = 50 - normX * 45;
           const glareY = 50 - normY * 45;
-          tiltCard.style.backgroundImage = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 65%), linear-gradient(145deg, #18284d 0%, #0d172e 100%)`;
+          tiltCard.style.backgroundImage = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.26) 0%, rgba(201,156,82,0.14) 35%, rgba(0,0,0,0) 70%), linear-gradient(145deg, #18284d 0%, #0d172e 100%)`;
           if (tiltSlider) tiltSlider.value = degY;
         });
       }
@@ -4168,6 +4182,22 @@
           isTiltDragging = false;
           apply3dAngles(0, 0, 0, 0);
         });
+
+        // Аппаратный гироскоп мобильных устройств (DeviceOrientationEvent)
+        if (window.DeviceOrientationEvent) {
+          window.addEventListener('deviceorientation', (e) => {
+            if (isTiltDragging) return; // Touch drag имеет приоритет
+            if (e.gamma !== null && e.beta !== null) {
+              const tiltBox = document.getElementById('tiltArtifactBox');
+              if (!tiltBox || tiltBox.offsetParent === null) return;
+              const clampedGamma = Math.max(-30, Math.min(30, e.gamma));
+              const clampedBeta = Math.max(15, Math.min(65, e.beta));
+              const normX = clampedGamma / 30;
+              const normY = (clampedBeta - 40) / 25;
+              apply3dAngles(normX * 28, -normY * 18, normX, normY);
+            }
+          }, { passive: true });
+        }
       }
 
       if (tiltSlider) {
@@ -4269,72 +4299,142 @@
       }
 
       // ========================================================================
-      // 10.1 ДИНАМИЧЕСКИЙ РЕНДЕРИНГ АНТОЛОГИИ ФОЛЬКЛОРА
+      // 10.1 ДИНАМИЧЕСКИЙ РЕНДЕРИНГ АНТОЛОГИИ ФОЛЬКЛОРА (8 ЭПОСОВ И СКАЗОК)
       // ========================================================================
       const FOLKLORE_ANTHOLOGY = [
         {
           id: 'shurale',
           cultId: 'tatarstan',
-          region: 'Поволжье',
-          title: 'Шурале — Хранитель вековых дубрав',
+          region: 'Татарстан (Поволжье)',
+          title: 'Мультфильм «Су анасы» (Водяная) и Легенда о Шурале',
           readTime: '4 мин',
-          category: 'Духи природы',
-          synopsis: 'Сказание о лукавом духе татарских лесов с длинными пальцами, который испытывает пугливых путников щекоткой, но отступает перед смекалкой дровосека Былтыра.',
-          moral: 'Победа разума и спокойствия над страхом перед дикой стихией.',
-          characters: ['Шурале', 'Дровосек Былтыр'],
+          category: 'Сказки и мультфильмы',
+          catType: 'tales',
+          synopsis: 'Классические татарские сказания Габдуллы Тукая о лукавом хранителе вековых дубрав Шурале и речной владычице Су анасы с золотым гребнем.',
+          moral: 'Почитание стихий, честность и победа ясного ума над страхом.',
+          characters: ['Шурале', 'Су анасы', 'Дровосек Былтыр'],
           museumSource: 'Литературный музей Габдуллы Тукая (Казань)',
-          img: './images/tatar_shurale.jpg'
+          img: './images/v903_453.png'
         },
         {
           id: 'sirin',
           cultId: 'pomorye',
-          region: 'Поморье',
-          title: 'Птица Сирин и пение Белого Моря',
-          readTime: '3 мин',
-          category: 'Птицы-девы',
-          synopsis: 'Предание о райской деве-птице, прилетающей на северные побережья. Ее напев дарует утешение поморским мореходам в суровые шторма.',
-          moral: 'Надежда и внутренняя крепость духа в испытаниях.',
-          characters: ['Сирин', 'Поморский лоцман'],
+          region: 'Поморье (Беломорье)',
+          title: 'Сказ «Кольцо Царевны» и Птица счастья Сирин',
+          readTime: '4 мин',
+          category: 'Северные сказы',
+          catType: 'tales',
+          synopsis: 'Поморская сказка о заветном перстне царевны, щепной птице счастья и мореходах-кормщиках, покоряющих Студёное море.',
+          moral: 'Верность слову, несгибаемое мужество и надежда в ледовых штормах.',
+          characters: ['Сирин', 'Царевна', 'Поморский мореход'],
           museumSource: 'Музей деревянного зодчества «Малые Корелы»',
-          img: './images/pomorye_myth.jpg'
+          img: './images/v906_463.png'
+        },
+        {
+          id: 'dzhangar',
+          cultId: 'caucasus',
+          region: 'Калмыкия',
+          title: 'Калмыцкий героический эпос «Джангар»',
+          readTime: '6 мин',
+          category: 'Богатырский эпос',
+          catType: 'epics',
+          synopsis: 'Монументальное сказание о сказочной стране Бумба, где не знают старости и смерти, и двенадцати богатырях во главе с ханом Джангаром.',
+          moral: 'Бескорыстное служение народу, верность братству и защита родной земли.',
+          characters: ['Хан Джангар', 'Хонгор Алый Меч', 'Богатырь Савар'],
+          museumSource: 'Национальный музей Республики Калмыкия им. Н.Н. Пальмова',
+          img: './images/v907_522.png'
+        },
+        {
+          id: 'geser',
+          cultId: 'yakutia',
+          region: 'Бурятия и Забайкалье',
+          title: 'Сказка «Алтан Хайша» (Золотые ножницы) и Эпос «Гэсэр»',
+          readTime: '5 мин',
+          category: 'Героический эпос',
+          catType: 'epics',
+          synopsis: 'Бурятская народная мудрость о волшебных золотых ножницах «Алтан Хайша» и подвигах небесного богатыря Абай Гэсэра, истребляющего зло.',
+          moral: 'Торжество высшей справедливости, скромность и чистота помыслов.',
+          characters: ['Абай Гэсэр', 'Мудрая девушка', 'Хан мангатхаев'],
+          museumSource: 'Национальный музей Республики Бурятия (Улан-Удэ)',
+          img: './images/v904_460.png'
+        },
+        {
+          id: 'geakchaval',
+          cultId: 'kamchatka',
+          region: 'Эвенкия и Чукотка',
+          title: 'Эвенский эпос: «Геакчавал — Охотник Белых Льдов»',
+          readTime: '5 мин',
+          category: 'Предания Севера',
+          catType: 'nature',
+          synopsis: 'Повествование о северном богатыре Геакчавале, единоборстве с полярным медведем и священном завете предков беречь хрупкую тундру.',
+          moral: 'Гармония человека и арктической стихии, почитание старцев и закона тайги.',
+          characters: ['Геакчавал', 'Хозяин Торосов', 'Шаман рода'],
+          museumSource: 'Музей Арктики и Антарктики (Санкт-Петербург)',
+          img: './images/v907_520.png'
+        },
+        {
+          id: 'kuigorozh',
+          cultId: 'tatarstan',
+          region: 'Мордовия (Мокша)',
+          title: '«Гора самоцветов: Сказ о Куйгороже»',
+          readTime: '4 мин',
+          category: 'Народные сказки',
+          catType: 'tales',
+          synopsis: 'Поучительная сказка о фантастическом существе Куйгороже, приносящем достаток лишь тем, кто знает меру и непрестанно трудится.',
+          moral: 'Предостережение от слепой алчности: подлинное счастье создается честным созиданием.',
+          characters: ['Куйгорож', 'Старик Пятака', 'Старуха'],
+          museumSource: 'Мордовский республиканский краеведческий музей',
+          img: './images/v905_462.png'
         },
         {
           id: 'bayanay',
           cultId: 'yakutia',
-          region: 'Якутия',
-          title: 'Благословение Байаная — Владыки тайги',
+          region: 'Якутия (Саха)',
+          title: 'Благословение Байаная и Эпос Олонхо',
           readTime: '5 мин',
-          category: 'Покровители',
-          synopsis: 'Якутский эпос о седобородом духе леса, который благоволит лишь тем охотникам, кто бережно относится к зверям и чтит закон тайги.',
-          moral: 'Священное экологическое равновесие человека и природы.',
-          characters: ['Байанай', 'Охотник Бэргэн'],
+          category: 'Космогония и духи',
+          catType: 'nature',
+          synopsis: 'Якутский эпос о седобородом духе леса Байанае и сотворении Среднего мира из ветвей священного древа Аал Луук Мас.',
+          moral: 'Священное экологическое равновесие человека и живой природы.',
+          characters: ['Байанай', 'Охотник Бэргэн', 'Божества Айыы'],
           museumSource: 'Музей мамонта и этнографии СВФУ (Якутск)',
           img: './images/yakutia_myth.jpg'
         },
         {
           id: 'narty',
           cultId: 'caucasus',
-          region: 'Кавказ',
-          title: 'Сказание о богатырях Нартах и огне Сатаны',
+          region: 'Кавказ (Дагестан)',
+          title: 'Сказание о Нартах и кузнеце Тлепше',
           readTime: '6 мин',
           category: 'Героический эпос',
-          synopsis: 'Предание о рождении непобедимого Сасрыквы и мудрой матери Нартов Сатане, хранительнице священного кузнечного очага.',
-          moral: 'Служение родной земле, уважение к старшим и верность клятве.',
+          catType: 'epics',
+          synopsis: 'Предание о рождении непобедимого богатыря Сасрыквы, мудрой матери Нартов Сатане и священном кузнечном очаге Тлепша.',
+          moral: 'Служение родной земле, уважение к предкам и нерушимость клятвы.',
           characters: ['Сатана', 'Сасрыква', 'Кузнец Тлепш'],
-          museumSource: 'Северокавказский филиал Музея Востока',
+          museumSource: 'Северокавказский филиал Государственного музея Востока',
           img: './images/v785_201.png'
         }
       ];
 
+      let currentFolkloreCategory = 'all';
+
       function renderFolkloreAnthology() {
         const container = document.getElementById('folkloreCardsContainer');
         if (!container) return;
-        container.innerHTML = FOLKLORE_ANTHOLOGY.map(item => `
-          <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-md); padding:20px; display:flex; gap:16px;">
-            <img src="${item.img}" alt="${item.title}" style="width:90px; height:110px; object-fit:cover; border-radius:var(--radius-sm); flex-shrink:0;" />
+
+        const filtered = FOLKLORE_ANTHOLOGY.filter(item => {
+          if (currentFolkloreCategory === 'all') return true;
+          return item.catType === currentFolkloreCategory;
+        });
+
+        container.innerHTML = filtered.map(item => `
+          <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-md); padding:20px; display:flex; gap:16px; transition:transform 0.25s ease, border-color 0.25s ease;">
+            <div style="width:96px; height:120px; border-radius:var(--radius-sm); overflow:hidden; flex-shrink:0; background:var(--bg-subtle, #f6f1e7); border:1px solid rgba(255,255,255,0.08);">
+              <img src="${item.img}" alt="${item.title}" loading="lazy" style="width:100%; height:100%; object-fit:cover;" />
+            </div>
             <div style="flex:1;">
               <span style="font-size:11px; color:var(--gold); font-weight:700;">✦ ${item.region} · ${item.category} · ⏱️ ${item.readTime}</span>
-              <h3 style="font-family:var(--font-editorial); font-size:18px; color:var(--text-main); margin:4px 0 6px 0; line-height:1.25;">${item.title}</h3>
+              <h3 style="font-family:var(--font-editorial); font-size:17.5px; color:var(--text-main); margin:4px 0 6px 0; line-height:1.3;">${item.title}</h3>
               <p style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:6px;">
                 ${item.synopsis}
               </p>
@@ -4351,6 +4451,16 @@
           </div>
         `).join('');
       }
+
+      document.querySelectorAll('#folkloreFilterPillsGroup .pill-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#folkloreFilterPillsGroup .pill-filter-btn').forEach(b => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          currentFolkloreCategory = btn.dataset.folkCat;
+          AudioEngine.playUiClick();
+          renderFolkloreAnthology();
+        });
+      });
 
       // ========================================================================
       // 11. ВИТРИНА НАГРАД
@@ -4421,8 +4531,352 @@
       }
 
       // ========================================================================
-      // 12. ИИ-МАСТЕРСКАЯ ОБЕРЕГОВ
+      // 12. ПРОЦЕДУРНЫЙ ГЕНЕРАТОР САКРАЛЬНЫХ ОБЕРЕГОВ (CANVAS 2D)
       // ========================================================================
+      const SacredOrnamentEngine = (function() {
+        const palettes = {
+          gold_sapphire: {
+            bgGrad: ['#14244d', '#050c1e'],
+            primary: '#c99c52',
+            secondary: '#e8c889',
+            accent: '#38bdf8',
+            highlight: '#fff2d4'
+          },
+          ruby_graphite: {
+            bgGrad: ['#2e0c15', '#090a12'],
+            primary: '#c44536',
+            secondary: '#e57368',
+            accent: '#c99c52',
+            highlight: '#ffe4e1'
+          },
+          ochre_linen: {
+            bgGrad: ['#fbf6ec', '#e9ddc7'],
+            primary: '#854d0e',
+            secondary: '#b45309',
+            accent: '#1c1917',
+            highlight: '#fef08a'
+          }
+        };
+
+        let currentAnimFrame = null;
+
+        function drawOrnament(canvas, motifs = ['Казанский тюльпан'], symmetry = 12, paletteKey = 'gold_sapphire', onDone = null) {
+          if (!canvas) return;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return;
+
+          const size = canvas.width; // 600
+          const center = size / 2;
+          const radius = size * 0.42;
+          const pal = palettes[paletteKey] || palettes.gold_sapphire;
+
+          if (currentAnimFrame) cancelAnimationFrame(currentAnimFrame);
+
+          let startTime = performance.now();
+          const duration = 520; // ms
+
+          function renderFrame(now) {
+            const elapsed = Math.max(0, (now || performance.now()) - startTime);
+            const progress = Math.min(1, Math.max(0, elapsed / duration));
+            const ease = Math.max(0, 1 - Math.pow(1 - progress, 3));
+
+            // 1. Фон
+            const bgGrad = ctx.createRadialGradient(center, center, 10, center, center, radius * 1.25);
+            bgGrad.addColorStop(0, pal.bgGrad[0]);
+            bgGrad.addColorStop(1, pal.bgGrad[1]);
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, size, size);
+
+            // 2. Внешняя золотая рама с жемчужным фризом (32 бусины)
+            ctx.save();
+            ctx.translate(center, center);
+
+            // Внешнее кольцо
+            ctx.strokeStyle = pal.primary;
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.arc(0, 0, Math.max(0.1, radius), 0, Math.PI * 2 * ease);
+            ctx.stroke();
+
+            // Внутреннее тонкое кольцо
+            ctx.strokeStyle = pal.secondary;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(0, 0, Math.max(0.1, radius * 0.94), 0, Math.PI * 2 * ease);
+            ctx.stroke();
+
+            // Жемчужины по ободу
+            const beadCount = 32;
+            const currentBeads = Math.floor(beadCount * ease);
+            ctx.fillStyle = pal.highlight;
+            for (let i = 0; i < currentBeads; i++) {
+              const a = (i / beadCount) * Math.PI * 2;
+              const bx = Math.cos(a) * (radius * 0.97);
+              const by = Math.sin(a) * (radius * 0.97);
+              ctx.beginPath();
+              ctx.arc(bx, by, 2.5, 0, Math.PI * 2);
+              ctx.fill();
+            }
+
+            // Зубчатый солнечный фриз
+            const teeth = symmetry * 2;
+            const teethRendered = Math.floor(teeth * ease);
+            ctx.strokeStyle = pal.accent;
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            for (let i = 0; i <= teethRendered; i++) {
+              const a = (i / teeth) * Math.PI * 2;
+              const rTooth = (i % 2 === 0) ? radius * 0.94 : radius * 0.88;
+              const tx = Math.cos(a) * rTooth;
+              const ty = Math.sin(a) * rTooth;
+              if (i === 0) ctx.moveTo(tx, ty);
+              else ctx.lineTo(tx, ty);
+            }
+            ctx.stroke();
+
+            // 3. Радиальная симметрия для мотивов
+            const angleStep = (Math.PI * 2) / symmetry;
+            const renderedSegments = Math.ceil(symmetry * ease);
+
+            for (let s = 0; s < renderedSegments; s++) {
+              ctx.save();
+              ctx.rotate(s * angleStep);
+
+              // Фоновые лучи солнца
+              ctx.strokeStyle = pal.secondary;
+              ctx.globalAlpha = 0.28;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(0, 0);
+              ctx.lineTo(0, -radius * 0.86);
+              ctx.stroke();
+              ctx.globalAlpha = 1.0;
+
+              // Отрисовка выбранных мотивов
+              motifs.forEach((m) => {
+                if (m === 'Казанский тюльпан') {
+                  drawTulipMotif(ctx, radius * 0.82, ease, pal);
+                }
+                if (m === 'Мезенский конь') {
+                  drawMezenHorseMotif(ctx, radius * 0.78, ease, pal);
+                }
+                if (m === 'Щепная птица') {
+                  drawBirdMotif(ctx, radius * 0.80, ease, pal);
+                }
+                if (m === 'Солярный ромб') {
+                  drawRhombusMotif(ctx, radius * 0.72, ease, pal);
+                }
+                if (m === 'Лировидный узор') {
+                  drawLyreMotif(ctx, radius * 0.76, ease, pal);
+                }
+              });
+
+              ctx.restore();
+            }
+
+            // 4. Центральное сакральное солнце / сердцевина оберега
+            ctx.fillStyle = pal.primary;
+            ctx.beginPath();
+            ctx.arc(0, 0, Math.max(0.1, 16 * ease), 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = pal.highlight;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(0, 0, Math.max(0.1, 24 * ease), 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.fillStyle = pal.accent;
+            ctx.beginPath();
+            ctx.arc(0, 0, Math.max(0.1, 8 * ease), 0, Math.PI * 2);
+            ctx.fill();
+
+            // Блик на центральном самоцвете
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(-2.5 * ease, -2.5 * ease, Math.max(0.1, 2.5 * ease), 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+
+            if (progress < 1) {
+              currentAnimFrame = requestAnimationFrame(renderFrame);
+            } else {
+              currentAnimFrame = null;
+              if (onDone) onDone();
+            }
+          }
+
+          currentAnimFrame = requestAnimationFrame(renderFrame);
+        }
+
+        // Мотив: Казанский тюльпан
+        function drawTulipMotif(ctx, maxR, progress, pal) {
+          const l = maxR * progress;
+          const w = l * 0.22;
+          ctx.fillStyle = pal.primary;
+          ctx.beginPath();
+          ctx.moveTo(0, -l * 0.2);
+          ctx.bezierCurveTo(w * 0.4, -l * 0.45, w * 0.6, -l * 0.75, 0, -l);
+          ctx.bezierCurveTo(-w * 0.6, -l * 0.75, -w * 0.4, -l * 0.45, 0, -l * 0.2);
+          ctx.fill();
+
+          // Боковые лепестки
+          ctx.strokeStyle = pal.secondary;
+          ctx.lineWidth = 1.8;
+          [-1, 1].forEach(side => {
+            ctx.beginPath();
+            ctx.moveTo(0, -l * 0.25);
+            ctx.bezierCurveTo(side * w * 0.8, -l * 0.4, side * w * 1.1, -l * 0.65, side * w * 0.5, -l * 0.85);
+            ctx.stroke();
+          });
+
+          // Зернь (жемчужные капли)
+          ctx.fillStyle = pal.highlight;
+          ctx.beginPath();
+          ctx.arc(0, -l * 0.55, 2.5, 0, Math.PI * 2);
+          ctx.arc(0, -l * 0.8, 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Мотив: Мезенский конь
+        function drawMezenHorseMotif(ctx, maxR, progress, pal) {
+          const sc = Math.max(0.1, maxR * 0.6 * progress);
+          ctx.strokeStyle = pal.primary;
+          ctx.lineWidth = 2.4;
+          ctx.lineCap = 'round';
+
+          // Арка спины
+          ctx.beginPath();
+          ctx.arc(0, -sc * 0.65, Math.max(0.1, sc * 0.26), Math.PI * 0.2, Math.PI * 0.8);
+          ctx.stroke();
+
+          // Голова и венец
+          ctx.beginPath();
+          ctx.moveTo(-sc * 0.22, -sc * 0.65);
+          ctx.lineTo(-sc * 0.32, -sc * 0.86);
+          ctx.stroke();
+
+          // Лучи венца
+          ctx.strokeStyle = pal.highlight;
+          ctx.lineWidth = 1.4;
+          for (let i = 0; i < 5; i++) {
+            const a = (i - 2) * 0.25;
+            ctx.beginPath();
+            ctx.moveTo(-sc * 0.32, -sc * 0.86);
+            ctx.lineTo(-sc * 0.32 + Math.cos(a - Math.PI/2) * 12, -sc * 0.86 + Math.sin(a - Math.PI/2) * 12);
+            ctx.stroke();
+          }
+
+          // Ноги-палочки
+          ctx.strokeStyle = pal.secondary;
+          ctx.lineWidth = 1.8;
+          ctx.beginPath();
+          ctx.moveTo(-sc * 0.14, -sc * 0.44);
+          ctx.lineTo(-sc * 0.16, -sc * 0.18);
+          ctx.moveTo(sc * 0.14, -sc * 0.44);
+          ctx.lineTo(sc * 0.16, -sc * 0.18);
+          ctx.stroke();
+        }
+
+        // Мотив: Щепная птица
+        function drawBirdMotif(ctx, maxR, progress, pal) {
+          const l = Math.max(0.1, maxR * progress);
+          ctx.strokeStyle = pal.secondary;
+          ctx.lineWidth = 1.6;
+
+          // Радиальные дуги оперения
+          for (let f = 1; f <= 3; f++) {
+            ctx.beginPath();
+            ctx.arc(0, -l * 0.25, Math.max(0.1, l * (0.18 + f * 0.16)), -Math.PI * 0.28, Math.PI * 0.28);
+            ctx.stroke();
+          }
+
+          // Фигурка птицы в центре
+          ctx.fillStyle = pal.primary;
+          ctx.beginPath();
+          ctx.ellipse(0, -l * 0.45, 5, 14, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = pal.highlight;
+          ctx.beginPath();
+          ctx.arc(0, -l * 0.62, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Мотив: Солярный ромб
+        function drawRhombusMotif(ctx, maxR, progress, pal) {
+          const l = maxR * 0.65 * progress;
+          const cy = -l * 0.75;
+          const sz = l * 0.28;
+
+          ctx.strokeStyle = pal.primary;
+          ctx.lineWidth = 2.2;
+          ctx.beginPath();
+          ctx.moveTo(0, cy - sz);
+          ctx.lineTo(sz, cy);
+          ctx.lineTo(0, cy + sz);
+          ctx.lineTo(-sz, cy);
+          ctx.closePath();
+          ctx.stroke();
+
+          // Отростки-крючки
+          ctx.strokeStyle = pal.secondary;
+          ctx.lineWidth = 1.6;
+          [-sz, sz].forEach(x => {
+            ctx.beginPath();
+            ctx.moveTo(x, cy);
+            ctx.lineTo(x * 1.35, cy - sz * 0.4);
+            ctx.stroke();
+          });
+
+          // Точки плодородия
+          ctx.fillStyle = pal.highlight;
+          ctx.beginPath();
+          ctx.arc(0, cy, 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Мотив: Лировидный узор (Харысхал)
+        function drawLyreMotif(ctx, maxR, progress, pal) {
+          const l = maxR * progress;
+          const w = l * 0.24;
+          ctx.strokeStyle = pal.primary;
+          ctx.lineWidth = 2.2;
+          ctx.lineCap = 'round';
+
+          // Сердцевидные волюты
+          ctx.beginPath();
+          ctx.moveTo(0, -l * 0.2);
+          ctx.bezierCurveTo(w * 0.9, -l * 0.35, w * 1.1, -l * 0.7, w * 0.4, -l * 0.85);
+          ctx.bezierCurveTo(w * 0.1, -l * 0.9, 0, -l * 0.8, 0, -l * 0.75);
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.moveTo(0, -l * 0.2);
+          ctx.bezierCurveTo(-w * 0.9, -l * 0.35, -w * 1.1, -l * 0.7, -w * 0.4, -l * 0.85);
+          ctx.bezierCurveTo(-w * 0.1, -l * 0.9, 0, -l * 0.8, 0, -l * 0.75);
+          ctx.stroke();
+
+          // Зернь жизни
+          ctx.fillStyle = pal.highlight;
+          ctx.beginPath();
+          ctx.arc(0, -l * 0.5, 3, 0, Math.PI * 2);
+          ctx.arc(w * 0.4, -l * 0.85, 2.5, 0, Math.PI * 2);
+          ctx.arc(-w * 0.4, -l * 0.85, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        return {
+          drawOrnament,
+          palettes
+        };
+      })();
+
+      // Селекторы мастерской
+      let selectedSymmetry = 12;
+      let selectedPalette = 'gold_sapphire';
+
       document.querySelectorAll('#aiMotifsSelectionGroup .pill-filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           btn.classList.toggle('is-active');
@@ -4430,40 +4884,86 @@
         });
       });
 
-      const genPostcardBtn = document.getElementById('runAiPostcardGenerationBtn');
-      if (genPostcardBtn) {
-        genPostcardBtn.addEventListener('click', () => {
-          const activeMotifs = Array.from(document.querySelectorAll('#aiMotifsSelectionGroup .pill-filter-btn.is-active')).map(b => b.dataset.motif);
-          const motifsText = activeMotifs.length ? activeMotifs.join(' и ') : 'Казанский тюльпан';
+      document.querySelectorAll('#aiSymmetrySelectionGroup .pill-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#aiSymmetrySelectionGroup .pill-filter-btn').forEach(b => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          selectedSymmetry = parseInt(btn.dataset.symmetry, 10) || 12;
+          AudioEngine.playUiClick();
+        });
+      });
 
-          const card = document.getElementById('aiPostcardResultCard');
+      document.querySelectorAll('#aiPaletteSelectionGroup .pill-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#aiPaletteSelectionGroup .pill-filter-btn').forEach(b => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          selectedPalette = btn.dataset.palette || 'gold_sapphire';
+          AudioEngine.playUiClick();
+        });
+      });
+
+      function generateWorkshopOrnament() {
+        const activeMotifs = Array.from(document.querySelectorAll('#aiMotifsSelectionGroup .pill-filter-btn.is-active')).map(b => b.dataset.motif);
+        const motifsToUse = activeMotifs.length ? activeMotifs : ['Казанский тюльпан'];
+        const motifsText = motifsToUse.join(' и ');
+
+        const canvas = document.getElementById('aiOrnamentCanvas');
+        const card = document.getElementById('aiPostcardResultCard');
+
+        if (card) {
+          card.style.opacity = '0.7';
+          card.style.transform = 'scale(0.99)';
+        }
+
+        // Звуковое сопровождение: варган + колокольный перезвон
+        AudioEngine.playVarganTwang(105, 1.4);
+        setTimeout(() => AudioEngine.playEthnicBell(880, 1.8), 120);
+
+        SacredOrnamentEngine.drawOrnament(canvas, motifsToUse, selectedSymmetry, selectedPalette, () => {
           if (card) {
-            card.style.opacity = '0.4';
-            card.style.transform = 'scale(0.98)';
+            card.style.opacity = '1';
+            card.style.transform = 'scale(1)';
           }
-
-          triggerToast('✨ Синтез цифрового оберега...');
-
-          setTimeout(() => {
-            if (card) {
-              card.style.opacity = '1';
-              card.style.transform = 'scale(1)';
-            }
-            document.getElementById('aiPostcardTitleHeading').textContent = `Оберег: ${motifsText}`;
-            document.getElementById('aiPostcardMeaningText').textContent =
-              `Символизирует гармонию традиций (${motifsText}), связь поколений и защиту в дальних путешествиях.`;
-            AudioEngine.playSuccessTrumpet();
-            triggerToast('✦ Персональный оберег сгенерирован!');
-          }, 650);
+          document.getElementById('aiPostcardTitleHeading').textContent = `Оберег: ${motifsText}`;
+          document.getElementById('aiPostcardMeaningText').textContent =
+            `Синтез сакральных мотивов (${motifsText}): розеточная симметрия ${selectedSymmetry} лучей, защита родового очага и преемственность поколений.`;
+          document.getElementById('aiPostcardMetadata').textContent =
+            `✦ Сакральный канон: ${selectedPalette === 'gold_sapphire' ? 'Золото и сапфир' : selectedPalette === 'ruby_graphite' ? 'Северная киноварь' : 'Поморский лен'} · РЭМ № OBR-${selectedSymmetry}-${Date.now().toString().slice(-4)}`;
+          triggerToast('✨ Сакральный оберег выкован!');
         });
       }
 
+      const genPostcardBtn = document.getElementById('runAiPostcardGenerationBtn');
+      if (genPostcardBtn) {
+        genPostcardBtn.addEventListener('click', generateWorkshopOrnament);
+      }
+
+      // Скачивание оберега в PNG
+      const downloadBtn = document.getElementById('downloadAiPostcardBtn');
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+          const canvas = document.getElementById('aiOrnamentCanvas');
+          if (!canvas) return;
+          const a = document.createElement('a');
+          a.download = `artefact-obereg-${Date.now()}.png`;
+          a.href = canvas.toDataURL('image/png');
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          AudioEngine.playSuccessTrumpet();
+          triggerToast('📥 Оберег сохранён в формате PNG (HiDPI)!');
+        });
+      }
+
+      // Поделиться оберегом (скопировать deep link)
       const shareBtn = document.getElementById('shareAiPostcardBtn');
       if (shareBtn) {
         shareBtn.addEventListener('click', () => {
+          const activeMotifs = Array.from(document.querySelectorAll('#aiMotifsSelectionGroup .pill-filter-btn.is-active')).map(b => encodeURIComponent(b.dataset.motif));
+          const deepUrl = `${window.location.origin}${window.location.pathname}#workshop?motifs=${activeMotifs.join(',')}&sym=${selectedSymmetry}&pal=${selectedPalette}`;
           if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-              triggerToast('🔗 Ссылка на оберег скопирована в буфер обмена!');
+            navigator.clipboard.writeText(deepUrl).then(() => {
+              triggerToast('🔗 Ссылка на сакральный оберег скопирована!');
             }).catch(() => {
               triggerToast('🔗 Ссылка готова к отправке!');
             });
@@ -4558,6 +5058,7 @@
       renderCulturesCatalog();
       renderFolkloreAnthology();
       renderRelicsShelf(false);
+      generateWorkshopOrnament();
 
       const startHash = window.location.hash.replace('#', '') || 'hero';
       routeTo(startHash, false); // Тихий запуск без звука при открытии страницы
