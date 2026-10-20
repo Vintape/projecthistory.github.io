@@ -58,6 +58,14 @@
       "memory_file": ".project-memory/DESIGN_SYSTEM.md"
     },
     {
+      "id": "perplexity_scout",
+      "role": "Архивный скаут и исследователь цифровых коллекций музеев",
+      "provider": "Perplexity AI",
+      "model": "perplexity/sonar",
+      "status": "active_verified",
+      "memory_file": ".project-memory/ETHNOGRAPHIC_CANON.md"
+    },
+    {
       "id": "chatgpt_editor",
       "role": "Литературный редактор и полиглот-фольклорист",
       "provider": "OpenAI (ChatGPT)",

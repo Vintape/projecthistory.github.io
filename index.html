@@ -976,9 +976,11 @@
       border: 2px solid var(--border-gold);
       box-shadow: var(--shadow-lg);
       background: #080f1e;
-      touch-action: pan-y;
+      touch-action: none;
       user-select: none;
       -webkit-user-select: none;
+      cursor: ew-resize;
+      --slider-pos: 50%;
     }
 
     .before-after-stage__bg-img {
@@ -988,30 +990,65 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      z-index: 1;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .before-after-stage__layer {
       position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 50%;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
-      border-right: 3px solid var(--gold);
-      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.6);
-      transition: width 0.05s linear;
+      clip-path: polygon(0 0, var(--slider-pos, 50%) 0, var(--slider-pos, 50%) 100%, 0 100%);
+      transition: none;
       z-index: 2;
+      pointer-events: none;
     }
 
     .before-after-stage__layer-img {
       position: absolute;
-      top: 0;
-      left: 0;
+      inset: 0;
       height: 100%;
       width: 100%;
       object-fit: cover;
       display: block;
-      filter: sepia(0.65) contrast(1.1);
+    }
+
+    .before-after-stage__divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: var(--slider-pos, 50%);
+      width: 3px;
+      background: var(--gold);
+      box-shadow: 0 0 10px rgba(201, 156, 82, 0.8), 0 0 20px rgba(0, 0, 0, 0.8);
+      transform: translateX(-50%);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .before-after-stage__handle {
+      position: absolute;
+      top: 50%;
+      left: var(--slider-pos, 50%);
+      width: 36px;
+      height: 36px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 16px var(--gold-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+      font-size: 13px;
+      font-weight: 700;
+      z-index: 4;
+      pointer-events: none;
     }
 
     .ba-badge-pill {
@@ -1273,13 +1310,13 @@
     .quiz-options-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 14px;
       margin: 18px 0;
     }
 
-    @media (min-width: 860px) {
+    @media (max-width: 680px) {
       .quiz-options-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
       }
     }
 
@@ -1287,15 +1324,19 @@
       background: var(--bg-card);
       border: 1px solid var(--border-gold-subtle);
       border-radius: var(--radius-md);
-      padding: 14px;
+      padding: 12px;
       cursor: pointer;
-      transition: var(--transition);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
       text-align: left;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      justify-content: flex-start;
       -webkit-tap-highlight-color: transparent;
       position: relative;
+      height: 100%;
+      min-height: 250px;
+      box-sizing: border-box;
+      overflow: hidden;
     }
 
     .quiz-option-card:hover, .quiz-option-card.is-selected, .quiz-option-card:focus-visible {
@@ -1315,6 +1356,89 @@
     .quiz-option-card.is-correct {
       border-color: #34d399 !important;
       background: rgba(52, 211, 153, 0.12) !important;
+      box-shadow: 0 0 20px rgba(52, 211, 153, 0.3) !important;
+    }
+
+    .quiz-option-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .quiz-option-card__badge {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--font-slab);
+      color: var(--gold-light);
+      background: rgba(201, 156, 82, 0.12);
+      border: 1px solid rgba(201, 156, 82, 0.25);
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.04em;
+    }
+
+    .quiz-option-card__radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .quiz-option-card.is-selected .quiz-option-card__radio {
+      border-color: var(--gold);
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold-glow);
+    }
+
+    .quiz-option-card.is-selected .quiz-option-card__radio::after {
+      content: '✓';
+      font-size: 11px;
+      color: #070d1e;
+      font-weight: 800;
+    }
+
+    .quiz-option-card__img-container {
+      width: 100%;
+      height: 110px;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: #060b18;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 8px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .quiz-option-card__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+
+    .quiz-option-card:hover .quiz-option-card__img {
+      transform: scale(1.04);
+    }
+
+    .quiz-option-card__title {
+      font-size: 12.5px;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      min-height: 34px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .quiz-option-academic-desc {
@@ -1323,7 +1447,11 @@
       color: var(--text-muted);
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       padding-top: 6px;
-      margin-top: 2px;
+      margin-top: auto;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     /* ШАГ 4: 3D-ОСМОТР АРТЕФАКТА */
@@ -1491,12 +1619,26 @@
     /* ==========================================================================
        8. ЭТНОАТЛАС И КОЛЛЕКЦИЯ
        ========================================================================== */
+    .atlas-layout-split {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 980px) {
+      .atlas-layout-split {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .russia-svg-map-box {
       width: 100%;
-      height: clamp(260px, 45vh, 480px);
-      background: radial-gradient(circle, #0e1b38 0%, #070d1e 100%);
+      height: 490px;
+      background: radial-gradient(circle at 45% 45%, #102144 0%, #060c1d 100%);
       border-radius: var(--radius-md);
       border: 1px solid var(--border-gold);
+      box-shadow: var(--shadow-lg), inset 0 0 50px rgba(0, 0, 0, 0.7);
       overflow: hidden;
       position: relative;
       display: flex;
@@ -1507,6 +1649,117 @@
     .russia-svg-map-box svg {
       width: 100%;
       height: 100%;
+      display: block;
+    }
+
+    .map-region-poly {
+      cursor: pointer;
+      transition: fill 0.25s ease, stroke 0.25s ease, filter 0.25s ease;
+    }
+
+    .map-region-poly:hover, .map-region-poly.is-active {
+      fill: rgba(201, 156, 82, 0.28) !important;
+      stroke: var(--gold) !important;
+      stroke-width: 2px !important;
+      filter: drop-shadow(0 0 10px rgba(201, 156, 82, 0.6));
+    }
+
+    .map-region-node {
+      cursor: pointer;
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .map-region-node:hover {
+      transform: scale(1.1);
+    }
+
+    .map-region-node.is-active {
+      transform: scale(1.15);
+      filter: drop-shadow(0 0 10px rgba(201, 156, 82, 0.85));
+    }
+
+    .sonar-ring {
+      animation: atlasPulse 2.8s infinite ease-out;
+      transform-origin: center;
+    }
+
+    @keyframes atlasPulse {
+      0% { r: 6px; opacity: 0.9; }
+      70% { r: 24px; opacity: 0; }
+      100% { r: 24px; opacity: 0; }
+    }
+
+    .atlas-dossier-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .atlas-dossier-card__cover {
+      width: 100%;
+      height: 145px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 12px;
+      border: 1px solid var(--border-gold-subtle);
+      background: #060b18;
+      position: relative;
+    }
+
+    .atlas-dossier-card__cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .atlas-territory-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 1100px) {
+      .atlas-territory-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .atlas-territory-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .atlas-territory-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .atlas-territory-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: 0 0 16px var(--gold-glow);
+    }
+
+    .atlas-territory-card.is-selected {
+      border-color: var(--gold);
+      background: var(--bg-card-hover);
+      box-shadow: 0 0 18px rgba(201, 156, 82, 0.4);
     }
 
     .relics-shelf-grid {
@@ -1914,6 +2167,8 @@
                 <div class="before-after-stage__layer" id="baArchiveLayerBox">
                   <img class="before-after-stage__layer-img" id="baArchiveImg" src="./images/kazan_archive_19th.jpg" alt="Архивное фото XIX в." />
                 </div>
+                <div class="before-after-stage__divider" id="baDividerLine"></div>
+                <div class="before-after-stage__handle" id="baDividerHandle">‹ ›</div>
                 <span class="ba-badge-pill ba-badge-pill--archive">Архив XIX в.</span>
                 <span class="ba-badge-pill ba-badge-pill--modern">Наши дни</span>
               </div>
@@ -2202,76 +2457,276 @@
     </section>
 
     <!-- ========================================================================
-         ЭКРАН 9: ИНТЕРАКТИВНЫЙ ЭТНОАТЛАС РОССИИ
+         ЭКРАН 9: ИНТЕРАКТИВНЫЙ ЭТНОАТЛАС РОССИИ И ШЕЛКОВОГО ПУТИ
          ======================================================================== -->
     <section class="screen-view" id="screen-atlas">
       <div class="content-canvas">
         <div style="margin-bottom:22px;">
-          <span class="gold-badge">География экспедиций</span>
+          <span class="gold-badge">✦ Картографический корпус этнографических экспедиций</span>
           <h2 class="heading-section">Интерактивный Этноатлас</h2>
           <p class="lead-paragraph">
-            Исследуйте карту регионов. Каждый маркер открывает доступ к сакральным памятникам, мифам и живым традициям коренных народов.
+            Исследуйте карту культурных ареалов. Выберите маркер региона, чтобы изучить полевой паспорт экспедиции, услышать живую речь коренных народов и открыть доступ к сакральным музейным реликвиям.
           </p>
         </div>
 
-        <div class="resp-grid-3" style="margin-bottom:20px;">
+        <div class="resp-grid-3" style="margin-bottom:22px; grid-template-columns: repeat(4, 1fr);">
           <div style="background:var(--bg-card); padding:14px; border-radius:var(--radius-md); border:1px solid var(--border-gold-subtle); text-align:center;">
-            <strong style="font-size:24px; color:var(--gold); display:block; font-family:var(--font-slab);">7</strong>
-            <span style="font-size:11.5px; color:var(--text-muted);">Экспедиционных зон</span>
+            <strong style="font-size:24px; color:var(--gold); display:block; font-family:var(--font-slab);">8</strong>
+            <span style="font-size:11.5px; color:var(--text-muted);">Культурных ареалов</span>
           </div>
           <div style="background:var(--bg-card); padding:14px; border-radius:var(--radius-md); border:1px solid var(--border-gold-subtle); text-align:center;">
-            <strong style="font-size:24px; color:#34d399; display:block; font-family:var(--font-slab);">18</strong>
-            <span style="font-size:11.5px; color:var(--text-muted);">Оцифрованных реликвий</span>
+            <strong style="font-size:24px; color:#34d399; display:block; font-family:var(--font-slab);">32</strong>
+            <span style="font-size:11.5px; color:var(--text-muted);">Верифицированных символа</span>
+          </div>
+          <div style="background:var(--bg-card); padding:14px; border-radius:var(--radius-md); border:1px solid var(--border-gold-subtle); text-align:center;">
+            <strong style="font-size:24px; color:var(--cyan); display:block; font-family:var(--font-slab);">8</strong>
+            <span style="font-size:11.5px; color:var(--text-muted);">Ведущих музеев РФ</span>
           </div>
           <div style="background:var(--bg-card); padding:14px; border-radius:var(--radius-md); border:1px solid var(--border-gold-subtle); text-align:center;">
             <strong style="font-size:24px; color:var(--ruby); display:block; font-family:var(--font-slab);">100%</strong>
-            <span style="font-size:11.5px; color:var(--text-muted);">Аутентичность источников</span>
+            <span style="font-size:11.5px; color:var(--text-muted);">Научный канон РАН</span>
           </div>
         </div>
 
-        <!-- Интерактивная векторная карта регионов -->
-        <div class="russia-svg-map-box">
-          <svg viewBox="0 0 1000 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Стилизованный силуэт Евразии и России -->
-            <path d="M70,220 Q180,180 280,240 T520,220 T720,180 T920,210 Q940,320 840,350 T620,380 T380,360 T140,340 Z" fill="rgba(212,175,55,0.06)" stroke="var(--border-gold)" stroke-width="1.5"/>
-            <path d="M120,260 Q180,240 240,290 T340,270" stroke="rgba(212,175,55,0.2)" stroke-width="1" stroke-dasharray="4 4"/>
-            <path d="M380,250 Q500,220 620,270 T820,240" stroke="rgba(212,175,55,0.2)" stroke-width="1" stroke-dasharray="4 4"/>
+        <!-- Сплит-зона: Карта + Живой Паспорт Экспедиции -->
+        <div class="atlas-layout-split">
+          <!-- Интерактивная векторная карта регионов -->
+          <div class="russia-svg-map-box">
+            <svg viewBox="0 0 1100 520" fill="none" xmlns="http://www.w3.org/2000/svg" id="atlasRussiaSvgMap">
+              <defs>
+                <radialGradient id="gradLand" cx="50%" cy="45%" r="65%">
+                  <stop offset="0%" stop-color="#16284f" stop-opacity="0.85"/>
+                  <stop offset="100%" stop-color="#0a1329" stop-opacity="0.95"/>
+                </radialGradient>
+                <linearGradient id="gradPinGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#f3d08a"/>
+                  <stop offset="100%" stop-color="#c99c52"/>
+                </linearGradient>
+                <filter id="glowAtlas" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3" result="blur"/>
+                  <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                </filter>
+              </defs>
 
-            <!-- Маркер Поморье -->
-            <g class="map-region-node" role="button" tabindex="0" onclick="setupQuestCulture('pomorye'); routeTo('quest');" onkeydown="if(event.key==='Enter'||event.key===' '){setupQuestCulture('pomorye'); routeTo('quest');}" style="cursor:pointer;">
-              <circle cx="210" cy="200" r="14" fill="rgba(198,40,40,0.3)" stroke="var(--ruby)" stroke-width="2"/>
-              <circle cx="210" cy="200" r="5" fill="#fff"/>
-              <text x="210" y="175" text-anchor="middle" fill="#fff" font-size="12" font-weight="600" font-family="Montserrat">Поморье</text>
-            </g>
+              <!-- Координатная картографическая сетка -->
+              <path d="M50,130 L1050,130 M50,250 L1050,250 M50,370 L1050,370" stroke="rgba(201,156,82,0.06)" stroke-width="1" stroke-dasharray="3 5"/>
+              <path d="M180,60 L180,480 M360,60 L360,480 M540,60 L540,480 M720,60 L720,480 M900,60 L900,480" stroke="rgba(201,156,82,0.06)" stroke-width="1" stroke-dasharray="3 5"/>
 
-            <!-- Маркер Татарстан -->
-            <g class="map-region-node" role="button" tabindex="0" onclick="setupQuestCulture('tatarstan'); routeTo('quest');" onkeydown="if(event.key==='Enter'||event.key===' '){setupQuestCulture('tatarstan'); routeTo('quest');}" style="cursor:pointer;">
-              <circle cx="250" cy="290" r="16" fill="rgba(212,175,55,0.4)" stroke="var(--gold)" stroke-width="2.5"/>
-              <circle cx="250" cy="290" r="6" fill="var(--gold-light)"/>
-              <text x="250" y="325" text-anchor="middle" fill="var(--gold-light)" font-size="13" font-weight="700" font-family="Montserrat">Татарстан</text>
-            </g>
+              <!-- Роза ветров (Компас) -->
+              <g transform="translate(85, 95)" opacity="0.55">
+                <circle cx="0" cy="0" r="26" stroke="rgba(201,156,82,0.3)" stroke-width="1" fill="none"/>
+                <path d="M0,-24 L4,-6 L24,0 L4,4 L0,24 L-4,4 L-24,0 L-4,-6 Z" fill="rgba(201,156,82,0.2)" stroke="var(--gold)" stroke-width="1"/>
+                <text x="0" y="-27" text-anchor="middle" fill="var(--gold-light)" font-size="9" font-family="var(--font-slab)" font-weight="700">С</text>
+                <text x="0" y="35" text-anchor="middle" fill="var(--gold)" font-size="8" font-family="var(--font-slab)">Ю</text>
+                <text x="32" y="3" text-anchor="start" fill="var(--gold)" font-size="8" font-family="var(--font-slab)">В</text>
+                <text x="-32" y="3" text-anchor="end" fill="var(--gold)" font-size="8" font-family="var(--font-slab)">З</text>
+              </g>
 
-            <!-- Маркер Алтай -->
-            <g class="map-region-node" role="button" tabindex="0" onclick="setupQuestCulture('altai'); routeTo('quest');" onkeydown="if(event.key==='Enter'||event.key===' '){setupQuestCulture('altai'); routeTo('quest');}" style="cursor:pointer;">
-              <circle cx="510" cy="330" r="14" fill="rgba(198,40,40,0.3)" stroke="var(--ruby)" stroke-width="2"/>
-              <circle cx="510" cy="330" r="5" fill="#fff"/>
-              <text x="510" y="360" text-anchor="middle" fill="#fff" font-size="12" font-weight="600" font-family="Montserrat">Горный Алтай</text>
-            </g>
+              <!-- Базовый контур материка (Россия и Центральная Азия) -->
+              <path d="M95,285 C105,255 125,230 145,225 C160,220 170,195 160,170 C150,145 165,115 195,110 C220,105 240,120 235,145 C230,165 245,180 260,175 C280,170 295,185 305,170 C315,155 330,160 345,175 C370,170 385,150 410,140 C435,130 460,100 480,105 C500,110 495,140 515,150 C535,160 550,135 570,115 C590,95 625,90 655,100 C685,110 700,145 725,135 C750,125 785,130 815,145 C845,160 880,140 910,155 C940,170 975,150 1005,135 C1035,120 1060,135 1075,160 C1090,185 1060,205 1035,215 C1010,225 990,250 995,280 C1000,310 985,340 955,360 C925,380 890,395 860,420 C830,445 790,440 760,410 C730,380 690,390 650,405 C610,420 570,435 530,450 C490,465 440,480 390,490 C340,500 290,470 260,450 C230,430 190,440 160,425 C130,410 100,380 90,350 C80,320 85,305 95,285 Z"
+                    fill="url(#gradLand)" stroke="rgba(201,156,82,0.35)" stroke-width="1.5" filter="drop-shadow(0 10px 25px rgba(0,0,0,0.6))"/>
 
-            <!-- Маркер Якутия -->
-            <g class="map-region-node" role="button" tabindex="0" onclick="setupQuestCulture('yakutia'); routeTo('quest');" onkeydown="if(event.key==='Enter'||event.key===' '){setupQuestCulture('yakutia'); routeTo('quest');}" style="cursor:pointer;">
-              <circle cx="720" cy="210" r="15" fill="rgba(72,202,228,0.3)" stroke="#48cae4" stroke-width="2"/>
-              <circle cx="720" cy="210" r="5" fill="#fff"/>
-              <text x="720" y="185" text-anchor="middle" fill="#48cae4" font-size="12" font-weight="600" font-family="Montserrat">Якутия</text>
-            </g>
+              <!-- Полуостров Камчатка -->
+              <path d="M985,225 C1005,250 1025,290 1030,335 C1035,370 1020,395 1010,385 C1000,375 990,330 980,295 C970,260 975,235 985,225 Z"
+                    fill="url(#gradLand)" stroke="rgba(201,156,82,0.4)" stroke-width="1.2"/>
 
-            <!-- Маркер Камчатка -->
-            <g class="map-region-node" role="button" tabindex="0" onclick="setupQuestCulture('kamchatka'); routeTo('quest');" onkeydown="if(event.key==='Enter'||event.key===' '){setupQuestCulture('kamchatka'); routeTo('quest');}" style="cursor:pointer;">
-              <circle cx="890" cy="230" r="14" fill="rgba(212,175,55,0.3)" stroke="var(--gold)" stroke-width="2"/>
-              <circle cx="890" cy="230" r="5" fill="#fff"/>
-              <text x="890" y="260" text-anchor="middle" fill="#fff" font-size="12" font-weight="600" font-family="Montserrat">Камчатка</text>
-            </g>
-          </svg>
+              <!-- Остров Сахалин -->
+              <path d="M915,310 C922,330 925,365 922,395 C918,410 912,410 910,390 C908,360 910,330 915,310 Z"
+                    fill="url(#gradLand)" stroke="rgba(201,156,82,0.35)" stroke-width="1"/>
+
+              <!-- Озеро Байкал (священный полумесяц) -->
+              <path d="M715,365 C725,355 735,340 732,325 C728,315 722,325 718,340 C712,355 710,362 715,365 Z"
+                    fill="#060c1d" stroke="rgba(72,202,228,0.6)" stroke-width="1.5"/>
+
+              <!-- Каспийское море -->
+              <path d="M190,395 C205,390 220,415 215,445 C210,470 195,475 185,455 C175,435 180,405 190,395 Z"
+                    fill="#060c1d" stroke="rgba(72,202,228,0.5)" stroke-width="1.2"/>
+
+              <!-- Аральское море (зона Шелкового пути) -->
+              <path d="M265,420 C280,415 290,430 285,445 C280,455 265,450 265,420 Z"
+                    fill="#060c1d" stroke="rgba(72,202,228,0.4)" stroke-width="1"/>
+
+              <!-- Речные магистрали: Волга, Лена, Енисей, Обь, Амур -->
+              <path d="M175,230 Q210,270 230,310 T200,405" stroke="rgba(72,202,228,0.35)" stroke-width="1.5" fill="none" stroke-dasharray="1 2"/>
+              <path d="M480,110 Q495,200 480,280 T460,380" stroke="rgba(72,202,228,0.25)" stroke-width="1.2" fill="none"/>
+              <path d="M590,105 Q585,210 575,310 T560,390" stroke="rgba(72,202,228,0.25)" stroke-width="1.2" fill="none"/>
+              <path d="M750,320 Q770,250 810,210 T840,140" stroke="rgba(72,202,228,0.35)" stroke-width="1.5" fill="none" stroke-dasharray="1 2"/>
+              <path d="M780,410 Q850,385 890,395 T940,370" stroke="rgba(72,202,228,0.25)" stroke-width="1.2" fill="none"/>
+
+              <!-- Горный хребет Урал (хребет между Европой и Азией) -->
+              <path d="M345,175 Q360,250 355,330 T365,400" stroke="rgba(201,156,82,0.35)" stroke-width="2" stroke-dasharray="2 4" fill="none"/>
+
+              <!-- ========================================================
+                   ИНТЕРАКТИВНЫЕ ОБЛАСТИ РЕГИОНОВ (КЛИКАБЕЛЬНЫЕ ПОЛИГОНЫ)
+                   ======================================================== -->
+
+              <!-- 1. Поморье и Русский Север -->
+              <path class="map-region-poly" id="poly-pomorye" data-region-id="pomorye"
+                    d="M165,130 C190,120 235,130 250,150 C265,175 250,210 220,225 C190,235 160,205 155,170 Z"
+                    fill="rgba(200,52,40,0.12)" stroke="rgba(200,52,40,0.4)" stroke-width="1.2"/>
+
+              <!-- 2. Татарстан и Волжская Булгария -->
+              <path class="map-region-poly is-active" id="poly-tatarstan" data-region-id="tatarstan"
+                    d="M210,270 C245,260 275,270 285,295 C295,325 270,350 240,355 C210,355 195,330 195,300 Z"
+                    fill="rgba(201,156,82,0.22)" stroke="var(--gold)" stroke-width="1.8"/>
+
+              <!-- 3. Кавказ (Дагестан) -->
+              <path class="map-region-poly" id="poly-caucasus" data-region-id="caucasus"
+                    d="M160,420 C185,410 215,420 215,445 C215,470 185,480 160,470 C145,455 145,435 160,420 Z"
+                    fill="rgba(200,52,40,0.12)" stroke="rgba(200,52,40,0.4)" stroke-width="1.2"/>
+
+              <!-- 4. Горный Алтай -->
+              <path class="map-region-poly" id="poly-altai" data-region-id="altai"
+                    d="M490,380 C525,370 560,385 565,415 C565,440 535,465 500,460 C475,450 470,410 490,380 Z"
+                    fill="rgba(201,156,82,0.12)" stroke="rgba(201,156,82,0.4)" stroke-width="1.2"/>
+
+              <!-- 5. Якутия (Саха) -->
+              <path class="map-region-poly" id="poly-yakutia" data-region-id="yakutia"
+                    d="M710,180 C780,160 840,180 870,230 C890,280 850,330 780,340 C730,340 680,280 690,220 Z"
+                    fill="rgba(72,202,228,0.12)" stroke="rgba(72,202,228,0.4)" stroke-width="1.2"/>
+
+              <!-- 6. Камчатка -->
+              <path class="map-region-poly" id="poly-kamchatka" data-region-id="kamchatka"
+                    d="M975,230 C1005,250 1025,290 1030,340 C1030,375 1005,385 985,340 C970,300 965,260 975,230 Z"
+                    fill="rgba(201,156,82,0.15)" stroke="rgba(201,156,82,0.4)" stroke-width="1.2"/>
+
+              <!-- 7. Казахстан (Великая Степь) -->
+              <path class="map-region-poly" id="poly-kazakhstan" data-region-id="kazakhstan"
+                    d="M310,380 C370,365 440,380 460,420 C460,455 400,480 340,475 C290,465 285,420 310,380 Z"
+                    fill="rgba(201,156,82,0.1)" stroke="rgba(201,156,82,0.35)" stroke-width="1.2"/>
+
+              <!-- 8. Узбекистан (Шелковый путь) -->
+              <path class="map-region-poly" id="poly-uzbekistan" data-region-id="uzbekistan"
+                    d="M260,440 C300,430 340,445 350,475 C350,500 310,515 270,510 C240,495 240,460 260,440 Z"
+                    fill="rgba(72,202,228,0.1)" stroke="rgba(72,202,228,0.35)" stroke-width="1.2"/>
+
+              <!-- ========================================================
+                   ПУЛЬСИРУЮЩИЕ РАДАРНЫЕ ПИНЫ РЕГИОНОВ (МАРКЕРЫ ЭКСПЕДИЦИЙ)
+                   ======================================================== -->
+
+              <!-- ПИН 1: Поморье -->
+              <g class="map-region-node" id="node-pomorye" data-region-id="pomorye" role="button" tabindex="0" aria-label="Регион: Поморье">
+                <circle class="sonar-ring" cx="200" cy="180" r="8" fill="none" stroke="var(--ruby)" stroke-width="1.5"/>
+                <circle cx="200" cy="180" r="7" fill="var(--ruby)" stroke="#fff" stroke-width="2"/>
+                <rect x="150" y="145" width="100" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(200,52,40,0.5)" stroke-width="1"/>
+                <text x="200" y="160" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Montserrat">⛵ Поморье</text>
+              </g>
+
+              <!-- ПИН 2: Татарстан -->
+              <g class="map-region-node" id="node-tatarstan" data-region-id="tatarstan" role="button" tabindex="0" aria-label="Регион: Татарстан">
+                <circle class="sonar-ring" cx="245" cy="305" r="8" fill="none" stroke="var(--gold)" stroke-width="2"/>
+                <circle cx="245" cy="305" r="8" fill="url(#gradPinGold)" stroke="#060c1d" stroke-width="2" filter="url(#glowAtlas)"/>
+                <rect x="190" y="268" width="110" height="24" rx="12" fill="rgba(14,25,51,0.95)" stroke="var(--gold)" stroke-width="1.5"/>
+                <text x="245" y="284" text-anchor="middle" fill="var(--gold-light)" font-size="11.5" font-weight="800" font-family="Montserrat">🌷 Татарстан</text>
+              </g>
+
+              <!-- ПИН 3: Кавказ -->
+              <g class="map-region-node" id="node-caucasus" data-region-id="caucasus" role="button" tabindex="0" aria-label="Регион: Кавказ">
+                <circle class="sonar-ring" cx="185" cy="445" r="8" fill="none" stroke="var(--ruby)" stroke-width="1.5"/>
+                <circle cx="185" cy="445" r="7" fill="var(--ruby)" stroke="#fff" stroke-width="2"/>
+                <rect x="135" y="412" width="100" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(200,52,40,0.5)" stroke-width="1"/>
+                <text x="185" y="427" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Montserrat">🗡️ Кавказ</text>
+              </g>
+
+              <!-- ПИН 4: Горный Алтай -->
+              <g class="map-region-node" id="node-altai" data-region-id="altai" role="button" tabindex="0" aria-label="Регион: Горный Алтай">
+                <circle class="sonar-ring" cx="525" cy="415" r="8" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
+                <circle cx="525" cy="415" r="7" fill="var(--gold)" stroke="#060c1d" stroke-width="2"/>
+                <rect x="465" y="382" width="120" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(201,156,82,0.5)" stroke-width="1"/>
+                <text x="525" y="397" text-anchor="middle" fill="var(--gold-light)" font-size="11" font-weight="700" font-family="Montserrat">🏔️ Горный Алтай</text>
+              </g>
+
+              <!-- ПИН 5: Якутия -->
+              <g class="map-region-node" id="node-yakutia" data-region-id="yakutia" role="button" tabindex="0" aria-label="Регион: Якутия">
+                <circle class="sonar-ring" cx="785" cy="250" r="8" fill="none" stroke="var(--cyan)" stroke-width="1.5"/>
+                <circle cx="785" cy="250" r="7" fill="var(--cyan)" stroke="#fff" stroke-width="2"/>
+                <rect x="735" y="218" width="100" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(72,202,228,0.5)" stroke-width="1"/>
+                <text x="785" y="233" text-anchor="middle" fill="#48cae4" font-size="11" font-weight="700" font-family="Montserrat">❄️ Якутия</text>
+              </g>
+
+              <!-- ПИН 6: Камчатка -->
+              <g class="map-region-node" id="node-kamchatka" data-region-id="kamchatka" role="button" tabindex="0" aria-label="Регион: Камчатка">
+                <circle class="sonar-ring" cx="1000" cy="295" r="8" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
+                <circle cx="1000" cy="295" r="7" fill="var(--gold)" stroke="#060c1d" stroke-width="2"/>
+                <rect x="945" y="262" width="110" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(201,156,82,0.5)" stroke-width="1"/>
+                <text x="1000" y="277" text-anchor="middle" fill="var(--gold-light)" font-size="11" font-weight="700" font-family="Montserrat">🌋 Камчатка</text>
+              </g>
+
+              <!-- ПИН 7: Казахстан -->
+              <g class="map-region-node" id="node-kazakhstan" data-region-id="kazakhstan" role="button" tabindex="0" aria-label="Регион: Казахстан">
+                <circle class="sonar-ring" cx="380" cy="430" r="7" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
+                <circle cx="380" cy="430" r="6" fill="var(--gold)" stroke="#060c1d" stroke-width="2"/>
+                <rect x="325" y="398" width="110" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(201,156,82,0.4)" stroke-width="1"/>
+                <text x="380" y="413" text-anchor="middle" fill="var(--gold-light)" font-size="10.5" font-weight="700" font-family="Montserrat">🦅 Казахстан</text>
+              </g>
+
+              <!-- ПИН 8: Узбекистан -->
+              <g class="map-region-node" id="node-uzbekistan" data-region-id="uzbekistan" role="button" tabindex="0" aria-label="Регион: Узбекистан">
+                <circle class="sonar-ring" cx="295" cy="475" r="7" fill="none" stroke="var(--cyan)" stroke-width="1.5"/>
+                <circle cx="295" cy="475" r="6" fill="var(--cyan)" stroke="#fff" stroke-width="2"/>
+                <rect x="235" y="443" width="120" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(72,202,228,0.4)" stroke-width="1"/>
+                <text x="295" y="458" text-anchor="middle" fill="#48cae4" font-size="10.5" font-weight="700" font-family="Montserrat">🕌 Узбекистан</text>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Интерактивный Полевой Паспорт Экспедиции (HUD Panel) -->
+          <div class="atlas-dossier-card" id="atlasDossierCard">
+            <div class="atlas-dossier-card__cover">
+              <img id="atlasDossierImg" src="./images/mechet-kul-sharif.jpg" alt="Фото региона" />
+              <span class="gold-badge" style="position:absolute; top:8px; left:8px; margin:0;" id="atlasDossierBadge">✦ 01 / 08 · Поволжье</span>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+              <h3 id="atlasDossierTitle" style="font-family:var(--font-editorial); font-size:21px; color:var(--text-main); margin:0;">
+                Татарстан <span>· Наследие урмана</span>
+              </h3>
+            </div>
+
+            <!-- Традиционное приветствие с голосом -->
+            <div style="background:rgba(201,156,82,0.08); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-sm); padding:10px 12px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+              <span id="atlasDossierGreeting" style="font-style:italic; font-family:var(--font-editorial); font-size:15px; color:var(--gold-light);">
+                «Исәнмесез! Рәхим итегез!»
+              </span>
+              <button class="action-chip" id="atlasVoiceListenBtn" style="padding:4px 10px; font-size:11px;">
+                <span>🗣️</span> Слушать
+              </button>
+            </div>
+
+            <p id="atlasDossierDesc" style="font-size:12px; line-height:1.55; color:var(--text-muted); margin-bottom:12px;">
+              Перекрёсток цивилизаций Востока и Запада, великое наследие Волжской Булгарии, виртуозная кожаная мозаика и поэзия древнего урмана.
+            </p>
+
+            <div style="font-size:11px; color:var(--text-dim); border-top:1px solid rgba(255,255,255,0.08); padding-top:10px; margin-top:auto; margin-bottom:14px;">
+              <div><strong style="color:var(--gold);">Сакральный артефакт:</strong> <span id="atlasDossierArtifact">Казанское хасите и филигрань</span></div>
+              <div style="margin-top:3px;"><strong style="color:var(--text-main);">Собрание:</strong> <span id="atlasDossierMuseum">Национальный музей РТ</span></div>
+            </div>
+
+            <button class="btn-action btn-action--ruby" id="atlasStartQuestBtn" style="width:100%; justify-content:center;">
+              Начать экспедицию в этот регион →
+            </button>
+          </div>
+        </div>
+
+        <!-- Нижний блок: Каталог исследовательских ареалов с живым фильтром -->
+        <div style="margin-top:32px; border-top:1px solid var(--border-gold-subtle); padding-top:24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span class="gold-badge">Все экспедиционные маршруты</span>
+              <h3 style="font-family:var(--font-editorial); font-size:22px; color:var(--text-main);">Каталог культурных ареалов</h3>
+            </div>
+            <div class="filter-pills" id="atlasRegionFilterPills">
+              <button class="pill-filter-btn is-active" data-filter="all">Все ареалы (8)</button>
+              <button class="pill-filter-btn" data-filter="north_volga">Север и Поволжье</button>
+              <button class="pill-filter-btn" data-filter="siberia_altai">Сибирь и Алтай</button>
+              <button class="pill-filter-btn" data-filter="east">Камчатка и Кавказ</button>
+              <button class="pill-filter-btn" data-filter="silk">Шёлковый путь</button>
+            </div>
+          </div>
+
+          <div class="atlas-territory-cards-grid" id="atlasTerritoryGrid">
+            <!-- Карточки генерируются динамически через initAtlasMap() -->
+          </div>
         </div>
       </div>
     </section>
@@ -3027,7 +3482,7 @@
           title: 'Татарстан',
           lead: 'Перекрёсток цивилизаций Востока и Запада, великое наследие Волжской Булгарии, виртуозная кожаная мозаика и поэзия древнего урмана.',
           greeting: '«Исәнмесез! Рәхим итегез!»',
-          speechText: 'Исэнмесез! Рэхим итегез! Добро пожаловать в Татарстан.',
+          speechText: 'Исэнмесез! Рэхим итегез! Казанские мастера веками хранили секреты золотого шитья и мозаичной кожи. Добро пожаловать в сокровищницу Татарстана.',
           imgModern: './images/mechet-kul-sharif.jpg',
           imgArchive: './images/kazan_archive_19th.jpg',
           mythTitle: 'Легенда о Шурале',
@@ -3048,28 +3503,28 @@
             {
               id: '1',
               name: 'Зооморфный мотив с изображением крылатого барса',
-              img: './images/v806_41.png',
+              img: './images/quiz/tatarstan_1.jpg',
               isCorrect: false,
               desc: 'Хотя барс являлся булгарским династическим символом, в ювелирных украшениях казанских татарок XIX века зооморфные образы практически не использовались из-за традиции аниконизма.'
             },
             {
               id: '2',
               name: 'Бугорчатая филигрань с мотивом тюльпана и пальметты',
-              img: './images/v806_42.png',
+              img: './images/quiz/tatarstan_2.jpg',
               isCorrect: true,
               desc: 'Именно объемная бугорчатая филигрань (сырлы челтәр) с тюльпановидными элементами и каплевидными накладками является визитной карточкой казанских мастеров XIX века, символизируя весеннее возрождение и изобилие.'
             },
             {
               id: '3',
               name: 'Черневой геометрический орнамент «плетенка»',
-              img: './images/v806_43.png',
+              img: './images/quiz/tatarstan_3.jpg',
               isCorrect: false,
               desc: 'Сложная ленточная плетенка характерна для скандинавских и древнерусских украшений домонгольского периода, а не для казанского хасите с филигранными бляхами.'
             },
             {
               id: '4',
               name: 'Перегородчатая полихромная эмаль с солярными знаками',
-              img: './images/v806_51.png',
+              img: './images/quiz/tatarstan_4.jpg',
               isCorrect: false,
               desc: 'Техника перегородчатой эмали была распространена в византийском и древнерусском ювелирном деле; татарские хасите декорировались сканью, зернью, чеканкой и сердоликом.'
             }
@@ -3089,11 +3544,11 @@
           title: 'Поморье',
           lead: 'Суровое побережье Студёного моря, былинные напевы Пинеги, деревянные шатровые храмы и искусство мореходов.',
           greeting: '«Поклон да здравие гостям дорогим!»',
-          speechText: 'Поклон да здравие гостям дорогим! Добро пожаловать на Русский Север.',
-          imgModern: './images/pomorye_myth.jpg',
-          imgArchive: './images/v651_126.png',
+          speechText: 'Поклон да здравие гостям дорогим! Северный край встречает вас мезенской росписью, резным деревом и мудростью древних поморов.',
+          imgModern: './images/pomorye_modern.jpg',
+          imgArchive: './images/pomorye_archive.jpg',
           mythTitle: 'Птица Сирин и сказы Белого моря',
-          mythCover: './images/pomorye_myth.jpg',
+          mythCover: './images/pomorye_modern.jpg',
           artTitle: 'Мезенский обережный ковш и берестяной туес',
           artDesc: 'Традиционная двухцветная графичная роспись из сажи и охры XVIII–XIX веков. Солярные огненные кони и уточки выступали мощными оберегами поморских мореходов в ледовых походах.',
           era: 'XVIII–XIX века',
@@ -3110,28 +3565,28 @@
             {
               id: '1',
               name: 'Птица Сирин в венце',
-              img: './images/v806_41.png',
+              img: './images/quiz/pomorye_1.jpg',
               isCorrect: false,
               desc: 'Образ райской птицы Сирин характерен для пермогорской и северодвинской росписи, но не встречается в лаконичной графической традиции Мезени.'
             },
             {
               id: '2',
               name: 'Ряд огненных коней-оленей («уточек-коников»)',
-              img: './images/v806_42.png',
+              img: './images/quiz/pomorye_2.jpg',
               isCorrect: true,
               desc: 'Мезенские кони на неестественно тонких ножках с раздвоенными копытцами символизируют бег солнца по небосводу и выступают главными защитниками домашнего очага и промысловиков.'
             },
             {
               id: '3',
               name: 'Травное древо жизни с тюльпанами',
-              img: './images/v806_43.png',
+              img: './images/quiz/pomorye_3.jpg',
               isCorrect: false,
               desc: 'Растительный орнамент с пышными цветами присущ поволжской (городецкой) и урало-сибирской росписям, в то время как мезенская графика сугубо архаична и схематична.'
             },
             {
               id: '4',
               name: 'Кукарский плетеный узор',
-              img: './images/v806_51.png',
+              img: './images/quiz/pomorye_4.jpg',
               isCorrect: false,
               desc: 'Сложное кружевное плетение восходит к вятским промыслам и не имеет отношения к северной семантике мезенского деревянного письма.'
             }
@@ -3151,11 +3606,11 @@
           title: 'Якутия (Саха)',
           lead: 'Земля вечной мерзлоты, священных лиственниц, героического эпоса Олонхо и солнечного праздника Ысыах.',
           greeting: '«Дорообо! Нөрүөн нөргүй!»',
-          speechText: 'Дорообо! Неруен нергуй! Добро пожаловать в Якутию, землю Олонхо.',
-          imgModern: './images/yakutia_myth.jpg',
-          imgArchive: './images/yakutia_myth.jpg',
+          speechText: 'Дорообо! Нөрүөн нөргүй! Вечная мерзлота хранит тайны сотворения мира, серебряные обереги и благословение светлых духов Айыы.',
+          imgModern: './images/yakutia_modern.jpg',
+          imgArchive: './images/yakutia_archive.jpg',
           mythTitle: 'Эпос Олонхо и Древо Аал Луук Мас',
-          mythCover: './images/yakutia_myth.jpg',
+          mythCover: './images/yakutia_modern.jpg',
           artTitle: 'Сакральный кумысный кубок Чороон',
           artDesc: 'Монументальный сосуд для священного напитка илгэ, выточенный из цельного массива березы на трех зооморфных ножках. Символ благословения небесных божеств Айыы.',
           era: 'XIX век',
@@ -3165,35 +3620,35 @@
           invNumber: 'Инв. № ЯГОМ-8941/Э · Зал шедевров Олонхо',
           keeperSecretWord: '«ОЛОНХО-1906»',
           stubSerial: '№ 07312-26',
-          loupeImg: './images/yakutia_myth.jpg',
+          loupeImg: './images/yakutia_archive.jpg',
           loupeScannerClue: 'Наведите сканер на средний и нижний пояса тулова: найдите геометрические насечки, стилизованные под конское копыто, и пояс наклонных параллельных линий, имитирующих гребенку.',
           correctChoice: '2',
           quizOptions: [
             {
               id: '1',
               name: 'Лировидный узор «Көҕүөр ойуу» с растительными побегами',
-              img: './images/v806_41.png',
+              img: './images/quiz/yakutia_1.jpg',
               isCorrect: false,
               desc: 'Хотя этот мотив широко известен в традиционном шитье и аппликации по коже, на церемониальных чороонах XIX века он почти не встречается, уступая место строгой ярусной геометрии.'
             },
             {
               id: '2',
               name: 'Поясной геометрический мотив «Кэрис» и «Тураҕас туйаҕа» (след копытца)',
-              img: './images/v806_42.png',
+              img: './images/quiz/yakutia_2.jpg',
               isCorrect: true,
               desc: 'Истинно каноничный декор кумысной утвари: ярусные врезные насечки «кэрис» маркируют структуру Вселенной, а мотив копытца знаменует благословение божества Дьөһөгөй Айыы.'
             },
             {
               id: '3',
               name: 'Арабесковая плетенка «Түмүк»',
-              img: './images/v806_43.png',
+              img: './images/quiz/yakutia_3.jpg',
               isCorrect: false,
               desc: 'Сложные переплетенные узловые орнаменты характерны для металлопластики и ювелирного дела Саха, но резчики по дереву не применяли их при оформлении обрядовых сосудов.'
             },
             {
               id: '4',
               name: 'Солярный круг с лучами «Күн»',
-              img: './images/v806_51.png',
+              img: './images/quiz/yakutia_4.jpg',
               isCorrect: false,
               desc: 'Солярная символика на чороонах передается через цилиндрический объем и круговые концентрические пояса, а не плоской гравировкой лучистого диска.'
             }
@@ -3213,11 +3668,11 @@
           title: 'Кавказ (Дагестан)',
           lead: 'Горные аулы мастеров-кубачинцев, кавказский нартовский эпос, вековые башни и филигранное чеканное серебро.',
           greeting: '«Салам алейкум! Мархаба!»',
-          speechText: 'Салам алейкум! Мархаба! Добро пожаловать на Кавказ, в край древних башен и златокузнецов.',
-          imgModern: './images/v785_201.png',
-          imgArchive: './images/v785_201.png',
+          speechText: 'Салам алейкум! Мархаба! Кавказские горы встречают вас серебряной чеканкой мастеров Кубачи, древними башнями и мудростью нартов.',
+          imgModern: './images/caucasus_modern.jpg',
+          imgArchive: './images/caucasus_archive.jpg',
           mythTitle: 'Сказание о богатырях Нартах и кузнеце Тлепше',
-          mythCover: './images/v785_201.png',
+          mythCover: './images/caucasus_modern.jpg',
           artTitle: 'Кубачинский чеканный серебряный кувшин мучал',
           artDesc: 'Традиционный водоносный кувшин мучал с растительной гравировкой «мархарай» и чернью XVIII века. Шедевр дагестанского златокузнечного ремесла из собрания ГИМ.',
           era: 'XVIII век',
@@ -3234,28 +3689,28 @@
             {
               id: '1',
               name: 'Геометрический орнамент с рогами барана',
-              img: './images/v806_41.png',
+              img: './images/quiz/caucasus_1.jpg',
               isCorrect: false,
               desc: 'Ромбические мотивы с рогами («кочкор») характерны для ковроткачества и войлоков кочевых народов, но не для чеканного кубачинского серебра.'
             },
             {
               id: '2',
               name: 'Растительный спиральный побег «Мархарай» и «Тутта»',
-              img: './images/v806_42.png',
+              img: './images/quiz/caucasus_2.jpg',
               isCorrect: true,
               desc: 'Канонический растительный узор кубачинских мастеров: переплетающиеся стебли и бутоны мархарай олицетворяют цветущий райский сад.'
             },
             {
               id: '3',
               name: 'Солярная спираль из концентрических колец',
-              img: './images/v806_43.png',
+              img: './images/quiz/caucasus_3.jpg',
               isCorrect: false,
               desc: 'Солярная спираль встречается в древней кобанской бронзе, но в классической кубачинской чеканке XVIII века господствует виртуозная флористика.'
             },
             {
               id: '4',
               name: 'Зооморфная чеканка с фигурами барсов',
-              img: './images/v806_51.png',
+              img: './images/quiz/caucasus_4.jpg',
               isCorrect: false,
               desc: 'Антропоморфные и зооморфные сцены не наносились на водоносные сосуды горцев из-за религиозных канонов Дагестана.'
             }
@@ -3275,11 +3730,11 @@
           title: 'Горный Алтай',
           lead: 'Бирюзовая Катунь, священная Белуха (Уч-Сумер), горловое пение кайчы и тайны Пазырыкских курганов скифской эпохи.',
           greeting: '«Јакшылар! Амыр-менди!»',
-          speechText: 'Якшылар! Амыр-менди! Добро пожаловать на священный Алтай.',
-          imgModern: './images/v668_87.png',
-          imgArchive: './images/v668_87.png',
+          speechText: 'Јакшылар! Амыр-менди! Священные вершины Белухи и древние курганы кочевников открывают вам вечную гармонию человека и природы.',
+          imgModern: './images/altai_modern.jpg',
+          imgArchive: './images/altai_archive.jpg',
           mythTitle: 'Алтайские духи и сказания Пазырыка',
-          mythCover: './images/v668_87.png',
+          mythCover: './images/altai_modern.jpg',
           artTitle: 'Пазырыкский войлочный ковер со сфинксами',
           artDesc: 'Древнейший в мире шедевр кочевой войлочной аппликации из Пятого Пазырыкского кургана (V–III вв. до н.э.), сохраненный в вечной мерзлоте. Из собрания Государственного Эрмитажа.',
           era: 'V–III вв. до н.э.',
@@ -3289,35 +3744,35 @@
           invNumber: 'Инв. № 1687/93 · Зал кочевников Горного Алтая V–III вв. до н.э.',
           keeperSecretWord: '«ПАЗЫРЫК-1929»',
           stubSerial: '№ 05834-26',
-          loupeImg: './images/v668_87.png',
+          loupeImg: './images/altai_archive.jpg',
           loupeScannerClue: 'Наведите сканер на верхний декоративный бордюр полотна. Обратите внимание на повторяющееся существо с телом хищника, крыльями и человеческим ликом в рогатом уборе.',
           correctChoice: '2',
           quizOptions: [
             {
               id: '1',
               name: 'Сцена терзания грифона снежным барсом',
-              img: './images/v806_41.png',
+              img: './images/quiz/altai_1.jpg',
               isCorrect: false,
               desc: 'Хотя мотив терзания травоядного хищником является каноном скифо-сибирского стиля, на данном бордюре фигура шествует изолированно и не вступает в схватку.'
             },
             {
               id: '2',
               name: 'Крылатый сфинкс с рогами оленя и растительным хвостом',
-              img: './images/v806_42.png',
+              img: './images/quiz/altai_2.jpg',
               isCorrect: true,
               desc: 'Верно. Синкретический образ сочетает переднеазиатскую иконографию сфинкса и алтайскую традицию увенчивать сакральных существ ветвистыми оленьими рогами.'
             },
             {
               id: '3',
               name: 'Тамгообразный знак дуговидного лука кочевника',
-              img: './images/v806_43.png',
+              img: './images/quiz/altai_3.jpg',
               isCorrect: false,
               desc: 'Родовые тамги характерны для более поздней древнетюркской эпохи (VI–X вв. н.э.) и не встречаются в пазырыкской аппликации раннего железного века.'
             },
             {
               id: '4',
               name: 'Фигура всадника перед Великой Богиней у Древа Жизни',
-              img: './images/v806_51.png',
+              img: './images/quiz/altai_4.jpg',
               isCorrect: false,
               desc: 'Эта монументальная сцена занимает центральное поле этого же ковра, однако сканер лупы направлен на орнаментальный фриз с полиморфным существом.'
             }
@@ -3337,11 +3792,11 @@
           title: 'Камчатка',
           lead: 'Край огнедышащих сопок, первозданной стихии и сакральных обрядов ительменов и коряков.',
           greeting: '«Алегут! Мэчи!»',
-          speechText: 'Алегут! Добро пожаловать на древнюю Камчатку, землю Ворона Кутха.',
-          imgModern: './images/v651_124.png',
-          imgArchive: './images/v651_124.png',
+          speechText: 'Алегут! Мэчи! Земля огнедышащих сопок и танцующих духов встречает вас шепотом океана и древней песней шаманского бубна.',
+          imgModern: './images/kamchatka_modern.jpg',
+          imgArchive: './images/kamchatka_archive.jpg',
           mythTitle: 'Ворон Кутх — Творец Земли',
-          mythCover: './images/v651_124.png',
+          mythCover: './images/kamchatka_modern.jpg',
           artTitle: 'Амулет из моржового клыка и корякская кухлянка',
           artDesc: 'Резная пластика из моржового клыка и меховая мозаика. Фигурка летящего Кутха дарует охотнику неуязвимость в метель и указывает путь сквозь ледяные шторма.',
           era: 'XIX век',
@@ -3358,28 +3813,28 @@
             {
               id: '1',
               name: 'Стилизованный след медвежьей лапы',
-              img: './images/v806_41.png',
+              img: './images/quiz/kamchatka_1.jpg',
               isCorrect: false,
               desc: 'Медвежий след наносился на ритуальные весла, но на защитных нагрудных плакетках центром композиции всегда выступал демиург Ворон.'
             },
             {
               id: '2',
               name: 'Крылатый силуэт Ворона Кутха с солярным нимбом',
-              img: './images/v806_42.png',
+              img: './images/quiz/kamchatka_2.jpg',
               isCorrect: true,
               desc: 'Канонический образ первопредка и демиурга Севера, несущего небесный огонь и защищающего от зимней стужи.'
             },
             {
               id: '3',
               name: 'Геометрическая ступенчатая пирамида',
-              img: './images/v806_43.png',
+              img: './images/quiz/kamchatka_3.jpg',
               isCorrect: false,
               desc: 'Ступенчатые мотивы присущи ткачеству Средней Азии, в то время как северные мастера использовали плавную костяную резьбу.'
             },
             {
               id: '4',
               name: 'Морской конёк с рыбьим хвостом',
-              img: './images/v806_51.png',
+              img: './images/quiz/kamchatka_4.jpg',
               isCorrect: false,
               desc: 'Античный мотив гиппокампа, не встречающийся в традиционной культуре коренных народов Камчатки.'
             }
@@ -3399,11 +3854,11 @@
           title: 'Казахстан',
           lead: 'Бескрайние степные горизонты, сакральные кюи на домбре, войлочные ковры сырмак и текемет, и философия кочевья.',
           greeting: '«Ассалаумағалейкум! Қош келдіңіз!»',
-          speechText: 'Ассалаумалейкум! Кош келдиниз! Добро пожаловать в Казахстан.',
-          imgModern: './images/kazakhstan_myth.jpg',
-          imgArchive: './images/kazakhstan_myth.jpg',
+          speechText: 'Ассалаумағалейкум! Қош келдіңіз! Золотой человек Иссыка и звонкие струны домбры рассказывают сагу о великой степи.',
+          imgModern: './images/kazakhstan_modern.jpg',
+          imgArchive: './images/kazakhstan_archive.jpg',
           mythTitle: 'Легенда о Коркыт-ата и домбре',
-          mythCover: './images/kazakhstan_myth.jpg',
+          mythCover: './images/kazakhstan_modern.jpg',
           artTitle: 'Войлочный ковер сырмак и мотив Кошкар-муйиз',
           artDesc: 'Архетипический орнамент кочевников в виде рогов барана («кошкар-муйиз»), украшающий войлочные мозаичные ковры сырмак как знак силы, изобилия и плодородия рода.',
           era: 'XIX век',
@@ -3413,35 +3868,35 @@
           invNumber: 'Инв. № ЦГМРК-6102/Э · Зал этнографии кочевых цивилизаций',
           keeperSecretWord: '«КОРКЫТ-1804»',
           stubSerial: '№ 06124-26',
-          loupeImg: './images/kazakhstan_myth.jpg',
+          loupeImg: './images/kazakhstan_archive.jpg',
           loupeScannerClue: 'Наведите лупу на центральное поле сырмака: обратите внимание на зеркально закрученные роговые завитки, символизирующие изобилие отар.',
           correctChoice: '2',
           quizOptions: [
             {
               id: '1',
               name: 'Шанырак с расходящимися лучами уыков',
-              img: './images/v806_41.png',
+              img: './images/quiz/kazakhstan_1.jpg',
               isCorrect: false,
               desc: 'Символ купола юрты помещается в купольных конструкциях, а в текстиле доминирует зооморфная роговая символика.'
             },
             {
               id: '2',
               name: 'Зооморфный мотив «Кошкар-муйиз» (рога барана)',
-              img: './images/v806_42.png',
+              img: './images/quiz/kazakhstan_2.jpg',
               isCorrect: true,
               desc: 'Древнейший степной архетип изобилия, силы, жизненной энергии и плодородия рода.'
             },
             {
               id: '3',
               name: 'Цветочный букет из лилий и гвоздик',
-              img: './images/v806_43.png',
+              img: './images/quiz/kazakhstan_3.jpg',
               isCorrect: false,
               desc: 'Европейский натюрморт не характерен для семантики номадов Евразии.'
             },
             {
               id: '4',
               name: 'Морской якорь и волны',
-              img: './images/v806_51.png',
+              img: './images/quiz/kazakhstan_4.jpg',
               isCorrect: false,
               desc: 'Морские мотивы чужды традиционной степной культуре номадов.'
             }
@@ -3461,9 +3916,9 @@
           title: 'Узбекистан',
           lead: 'Бирюзовые купола Самарканда и Бухары, резной ганч, сияющий шелк икат и шелковое вышитое сюзане.',
           greeting: '«Ассалому алайкум! Хуш келибсиз!»',
-          speechText: 'Ассалому алайкум! Хуш келибсиз! Добро пожаловать в Узбекистан.',
+          speechText: 'Ассалому алайкум! Хуш келибсиз! Лазурная мозаика медресе и солнечные узоры чеканщиков приветствуют благородных странников.',
           imgModern: './images/Hiva.jpg',
-          imgArchive: './images/Hiva.jpg',
+          imgArchive: './images/uzbekistan_samarkand_archive.jpg',
           mythTitle: 'Легенда о птице Хумо и мастерах Хивы',
           mythCover: './images/Hiva.jpg',
           artTitle: 'Бухарское вышитое сюзане и Риштанская керамика',
@@ -3475,35 +3930,35 @@
           invNumber: 'Инв. № ГМИУ-4410/ДПИ · Зал традиционного текстиля и керамики',
           keeperSecretWord: '«ХИВА-1873»',
           stubSerial: '№ 08912-26',
-          loupeImg: './images/Hiva.jpg',
+          loupeImg: './images/uzbekistan_samarkand_archive.jpg',
           loupeScannerClue: 'Наведите лупу на центральный медальон сюзане: найдите крупный раскрывающийся плод с алыми зернами внутри.',
           correctChoice: '2',
           quizOptions: [
             {
               id: '1',
               name: 'Павлиний глаз с лазурной глазурью',
-              img: './images/v806_41.png',
+              img: './images/quiz/uzbekistan_1.jpg',
               isCorrect: false,
               desc: 'Мотив встречается в фаянсе Ирана, но в бухарском свадебном текстиле центральное место занимает растительная символика плодородия.'
             },
             {
               id: '2',
               name: 'Цветущий плод граната («Анор») в кольце миндалевидных узоров',
-              img: './images/v806_42.png',
+              img: './images/quiz/uzbekistan_2.jpg',
               isCorrect: true,
               desc: 'Священный символ плодородия, изобилия, многочисленного потомства и солнечного света в культуре Мавераннахра.'
             },
             {
               id: '3',
               name: 'Лавровый венок победы',
-              img: './images/v806_43.png',
+              img: './images/quiz/uzbekistan_3.jpg',
               isCorrect: false,
               desc: 'Античный римский символ, не имеющий отношения к свадебным традициям Шелкового пути.'
             },
             {
               id: '4',
               name: 'Кедровые шишки в снегу',
-              img: './images/v806_51.png',
+              img: './images/quiz/uzbekistan_4.jpg',
               isCorrect: false,
               desc: 'Сибирский мотив, чуждый теплым оазисам Бухары и Самарканда.'
             }
@@ -3585,6 +4040,10 @@
             if (burger) burger.setAttribute('aria-expanded', 'false');
           }
 
+          if (screenId === 'atlas' && typeof selectAtlasRegion === 'function') {
+            selectAtlasRegion(activeCultureId || 'tatarstan');
+          }
+
           window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
@@ -3613,6 +4072,11 @@
       window.getActiveCultureId = () => activeCultureId;
       window.getActiveQuestStep = () => activeQuestStep;
       window.ETHNO_DATABASE = ETHNO_DATABASE;
+      window.setupQuestCulture = (id, s) => { if (typeof setupQuestCulture === 'function') setupQuestCulture(id, s); };
+      window.selectAtlasRegion = (rid) => { if (typeof selectAtlasRegion === 'function') selectAtlasRegion(rid); };
+      window.initAtlasMap = () => { if (typeof initAtlasMap === 'function') initAtlasMap(); };
+      window.setBaPercentage = (v) => { if (typeof setBaPercentage === 'function') setBaPercentage(v); };
+      window.renderRelicsShelf = (u) => { if (typeof renderRelicsShelf === 'function') renderRelicsShelf(u); };
 
       // Обработка системных кнопок браузера «Назад / Вперёд»
       window.addEventListener('popstate', (e) => {
@@ -3660,6 +4124,7 @@
         if (modernImg) modernImg.src = data.imgModern;
         const archiveImg = document.getElementById('baArchiveImg');
         if (archiveImg) archiveImg.src = data.imgArchive;
+        if (typeof setBaPercentage === 'function') setBaPercentage(50);
 
         // Шаг 2: Видео и Миф
         const posterImg = document.getElementById('videoPlayerPosterImg');
@@ -3826,26 +4291,45 @@
       const baLayer = document.getElementById('baArchiveLayerBox');
 
       function setBaPercentage(val) {
-        const clamped = Math.max(5, Math.min(95, val));
-        if (baLayer) baLayer.style.width = clamped + '%';
-        if (baSlider) baSlider.value = clamped;
+        const clamped = Math.max(3, Math.min(97, parseFloat(val) || 50));
+        if (baStage) {
+          baStage.style.setProperty('--slider-pos', clamped + '%');
+        }
+        if (baSlider) {
+          baSlider.value = clamped;
+        }
       }
 
       if (baSlider) {
         baSlider.addEventListener('input', () => setBaPercentage(baSlider.value));
       }
 
-      // Тач-свайп прямо по фото Было / Стало
+      // Интерактивное перемещение слайдера (мышь и тач) прямо по фото Было / Стало
       if (baStage) {
         let isBaDragging = false;
         function handleBaMove(e) {
           const rect = baStage.getBoundingClientRect();
-          const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-          if (clientX) {
+          const clientX = (e.touches && e.touches.length > 0) ? e.touches[0].clientX : e.clientX;
+          if (typeof clientX === 'number' && rect.width > 0) {
             const pct = ((clientX - rect.left) / rect.width) * 100;
             setBaPercentage(pct);
           }
         }
+
+        baStage.addEventListener('mousedown', (e) => {
+          isBaDragging = true;
+          handleBaMove(e);
+        });
+
+        window.addEventListener('mousemove', (e) => {
+          if (isBaDragging) {
+            handleBaMove(e);
+          }
+        });
+
+        window.addEventListener('mouseup', () => {
+          isBaDragging = false;
+        });
 
         baStage.addEventListener('touchstart', (e) => {
           isBaDragging = true;
@@ -3859,6 +4343,7 @@
         }, { passive: true });
 
         baStage.addEventListener('touchend', () => { isBaDragging = false; });
+        baStage.addEventListener('touchcancel', () => { isBaDragging = false; });
       }
 
       // Кнопка голосового приветствия (Dual-Engine Audio с поддержкой Play/Stop Toggle)
@@ -4056,12 +4541,17 @@
           instrEl.textContent = cultureData.loupeScannerClue;
         }
 
+        const letters = ['А', 'Б', 'В', 'Г'];
         grid.innerHTML = cultureData.quizOptions.map((opt, idx) => `
-          <div class="quiz-option-card ${idx === 0 ? 'is-selected' : ''}" role="button" tabindex="0" aria-label="Вариант узора: ${opt.name}" data-opt-id="${opt.id}">
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-              <img src="${opt.img}" alt="${opt.name}" />
-              <strong style="font-size:11.5px; line-height:1.3; color:var(--text-main);">${opt.name}</strong>
+          <div class="quiz-option-card ${idx === 0 ? 'is-selected' : ''}" role="button" tabindex="0" aria-label="Вариант ${letters[idx] || (idx + 1)}: ${opt.name}" data-opt-id="${opt.id}">
+            <div class="quiz-option-card__header">
+              <span class="quiz-option-card__badge">0${idx + 1} · ВАРИАНТ ${letters[idx] || (idx + 1)}</span>
+              <span class="quiz-option-card__radio" aria-hidden="true"></span>
             </div>
+            <div class="quiz-option-card__img-container">
+              <img class="quiz-option-card__img" src="${opt.img}" alt="${opt.name}" loading="lazy" />
+            </div>
+            <div class="quiz-option-card__title">${opt.name}</div>
             <div class="quiz-option-academic-desc">
               ${opt.desc || ''}
             </div>
@@ -4463,6 +4953,199 @@
       });
 
       // ========================================================================
+      // 10.2 ИНТЕРАКТИВНЫЙ ЭТНОАТЛАС И КАРТОГРАФИЧЕСКИЙ КОРПУС
+      // ========================================================================
+      const ATLAS_REGIONS_CONFIG = [
+        { id: 'pomorye', filterCat: 'north_volga', number: '01' },
+        { id: 'tatarstan', filterCat: 'north_volga', number: '02' },
+        { id: 'caucasus', filterCat: 'east', number: '03' },
+        { id: 'altai', filterCat: 'siberia_altai', number: '04' },
+        { id: 'yakutia', filterCat: 'siberia_altai', number: '05' },
+        { id: 'kamchatka', filterCat: 'east', number: '06' },
+        { id: 'kazakhstan', filterCat: 'silk', number: '07' },
+        { id: 'uzbekistan', filterCat: 'silk', number: '08' }
+      ];
+
+      let activeAtlasRegionId = 'tatarstan';
+      let currentAtlasFilter = 'all';
+
+      function selectAtlasRegion(regionId) {
+        const data = ETHNO_DATABASE[regionId];
+        if (!data) return;
+        activeAtlasRegionId = regionId;
+
+        // Синхронизируем SVG полигоны регионов
+        document.querySelectorAll('.map-region-poly').forEach(poly => {
+          const isMatch = poly.dataset.regionId === regionId;
+          poly.classList.toggle('is-active', isMatch);
+        });
+
+        // Синхронизируем SVG пины регионов
+        document.querySelectorAll('.map-region-node').forEach(node => {
+          const isMatch = node.dataset.regionId === regionId;
+          node.classList.toggle('is-active', isMatch);
+        });
+
+        // Обновляем Полевой Паспорт Экспедиции (HUD Panel)
+        const dImg = document.getElementById('atlasDossierImg');
+        if (dImg) {
+          dImg.src = data.imgModern;
+          dImg.alt = data.title;
+        }
+
+        const dBadge = document.getElementById('atlasDossierBadge');
+        if (dBadge) dBadge.textContent = data.sub;
+
+        const dTitle = document.getElementById('atlasDossierTitle');
+        if (dTitle) {
+          dTitle.innerHTML = `${data.title} <span>· Паспорт экспедиции</span>`;
+        }
+
+        const dGreeting = document.getElementById('atlasDossierGreeting');
+        if (dGreeting) dGreeting.textContent = data.greeting;
+
+        const dDesc = document.getElementById('atlasDossierDesc');
+        if (dDesc) dDesc.textContent = data.lead;
+
+        const dArtifact = document.getElementById('atlasDossierArtifact');
+        if (dArtifact) dArtifact.textContent = data.artTitle;
+
+        const dMuseum = document.getElementById('atlasDossierMuseum');
+        if (dMuseum) dMuseum.textContent = `${data.museumName} (${data.museumCity})`;
+
+        // Подсвечиваем соответствующую карточку в каталоге
+        document.querySelectorAll('.atlas-territory-card').forEach(card => {
+          card.classList.toggle('is-selected', card.dataset.cultId === regionId);
+        });
+      }
+
+      function renderAtlasTerritoryCards() {
+        const grid = document.getElementById('atlasTerritoryGrid');
+        if (!grid) return;
+
+        const filtered = ATLAS_REGIONS_CONFIG.filter(item => {
+          if (currentAtlasFilter === 'all') return true;
+          return item.filterCat === currentAtlasFilter;
+        });
+
+        grid.innerHTML = filtered.map(item => {
+          const d = ETHNO_DATABASE[item.id];
+          if (!d) return '';
+          const isSelected = item.id === activeAtlasRegionId;
+          return `
+            <div class="atlas-territory-card ${isSelected ? 'is-selected' : ''}" data-cult-id="${item.id}" role="button" tabindex="0" aria-label="Экспедиция: ${d.title}">
+              <div style="width:100%; height:120px; border-radius:var(--radius-sm); overflow:hidden; background:#060b18; margin-bottom:10px; position:relative; border:1px solid rgba(255,255,255,0.08);">
+                <img src="${d.imgModern}" alt="${d.title}" loading="lazy" style="width:100%; height:100%; object-fit:cover; display:block;" />
+                <span class="gold-badge" style="position:absolute; top:6px; left:6px; margin:0; font-size:10px; padding:2px 6px;">
+                  ✦ ${item.number} / 08
+                </span>
+              </div>
+              <strong style="font-family:var(--font-editorial); font-size:16px; color:var(--text-main); margin-bottom:4px; display:block;">
+                ${d.title}
+              </strong>
+              <p style="font-size:11.5px; color:var(--text-muted); line-height:1.45; margin-bottom:10px; flex:1; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+                ${d.lead}
+              </p>
+              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.06); padding-top:8px;">
+                <span style="font-size:10.5px; color:var(--gold); font-style:italic;">${d.greeting.slice(0, 18)}...</span>
+                <span style="font-size:11px; color:var(--gold-light); font-weight:600;">Выбрать →</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        grid.querySelectorAll('.atlas-territory-card').forEach(card => {
+          card.addEventListener('click', () => {
+            const cultId = card.dataset.cultId;
+            selectAtlasRegion(cultId);
+            AudioEngine.playUiClick();
+          });
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              selectAtlasRegion(card.dataset.cultId);
+              AudioEngine.playUiClick();
+            }
+          });
+        });
+      }
+
+      function initAtlasMap() {
+        // Слушатели полигонов SVG
+        document.querySelectorAll('.map-region-poly').forEach(poly => {
+          poly.addEventListener('click', () => {
+            const rid = poly.dataset.regionId;
+            if (rid) {
+              selectAtlasRegion(rid);
+              AudioEngine.playUiClick();
+            }
+          });
+        });
+
+        // Слушатели пинов SVG
+        document.querySelectorAll('.map-region-node').forEach(node => {
+          node.addEventListener('click', () => {
+            const rid = node.dataset.regionId;
+            if (rid) {
+              selectAtlasRegion(rid);
+              AudioEngine.playEthnicBell(580, 1.2);
+            }
+          });
+          node.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              const rid = node.dataset.regionId;
+              if (rid) {
+                selectAtlasRegion(rid);
+                AudioEngine.playEthnicBell(580, 1.2);
+              }
+            }
+          });
+        });
+
+        // Кнопка прослушивания голоса в карточке паспорта
+        const atlasVoiceBtn = document.getElementById('atlasVoiceListenBtn');
+        if (atlasVoiceBtn) {
+          atlasVoiceBtn.addEventListener('click', () => {
+            if (AudioEngine.isSpeaking()) {
+              AudioEngine.stopSpeech();
+              triggerToast('Диктор остановлен');
+              return;
+            }
+            const data = ETHNO_DATABASE[activeAtlasRegionId] || ETHNO_DATABASE.tatarstan;
+            AudioEngine.playPreRenderedVoice(activeAtlasRegionId, data.speechText, () => {
+              AudioEngine.playEthnicBell(660, 1.2);
+            });
+            triggerToast(`Голос региона: ${data.title}`);
+          });
+        }
+
+        // Кнопка перехода в экспедицию из карточки паспорта
+        const atlasStartBtn = document.getElementById('atlasStartQuestBtn');
+        if (atlasStartBtn) {
+          atlasStartBtn.addEventListener('click', () => {
+            setupQuestCulture(activeAtlasRegionId);
+            routeTo('quest');
+            triggerToast(`Экспедиция начата: ${ETHNO_DATABASE[activeAtlasRegionId].title}`);
+          });
+        }
+
+        // Фильтры каталога
+        document.querySelectorAll('#atlasRegionFilterPills .pill-filter-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('#atlasRegionFilterPills .pill-filter-btn').forEach(b => b.classList.remove('is-active'));
+            btn.classList.add('is-active');
+            currentAtlasFilter = btn.dataset.filter || 'all';
+            AudioEngine.playUiClick();
+            renderAtlasTerritoryCards();
+          });
+        });
+
+        selectAtlasRegion('tatarstan');
+        renderAtlasTerritoryCards();
+      }
+
+      // ========================================================================
       // 11. ВИТРИНА НАГРАД
       // ========================================================================
       function renderRelicsShelf(unlockAll = false) {
@@ -4470,19 +5153,19 @@
         if (!shelf) return;
 
         const relics = [
-          { name: 'Казанский тюльпан', reg: 'Татарстан', icon: './images/v654_200.png', unlocked: true },
-          { name: 'Ворон Кутх', reg: 'Камчатка', icon: './images/v651_124.png', unlocked: unlockAll },
-          { name: 'Птица счастья', reg: 'Поморье', icon: './images/v651_126.png', unlocked: unlockAll },
-          { name: 'Алтайский топшуур', reg: 'Алтай', icon: './images/v668_87.png', unlocked: unlockAll },
-          { name: 'Серебряный чорон', reg: 'Якутия', icon: './images/yakutia_myth.jpg', unlocked: unlockAll },
-          { name: 'Орнамент Кошкар', reg: 'Казахстан', icon: './images/kazakhstan_myth.jpg', unlocked: unlockAll },
-          { name: 'Хивинский гранат', reg: 'Узбекистан', icon: './images/Hiva.jpg', unlocked: unlockAll },
-          { name: 'Золотая гривна', reg: 'Скифы', icon: './images/v785_201.png', unlocked: unlockAll }
+          { name: 'Казанский тюльпан', reg: 'Татарстан', icon: './images/quiz/tatarstan_1.jpg', unlocked: true },
+          { name: 'Ворон Кутх', reg: 'Камчатка', icon: './images/quiz/kamchatka_1.jpg', unlocked: unlockAll },
+          { name: 'Птица счастья', reg: 'Поморье', icon: './images/quiz/pomorye_1.jpg', unlocked: unlockAll },
+          { name: 'Алтайский топшуур', reg: 'Алтай', icon: './images/quiz/altai_2.jpg', unlocked: unlockAll },
+          { name: 'Серебряный чорон', reg: 'Якутия', icon: './images/quiz/yakutia_1.jpg', unlocked: unlockAll },
+          { name: 'Орнамент Кошкар', reg: 'Казахстан', icon: './images/quiz/kazakhstan_1.jpg', unlocked: unlockAll },
+          { name: 'Хивинский гранат', reg: 'Узбекистан', icon: './images/quiz/uzbekistan_1.jpg', unlocked: unlockAll },
+          { name: 'Кубачинский мучал', reg: 'Кавказ', icon: './images/quiz/caucasus_2.jpg', unlocked: unlockAll }
         ];
 
         shelf.innerHTML = relics.map(r => `
           <div class="relic-item-box ${r.unlocked ? 'is-unlocked' : 'is-locked'}">
-            <img src="${r.icon}" alt="${r.name}" />
+            <img src="${r.icon}" alt="${r.name}" loading="lazy" />
             <strong style="font-size:12.5px; color:var(--text-main); display:block;">${r.name}</strong>
             <span style="font-size:11px; color:var(--gold);">${r.reg}</span>
             <span style="display:block; font-size:10px; margin-top:4px; color:${r.unlocked ? '#34d399' : 'var(--text-dim)'};">
@@ -5059,6 +5742,7 @@
       renderFolkloreAnthology();
       renderRelicsShelf(false);
       generateWorkshopOrnament();
+      initAtlasMap();
 
       const startHash = window.location.hash.replace('#', '') || 'hero';
       routeTo(startHash, false); // Тихий запуск без звука при открытии страницы
