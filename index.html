@@ -1667,27 +1667,63 @@
 
     .map-region-node {
       cursor: pointer;
-      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
 
-    .map-region-node:hover {
-      transform: scale(1.1);
+    .map-region-node circle:not(.sonar-ring) {
+      transform-box: fill-box;
+      transform-origin: center;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), filter 0.28s ease;
+      will-change: transform, filter;
     }
 
-    .map-region-node.is-active {
-      transform: scale(1.15);
-      filter: drop-shadow(0 0 10px rgba(201, 156, 82, 0.85));
+    .map-region-node rect {
+      transition: fill 0.25s ease, stroke 0.25s ease, filter 0.25s ease;
+      will-change: fill, stroke;
+    }
+
+    .map-region-node text {
+      transition: fill 0.25s ease;
+      pointer-events: none;
+    }
+
+    .map-region-node:hover circle:not(.sonar-ring) {
+      transform: scale(1.35);
+      filter: drop-shadow(0 0 8px rgba(201, 156, 82, 0.9));
+    }
+
+    .map-region-node:hover rect {
+      fill: rgba(18, 32, 66, 0.98);
+      stroke: var(--gold);
+      stroke-width: 1.8px;
+      filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.6));
+    }
+
+    .map-region-node.is-active circle:not(.sonar-ring) {
+      transform: scale(1.45);
+      filter: drop-shadow(0 0 12px rgba(201, 156, 82, 1));
+    }
+
+    .map-region-node.is-active rect {
+      fill: rgba(22, 40, 82, 0.98);
+      stroke: var(--gold-light);
+      stroke-width: 2px;
+      filter: drop-shadow(0 0 10px rgba(201, 156, 82, 0.5));
     }
 
     .sonar-ring {
+      pointer-events: none !important;
       animation: atlasPulse 2.8s infinite ease-out;
       transform-origin: center;
+      transform-box: fill-box;
     }
 
     @keyframes atlasPulse {
-      0% { r: 6px; opacity: 0.9; }
-      70% { r: 24px; opacity: 0; }
-      100% { r: 24px; opacity: 0; }
+      0% { r: 6px; opacity: 0.9; stroke-width: 2px; }
+      70% { r: 24px; opacity: 0; stroke-width: 0.8px; }
+      100% { r: 24px; opacity: 0; stroke-width: 0.8px; }
     }
 
     .atlas-dossier-card {
@@ -1795,6 +1831,311 @@
       object-fit: contain;
       margin: 0 auto 10px;
       display: block;
+    /* ==========================================================================
+       8.5 НЕЙРОРЕСТАВРАЦИОННАЯ СПЕКТРАЛЬНАЯ ЛАБОРАТОРИЯ (AI ARCHAEOMETRIC LAB)
+       ========================================================================== */
+    .restorer-container {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 1024px) {
+      .restorer-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .restorer-stage-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: var(--shadow-lg), 0 0 30px rgba(0, 0, 0, 0.7);
+      position: relative;
+    }
+
+    .restorer-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      max-height: 520px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: #040711;
+      border: 1px solid rgba(201, 156, 82, 0.35);
+      cursor: ew-resize;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .restorer-img-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      will-change: clip-path, filter;
+      transition: filter 0.35s ease;
+    }
+
+    .restorer-img-before {
+      z-index: 2;
+      clip-path: polygon(0 0, var(--restorer-pos, 50%) 0, var(--restorer-pos, 50%) 100%, 0 100%);
+    }
+
+    .restorer-img-after {
+      z-index: 1;
+    }
+
+    /* Спектральные фильтры */
+    .spectral-filter--visible {
+      filter: none;
+    }
+    .spectral-filter--uv {
+      filter: hue-rotate(220deg) saturate(2.4) contrast(1.4) brightness(0.95);
+    }
+    .spectral-filter--xray {
+      filter: invert(1) grayscale(1) contrast(2.4) brightness(1.1);
+    }
+    .spectral-filter--ir {
+      filter: grayscale(0.85) sepia(0.55) hue-rotate(330deg) contrast(1.5) brightness(1.05);
+    }
+
+    /* Интерактивный золотой ползунок-разделитель */
+    .restorer-divider-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: var(--restorer-pos, 50%);
+      width: 2px;
+      background: var(--gold);
+      box-shadow: 0 0 12px var(--gold), 0 0 25px rgba(243, 208, 138, 0.8);
+      z-index: 10;
+      pointer-events: none;
+      transform: translateX(-50%);
+    }
+
+    .restorer-divider-knob {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #f3d08a 0%, #c99c52 70%, #876223 100%);
+      border: 2px solid #060c1d;
+      box-shadow: 0 0 14px rgba(201, 156, 82, 0.9), 0 4px 15px rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #060c1d;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: grab;
+      pointer-events: auto;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .restorer-divider-knob:active {
+      cursor: grabbing;
+      transform: translate(-50%, -50%) scale(1.12);
+      box-shadow: 0 0 22px rgba(243, 208, 138, 1);
+    }
+
+    /* Лазерный луч нейросканирования */
+    .restorer-scan-beam {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #48cae4, #fff, #48cae4, transparent);
+      box-shadow: 0 0 18px #48cae4, 0 0 35px #48cae4;
+      z-index: 15;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .restorer-scan-beam.is-scanning {
+      opacity: 1;
+      animation: laserSweep 2.4s ease-in-out infinite;
+    }
+
+    @keyframes laserSweep {
+      0% { top: 0%; opacity: 0; }
+      15% { opacity: 1; }
+      85% { opacity: 1; }
+      100% { top: 98%; opacity: 0; }
+    }
+
+    /* Интерактивные хотспоты анализа */
+    .restorer-hotspot-pin {
+      position: absolute;
+      z-index: 12;
+      width: 26px;
+      height: 26px;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: none;
+      padding: 0;
+    }
+
+    .restorer-hotspot-pulse {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 1.5px solid var(--gold);
+      animation: hotspotSonar 2.2s infinite ease-out;
+      pointer-events: none;
+    }
+
+    .restorer-hotspot-core {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--gold-light);
+      border: 2px solid #060c1d;
+      box-shadow: 0 0 8px var(--gold);
+      transition: transform 0.2s ease;
+    }
+
+    .restorer-hotspot-pin:hover .restorer-hotspot-core,
+    .restorer-hotspot-pin.is-active .restorer-hotspot-core {
+      transform: scale(1.4);
+      background: #fff;
+      box-shadow: 0 0 14px var(--gold-light);
+    }
+
+    @keyframes hotspotSonar {
+      0% { transform: scale(0.6); opacity: 1; }
+      100% { transform: scale(2.4); opacity: 0; }
+    }
+
+    /* Бейджи состояния реставрации на вьюпорте */
+    .restorer-label-tag {
+      position: absolute;
+      bottom: 12px;
+      padding: 4px 10px;
+      background: rgba(6, 12, 29, 0.88);
+      border: 1px solid var(--border-gold-subtle);
+      border-radius: var(--radius-sm);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      z-index: 11;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+    .restorer-label-before {
+      left: 12px;
+      color: #e2a075;
+      border-color: rgba(226, 160, 117, 0.4);
+    }
+    .restorer-label-after {
+      right: 12px;
+      color: var(--gold-light);
+      border-color: rgba(243, 208, 138, 0.4);
+    }
+
+    /* HUD Карточка диагностики */
+    .restorer-hud-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .restorer-hud-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border-gold-subtle);
+      padding-bottom: 12px;
+    }
+
+    .restorer-telemetry-box {
+      background: rgba(6, 12, 29, 0.65);
+      border: 1px solid rgba(201, 156, 82, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-family: monospace;
+      font-size: 11.5px;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+
+    .restorer-telemetry-box strong {
+      color: var(--gold-light);
+    }
+
+    .restorer-spec-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .restorer-spec-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+    }
+
+    .restorer-spec-bar-label {
+      width: 70px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .restorer-spec-bar-track {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .restorer-spec-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .restorer-spec-bar-val {
+      width: 42px;
+      text-align: right;
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    .restorer-log-terminal {
+      background: #030712;
+      border: 1px solid rgba(72, 202, 228, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      height: 105px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 11px;
+      color: #38bdf8;
+      line-height: 1.5;
     }
 
     /* ==========================================================================
@@ -1989,6 +2330,7 @@
         <button class="nav-btn" data-route="cultures">🗺️ Культуры</button>
         <button class="nav-btn" data-route="quest">🧭 Маршрут</button>
         <button class="nav-btn" data-route="atlas">🌐 Этноатлас</button>
+        <button class="nav-btn" data-route="restorer">🔬 AI-Лаборатория</button>
         <button class="nav-btn" data-route="folklore">📜 Фольклор</button>
         <button class="nav-btn" data-route="collection">💎 Награды</button>
         <button class="nav-btn" data-route="workshop">✨ Мастерская</button>
@@ -2027,6 +2369,7 @@
       <button class="nav-btn" data-route="cultures">🗺️ Культуры народов</button>
       <button class="nav-btn" data-route="quest">🧭 Маршрут экспедиции</button>
       <button class="nav-btn" data-route="atlas">🌐 Интерактивный этноатлас</button>
+      <button class="nav-btn" data-route="restorer">🔬 AI-Лаборатория реставрации</button>
       <button class="nav-btn" data-route="folklore">📜 Антология фольклора</button>
       <button class="nav-btn" data-route="collection">💎 Витрина реликвий</button>
       <button class="nav-btn" data-route="workshop">✨ ИИ-мастерская оберегов</button>
@@ -2047,6 +2390,9 @@
           <div style="display:flex; gap:12px; flex-wrap:wrap;">
             <button class="btn-action btn-action--ruby" onclick="routeTo('cultures')">
               Начать исследование →
+            </button>
+            <button class="btn-action btn-action--outline" onclick="routeTo('restorer')">
+              🔬 AI-Лаборатория реставрации
             </button>
             <button class="btn-action btn-action--outline" onclick="routeTo('quest')">
               Маршрут экспедиции
@@ -2677,7 +3023,7 @@
               <!-- ПИН 6: Камчатка -->
               <g class="map-region-node" id="node-kamchatka" data-region-id="kamchatka" role="button" tabindex="0" aria-label="Регион: Камчатка">
                 <circle class="sonar-ring" cx="1005" cy="295" r="8" fill="none" stroke="var(--ruby)" stroke-width="1.5"/>
-                <circle cx="1005" cy="295" r="7" fill="var="#ruby" stroke="#060c1d" stroke-width="2"/>
+                <circle cx="1005" cy="295" r="7" fill="var(--ruby)" stroke="#060c1d" stroke-width="2"/>
                 <rect x="950" y="262" width="110" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(200,52,40,0.5)" stroke-width="1"/>
                 <text x="1005" y="277" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Montserrat">🌋 Камчатка</text>
               </g>
@@ -2762,7 +3108,178 @@
     </section>
 
     <!-- ========================================================================
-         ЭКРАН 10: ВИТРИНА НАГРАД И СЕМЕЙНЫЙ РЕЖИМ
+         ЭКРАН 10: НЕЙРОРЕСТАВРАЦИОННАЯ СПЕКТРАЛЬНАЯ ЛАБОРАТОРИЯ (AI ARCHAEOMETRIC LAB)
+         ======================================================================== -->
+    <section class="screen-view" id="screen-restorer">
+      <div class="content-canvas">
+        <div style="margin-bottom:22px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+          <div>
+            <span class="gold-badge">✦ Археометрический аналитический комплекс · Zero API Key Runtime</span>
+            <h2 class="heading-section">Нейрореставрационная Лаборатория</h2>
+            <p class="lead-paragraph">
+              Интерактивное исследование сакральных экспонатов: оптическая деконволюция, мультиспектральный анализ (UV 365 nm / X-Ray / IR 950 nm) и обратимая цифровая реконструкция музейных утрат.
+            </p>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="action-chip is-active" id="restorerHotspotsToggleBtn">
+              <span>📍</span> Метки анализа
+            </button>
+            <button class="action-chip" id="restorer3DPedestalBtn">
+              <span>🏺</span> Пьедестал 3D
+            </button>
+          </div>
+        </div>
+
+        <!-- Селектор экспонатов лаборатории -->
+        <div class="filter-pills" id="restorerArtifactSelectGroup" style="margin-bottom:20px;">
+          <button class="pill-filter-btn is-active" data-art-id="khasite">
+            🌷 01 · Казанское хасите (XIX в.)
+          </button>
+          <button class="pill-filter-btn" data-art-id="scythian">
+            🦅 02 · Скифская золотая пектораль (IV в. до н.э.)
+          </button>
+          <button class="pill-filter-btn" data-art-id="yakut">
+            ❄️ 03 · Якутское илин кэбисэр (XVIII в.)
+          </button>
+        </div>
+
+        <!-- Селектор спектральных режимов -->
+        <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-sm); padding:10px 14px; margin-bottom:18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--gold); font-weight:700;">Спектральный режим:</span>
+            <div class="filter-pills" id="restorerSpectralModesGroup">
+              <button class="pill-filter-btn is-active" data-mode="visible">👁️ Оптический RGB</button>
+              <button class="pill-filter-btn" data-mode="uv">🟣 УФ Люминесценция (365 nm)</button>
+              <button class="pill-filter-btn" data-mode="xray">⚡ Рентген (X-Ray)</button>
+              <button class="pill-filter-btn" data-mode="ir">🔴 Инфракрасный (950 nm)</button>
+            </div>
+          </div>
+          <span class="gold-badge" id="restorerWavelengthBadge" style="margin:0; font-family:monospace; font-size:11px;">
+            λ = 380–740 nm · Оптическая детекция
+          </span>
+        </div>
+
+        <!-- Основная сплит-зона: Интерактивный слайдер Было/Стало + Телеметрия HUD -->
+        <div class="restorer-container">
+          <!-- Стейдж с интерактивным ползунком реставрации -->
+          <div class="restorer-stage-card">
+            <div class="restorer-viewport" id="restorerViewport" role="region" aria-label="Сравнение экспоната до и после реставрации">
+              <!-- Слой ДО (нереставрированный, с маской клипа) -->
+              <img class="restorer-img-layer restorer-img-before" id="restorerImgBefore" src="./images/khasite_unrestored.jpg" alt="Экспонат до реставрации" />
+              <!-- Слой ПОСЛЕ (реставрированный) -->
+              <img class="restorer-img-layer restorer-img-after" id="restorerImgAfter" src="./images/khasite_restored.jpg" alt="Экспонат после реставрации" />
+
+              <!-- Лазерный луч сканирования -->
+              <div class="restorer-scan-beam" id="restorerScanBeam"></div>
+
+              <!-- Интерактивная линия-шторка -->
+              <div class="restorer-divider-line" id="restorerDividerLine">
+                <div class="restorer-divider-knob" id="restorerDividerKnob" role="slider" aria-label="Положение шторки сравнения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
+                  <span>‹ ⏵ ›</span>
+                </div>
+              </div>
+
+              <!-- Контейнер для динамических хотспотов -->
+              <div id="restorerHotspotsLayer"></div>
+
+              <!-- Бейджи-подписи -->
+              <div class="restorer-label-tag restorer-label-before">◄ До реставрации</div>
+              <div class="restorer-label-tag restorer-label-after">ИИ-реконструкция ►</div>
+            </div>
+
+            <!-- Подсказка управления под стейджем -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; font-size:11.5px; color:var(--text-muted);">
+              <span>💡 Перетаскивайте золотую стрелку или кликайте по изображению</span>
+              <span id="restorerProgressPercentText" style="color:var(--gold-light); font-weight:700; font-family:monospace;">Баланс: 50% / 50%</span>
+            </div>
+          </div>
+
+          <!-- Правая колонка: Диагностический HUD и управление нейросетью -->
+          <div class="restorer-hud-card">
+            <div class="restorer-hud-header">
+              <div>
+                <span class="gold-badge" id="restorerArtEraBadge" style="margin-bottom:4px; font-size:10px;">XIX век · Казань</span>
+                <h3 id="restorerArtTitle" style="font-family:var(--font-editorial); font-size:20px; color:var(--text-main); margin:0;">
+                  Казанское нагрудное хасите
+                </h3>
+              </div>
+              <span style="font-family:monospace; font-size:10px; color:#34d399; background:rgba(52,211,153,0.1); border:1px solid rgba(52,211,153,0.3); border-radius:4px; padding:2px 6px;">
+                ● NEURAL RESNET READY
+              </span>
+            </div>
+
+            <!-- Описание спектрального слоя -->
+            <p id="restorerSpectralLayerDesc" style="font-size:12px; color:var(--text-muted); line-height:1.55; margin:0; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:var(--radius-sm); padding:10px 12px;">
+              Естественный видимый свет (RGB). Спектр 380–740 нм. Фотограмметрическая реконструкция текстуры бархата и серебряной скани.
+            </p>
+
+            <!-- Телеметрия спектрометрии -->
+            <div class="restorer-telemetry-box" id="restorerTelemetryBox">
+              <div><strong>Хранение:</strong> <span id="restorerMuseumText">Национальный музей РТ (КП-10492)</span></div>
+              <div style="margin-top:3px;"><strong>Материалы:</strong> <span id="restorerMaterialText">Серебро 875°, скань, бирюза, сердолики</span></div>
+              <div style="margin-top:3px;"><strong>Датировка:</strong> <span id="restorerAgeText">1842 ± 5 гг. (Метод XRF флуоресценции)</span></div>
+              <div style="margin-top:3px;"><strong>Статус сохранности:</strong> <span id="restorerStatusText">98.7% аутентичной структуры</span></div>
+            </div>
+
+            <!-- Металлургические спектральные шкалы сплава -->
+            <div>
+              <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--gold); font-weight:700; display:block; margin-bottom:8px;">
+                Рентгенофлуоресцентный анализ сплава (XRF):
+              </span>
+              <div class="restorer-spec-bars" id="restorerSpecBars">
+                <div class="restorer-spec-bar-row">
+                  <span class="restorer-spec-bar-label">Золото (Au)</span>
+                  <div class="restorer-spec-bar-track">
+                    <div class="restorer-spec-bar-fill" id="barAu" style="width:84.6%; background:linear-gradient(90deg, #c99c52, #f3d08a);"></div>
+                  </div>
+                  <span class="restorer-spec-bar-val" id="valAu">84.6%</span>
+                </div>
+                <div class="restorer-spec-bar-row">
+                  <span class="restorer-spec-bar-label">Серебро (Ag)</span>
+                  <div class="restorer-spec-bar-track">
+                    <div class="restorer-spec-bar-fill" id="barAg" style="width:12.2%; background:linear-gradient(90deg, #94a3b8, #cbd5e1);"></div>
+                  </div>
+                  <span class="restorer-spec-bar-val" id="valAg">12.2%</span>
+                </div>
+                <div class="restorer-spec-bar-row">
+                  <span class="restorer-spec-bar-label">Медь (Cu)</span>
+                  <div class="restorer-spec-bar-track">
+                    <div class="restorer-spec-bar-fill" id="barCu" style="width:3.2%; background:linear-gradient(90deg, #c83428, #f87171);"></div>
+                  </div>
+                  <span class="restorer-spec-bar-val" id="valCu">3.2%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Интерактивная карточка выбранного хотспота (детализация элемента) -->
+            <div id="restorerHotspotCard" style="background:rgba(201,156,82,0.06); border:1px solid var(--border-gold); border-radius:var(--radius-sm); padding:12px; display:block;">
+              <span class="gold-badge" id="restorerHotspotTag" style="margin:0 0 6px 0; font-size:10px;">Филигрань и скань</span>
+              <strong id="restorerHotspotTitle" style="color:var(--text-main); font-size:13.5px; display:block; margin-bottom:4px; font-family:var(--font-editorial);">
+                Коранница «Бөтү» (Серебряный футляр)
+              </strong>
+              <p id="restorerHotspotDesc" style="font-size:11.5px; color:var(--text-muted); line-height:1.5; margin:0;">
+                Шестигранный футляр для молитвенного свитка, украшенный филигранью и бирюзовым кабошоном. Нейросеть удалила оксидную пленку и восстановила утраченные подвески.
+              </p>
+            </div>
+
+            <!-- Терминал процесса нейрореконструкции -->
+            <div class="restorer-log-terminal" id="restorerTerminalLog" aria-live="polite">
+              [SYSTEM] Археометрический модуль инициализирован.<br/>
+              [STATUS] Загружен эталон музейного канона КП-10492.<br/>
+              [READY] Нажмите «Запустить ИИ-реконструкцию» для старта лазерного анализа.
+            </div>
+
+            <!-- Кнопка запуска кинематографической реставрации -->
+            <button class="btn-action btn-action--ruby" id="runRestorationProcessBtn" style="width:100%; justify-content:center; padding:12px 18px; font-size:13px;">
+              <span>⚡</span> Запустить ИИ-реконструкцию (Лазерное сканирование)
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         ЭКРАН 11: ВИТРИНА НАГРАД И СЕМЕЙНЫЙ РЕЖИМ
          ======================================================================== -->
     <section class="screen-view" id="screen-collection">
       <div class="content-canvas">
@@ -3486,6 +4003,39 @@
           osc.stop(t + duration + 0.05);
         }
 
+        // е) Лазерный сканер спектрометрии (футуристический акустический резонанс)
+        function playLaserScan(duration = 2.4) {
+          const ctx = getContext();
+          if (!ctx) return;
+          if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+          const t = ctx.currentTime;
+
+          const osc = ctx.createOscillator();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(320, t);
+          osc.frequency.exponentialRampToValueAtTime(1450, t + duration * 0.7);
+          osc.frequency.exponentialRampToValueAtTime(880, t + duration);
+
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.Q.setValueAtTime(6.0, t);
+          filter.frequency.setValueAtTime(450, t);
+          filter.frequency.exponentialRampToValueAtTime(1600, t + duration * 0.7);
+
+          const gain = ctx.createGain();
+          gain.gain.setValueAtTime(0.0001, t);
+          gain.gain.linearRampToValueAtTime(0.2, t + 0.08);
+          gain.gain.setValueAtTime(0.2, t + duration * 0.85);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          routeThroughHall(gain);
+
+          osc.start(t);
+          osc.stop(t + duration + 0.1);
+        }
+
         return {
           getContext,
           playPreRenderedVoice,
@@ -3495,6 +4045,7 @@
           playEthnicBell,
           playGusliChord,
           playVarganTwang,
+          playLaserScan,
           playUiClick,
           playSuccessTrumpet,
           toggleAmbient
@@ -4074,6 +4625,10 @@
             selectAtlasRegion(activeCultureId || 'tatarstan');
           }
 
+          if (screenId === 'restorer' && typeof initRestorerLab === 'function') {
+            initRestorerLab();
+          }
+
           window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
@@ -4117,6 +4672,11 @@
       window.initAtlasMap = () => { if (typeof initAtlasMap === 'function') initAtlasMap(); };
       window.setBaPercentage = (v) => { if (typeof setBaPercentage === 'function') setBaPercentage(v); };
       window.renderRelicsShelf = (u) => { if (typeof renderRelicsShelf === 'function') renderRelicsShelf(u); };
+      window.renderRestorerArtifact = (id) => { if (typeof renderRestorerArtifact === 'function') renderRestorerArtifact(id); };
+      window.setSpectralMode = (m) => { if (typeof setSpectralMode === 'function') setSpectralMode(m); };
+      window.setRestorerSliderPosition = (p) => { if (typeof setRestorerSliderPosition === 'function') setRestorerSliderPosition(p); };
+      window.runRestorationSimulation = () => { if (typeof runRestorationSimulation === 'function') runRestorationSimulation(); };
+      window.initRestorerLab = () => { if (typeof initRestorerLab === 'function') initRestorerLab(); };
 
       // Обработка системных кнопок браузера «Назад / Вперёд»
       window.addEventListener('popstate', (e) => {
@@ -4844,7 +5404,7 @@
           moral: 'Почитание стихий, честность и победа ясного ума над страхом.',
           characters: ['Шурале', 'Су анасы', 'Дровосек Былтыр'],
           museumSource: 'Литературный музей Габдуллы Тукая (Казань)',
-          img: './images/v903_453.png'
+          img: './images/tatar_su_anasy_masterpiece.jpg'
         },
         {
           id: 'sirin',
@@ -4858,7 +5418,7 @@
           moral: 'Верность слову, несгибаемое мужество и надежда в ледовых штормах.',
           characters: ['Сирин', 'Царевна', 'Поморский мореход'],
           museumSource: 'Музей деревянного зодчества «Малые Корелы»',
-          img: './images/v906_463.png'
+          img: './images/pomorye_bird_of_happiness.jpg'
         },
         {
           id: 'dzhangar',
@@ -4872,7 +5432,7 @@
           moral: 'Бескорыстное служение народу, верность братству и защита родной земли.',
           characters: ['Хан Джангар', 'Хонгор Алый Меч', 'Богатырь Савар'],
           museumSource: 'Национальный музей Республики Калмыкия им. Н.Н. Пальмова',
-          img: './images/v907_522.png'
+          img: './images/kalmyk_dzhangar_epic_masterpiece.jpg'
         },
         {
           id: 'geser',
@@ -4886,7 +5446,7 @@
           moral: 'Торжество высшей справедливости, скромность и чистота помыслов.',
           characters: ['Абай Гэсэр', 'Мудрая девушка', 'Хан мангатхаев'],
           museumSource: 'Национальный музей Республики Бурятия (Улан-Удэ)',
-          img: './images/v904_460.png'
+          img: './images/geser_buryat_epic_masterpiece.jpg'
         },
         {
           id: 'geakchaval',
@@ -4900,7 +5460,7 @@
           moral: 'Гармония человека и арктической стихии, почитание старцев и закона тайги.',
           characters: ['Геакчавал', 'Хозяин Торосов', 'Шаман рода'],
           museumSource: 'Музей Арктики и Антарктики (Санкт-Петербург)',
-          img: './images/v907_520.png'
+          img: './images/evenk_geakchaval_epic_masterpiece.jpg'
         },
         {
           id: 'kuigorozh',
@@ -4914,7 +5474,7 @@
           moral: 'Предостережение от слепой алчности: подлинное счастье создается честным созиданием.',
           characters: ['Куйгорож', 'Старик Пятака', 'Старуха'],
           museumSource: 'Мордовский республиканский краеведческий музей',
-          img: './images/v905_462.png'
+          img: './images/kuigorozh_mordovia_masterpiece.jpg'
         },
         {
           id: 'bayanay',
@@ -4942,7 +5502,7 @@
           moral: 'Служение родной земле, уважение к предкам и нерушимость клятвы.',
           characters: ['Сатана', 'Сасрыква', 'Кузнец Тлепш'],
           museumSource: 'Северокавказский филиал Государственного музея Востока',
-          img: './images/v785_201.png'
+          img: './images/caucasus_nart_tlepsh_masterpiece.jpg'
         }
       ];
 
@@ -5108,6 +5668,493 @@
             }
           });
         });
+      }
+
+      // ========================================================================
+      // 10.15 НЕЙРОРЕСТАВРАЦИОННАЯ СПЕКТРАЛЬНАЯ ЛАБОРАТОРИЯ (AI ARCHAEOMETRIC RESTORER)
+      // ========================================================================
+      const AI_RESTORER_DATABASE = {
+        khasite: {
+          id: 'khasite',
+          title: 'Казанское нагрудное хасите',
+          era: 'XIX век · Казань',
+          museum: 'Национальный музей Республики Татарстан (КП-10492)',
+          material: 'Серебро 875°, золочение, скань, бирюза, сердолики, шелковый бархат',
+          dating: '1842 ± 5 гг. (Метод XRF флуоресценции)',
+          status: '98.7% аутентичной структуры',
+          unrestoredImg: './images/khasite_unrestored.jpg',
+          restoredImg: './images/khasite_restored.jpg',
+          pedestalImg: './images/tatar_khasite_3d_pedestal.jpg',
+          metals: { au: '84.6%', ag: '12.2%', cu: '3.2%' },
+          spectralLayers: {
+            visible: 'Естественный видимый свет (RGB). Спектр 380–740 нм. Фотограмметрическая реконструкция текстуры бархата и серебряной скани.',
+            uv: 'Ультрафиолетовая люминесценция (365 нм). Детекция следов органических смол и ранней клеевой реставрации 1950-х годов.',
+            xray: 'Рентгеновская томография (X-Ray). Просвечивание внутренних пустотелых блях, каркасных штифтов и толщины чеканных пластин.',
+            ir: 'Инфракрасная рефлектография (950 нм). Проникновение сквозь поверхностные оксиды, обнаружение скрытого клейма казанского мастера «Б.А.».'
+          },
+          hotspots: [
+            {
+              id: 'koran_box',
+              x: 48, y: 32,
+              title: 'Коранница «Бөтү» (Серебряный футляр)',
+              tag: 'Филигрань и скань',
+              desc: 'Шестигранный футляр для молитвенного свитка, украшенный филигранью и бирюзовым кабошоном. Нейросеть удалила оксидную пленку и восстановила утраченные подвески.'
+            },
+            {
+              id: 'carnelian',
+              x: 65, y: 55,
+              title: 'Астраханские и индийские сердолики',
+              tag: 'Минералогия',
+              desc: 'Кабошоны из природного халцедона с характерным пламенным оттенком. Спектральная колориметрия подтверждает подлинность и происхождение минералов по Великому Волжскому пути.'
+            },
+            {
+              id: 'coins',
+              x: 35, y: 72,
+              title: 'Серебряные монеты с чеканкой',
+              tag: 'Нумизматика',
+              desc: 'Подвесные монеты рубежа XVIII–XIX веков. Восстановлен рельеф вензелей и очищены края от глубокой микрокоррозии без механического истирания металла.'
+            }
+          ]
+        },
+        scythian: {
+          id: 'scythian',
+          title: 'Скифская золотая пектораль',
+          era: 'IV в. до н.э. · Причерноморье',
+          museum: 'Музей исторических драгоценностей (ГИМ / МИД)',
+          material: 'Золото 950° высшей пробы, микролитье, пайка, волочение, стеклянная эмаль',
+          dating: 'ок. 350 г. до н.э. (Радиоизотопный анализ)',
+          status: '99.4% сохранность микрорельефа',
+          unrestoredImg: './images/scythian_gold_unrestored.jpg',
+          restoredImg: './images/scythian_gold_restored.jpg',
+          pedestalImg: './images/scythian_gold_restored.jpg',
+          metals: { au: '95.8%', ag: '3.1%', cu: '1.1%' },
+          spectralLayers: {
+            visible: 'Оптический RGB диапазон. Восстановлен первозданный зеркальный блеск червонного золота с микрогранями полировки.',
+            uv: 'Ультрафиолетовая флуоресценция (365 нм). Анализ микроостатков голубой стеклянной эмали в чашечках цветов.',
+            xray: 'Рентгеновский контроль. Подтверждена цельнолитая структура каркасных витых жгутов и отсутствие скрытых спаек нового времени.',
+            ir: 'Инфракрасный спектр. Обнаружены микроскопические технологические насечки античного мастера на оборотной стороне пекторали.'
+          },
+          hotspots: [
+            {
+              id: 'upper_tier',
+              x: 50, y: 28,
+              title: 'Верхний ярус: Бытовые сцены скифов',
+              tag: 'Микролитье',
+              desc: 'Скифы шьют рубаху из овечьей шкуры и доят овец. Нейросетевая деконволюция восстановила мимику лиц и детали складок одежды размером менее 0.3 мм.'
+            },
+            {
+              id: 'middle_tier',
+              x: 72, y: 48,
+              title: 'Средний ярус: Растительный орнамент',
+              tag: 'Ювелирная флора',
+              desc: 'Филигранные побеги аканта и пальметты с фигурками пяти летящих птиц. Ликвидированы деформации тончайших золотых лепестков.'
+            },
+            {
+              id: 'lower_tier',
+              x: 28, y: 68,
+              title: 'Нижний ярус: Скифский звериный стиль',
+              tag: 'Звериный стиль',
+              desc: 'Динамическая батальная сцена терзания коней крылатыми грифонами. Устранены микротрещины на лапах мифических чудовищ.'
+            }
+          ]
+        },
+        yakut: {
+          id: 'yakut',
+          title: 'Якутское серебряное илин кэбисэр',
+          era: 'XVIII век · Якутия (Саха)',
+          museum: 'Музей археологии и этнографии СВФУ (Якутск)',
+          material: 'Серебро 875°, гравировка, ковка, подвески-бубенцы кылыгырас',
+          dating: '1782–1810 гг. (Спектральный анализ патины)',
+          status: '97.9% воссоздание цепочечных звеньев',
+          unrestoredImg: './images/ilin_kebiser_unrestored.jpg',
+          restoredImg: './images/ilin_kebiser_restored.jpg',
+          pedestalImg: './images/ilin_kebiser_restored.jpg',
+          metals: { au: '0.0%', ag: '88.2%', cu: '11.8%' },
+          spectralLayers: {
+            visible: 'Оптический RGB диапазон. Очищенное серебро с лунным мерцанием, свойственным традиционным украшениям народа Саха.',
+            uv: 'Ультрафиолетовый анализ. Контроль равномерности защитного воскового слоя от повторного окисления.',
+            xray: 'Рентгеновская дефектоскопия. Исследование механического наклепа и ковочной структуры звеньев цепей.',
+            ir: 'Инфракрасный анализ. Изучение состава древней патины в углублениях гравированных знаков солнца.'
+          },
+          hotspots: [
+            {
+              id: 'grivna',
+              x: 50, y: 22,
+              title: 'Гривна-обруч с сакральной гравировкой',
+              tag: 'Чеканка Саха',
+              desc: 'Массивный кованый полукруг с орнаментом «көҕүөр ойуу» (древо жизни) и символами плодородия. Устранена сульфидная чернь (Ag₂S).'
+            },
+            {
+              id: 'plates',
+              x: 50, y: 52,
+              title: 'Солярные пластины (Күн)',
+              tag: 'Космогония',
+              desc: 'Прямоугольные пластины с выгравированным ликом солнца и птиц Айыы. Восстановлена геометрия соединительных серебряных колец.'
+            },
+            {
+              id: 'bells',
+              x: 32, y: 78,
+              title: 'Подвески-бубенцы «Кылыгырас»',
+              tag: 'Акустический оберег',
+              desc: 'Звенящие цепочки, отпугивающие злых духов абаасы при движении женщины. Воссозданы утраченные звенья по музейным аналогам XVIII века.'
+            }
+          ]
+        }
+      };
+
+      let activeRestorerArtId = 'khasite';
+      let activeSpectralMode = 'visible';
+      let restorerSliderPos = 50;
+      let isShowingHotspots = true;
+      let isPedestalView = false;
+      let isRestorationProcessRunning = false;
+
+      function renderRestorerArtifact(artId) {
+        const d = AI_RESTORER_DATABASE[artId];
+        if (!d) return;
+        activeRestorerArtId = artId;
+
+        // Картинки
+        const beforeImg = document.getElementById('restorerImgBefore');
+        const afterImg = document.getElementById('restorerImgAfter');
+        if (beforeImg) {
+          beforeImg.src = isPedestalView ? d.pedestalImg : d.unrestoredImg;
+          beforeImg.alt = `${d.title} (до реставрации)`;
+        }
+        if (afterImg) {
+          afterImg.src = d.restoredImg;
+          afterImg.alt = `${d.title} (после реставрации)`;
+        }
+
+        // Заголовки и метаданные
+        const titleEl = document.getElementById('restorerArtTitle');
+        if (titleEl) titleEl.textContent = d.title;
+        const eraEl = document.getElementById('restorerArtEraBadge');
+        if (eraEl) eraEl.textContent = d.era;
+        const museumEl = document.getElementById('restorerMuseumText');
+        if (museumEl) museumEl.textContent = d.museum;
+        const matEl = document.getElementById('restorerMaterialText');
+        if (matEl) matEl.textContent = d.material;
+        const ageEl = document.getElementById('restorerAgeText');
+        if (ageEl) ageEl.textContent = d.dating;
+        const statusEl = document.getElementById('restorerStatusText');
+        if (statusEl) statusEl.textContent = d.status;
+
+        // Металлы XRF
+        const barAu = document.getElementById('barAu');
+        const valAu = document.getElementById('valAu');
+        if (barAu && valAu) {
+          barAu.style.width = d.metals.au;
+          valAu.textContent = d.metals.au;
+        }
+        const barAg = document.getElementById('barAg');
+        const valAg = document.getElementById('valAg');
+        if (barAg && valAg) {
+          barAg.style.width = d.metals.ag;
+          valAg.textContent = d.metals.ag;
+        }
+        const barCu = document.getElementById('barCu');
+        const valCu = document.getElementById('valCu');
+        if (barCu && valCu) {
+          barCu.style.width = d.metals.cu;
+          valCu.textContent = d.metals.cu;
+        }
+
+        // Описание спектрального слоя
+        updateSpectralDescription();
+
+        // Рендер хотспотов
+        renderRestorerHotspots();
+
+        // Обновление логов
+        logRestorerMessage(`[LOAD] Загружен экспонат «${d.title}». XRF профиль: Au ${d.metals.au}, Ag ${d.metals.ag}.`);
+      }
+
+      function updateSpectralDescription() {
+        const d = AI_RESTORER_DATABASE[activeRestorerArtId];
+        const descEl = document.getElementById('restorerSpectralLayerDesc');
+        if (descEl && d && d.spectralLayers[activeSpectralMode]) {
+          descEl.textContent = d.spectralLayers[activeSpectralMode];
+        }
+      }
+
+      function renderRestorerHotspots() {
+        const layer = document.getElementById('restorerHotspotsLayer');
+        if (!layer) return;
+
+        if (!isShowingHotspots || isPedestalView) {
+          layer.innerHTML = '';
+          return;
+        }
+
+        const d = AI_RESTORER_DATABASE[activeRestorerArtId];
+        if (!d) return;
+
+        layer.innerHTML = d.hotspots.map((h, idx) => `
+          <button class="restorer-hotspot-pin ${idx === 0 ? 'is-active' : ''}" data-hotspot-idx="${idx}" style="left:${h.x}%; top:${h.y}%;" title="${h.title}" aria-label="Метка анализа: ${h.title}">
+            <div class="restorer-hotspot-pulse"></div>
+            <div class="restorer-hotspot-core"></div>
+          </button>
+        `).join('');
+
+        layer.querySelectorAll('.restorer-hotspot-pin').forEach(pin => {
+          pin.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const idx = parseInt(pin.dataset.hotspotIdx, 10);
+            selectRestorerHotspot(idx);
+          });
+        });
+
+        if (d.hotspots.length > 0) {
+          selectRestorerHotspot(0, false);
+        }
+      }
+
+      function selectRestorerHotspot(idx, playSound = true) {
+        const d = AI_RESTORER_DATABASE[activeRestorerArtId];
+        if (!d || !d.hotspots[idx]) return;
+        const h = d.hotspots[idx];
+
+        // Активный класс на пинах
+        const layer = document.getElementById('restorerHotspotsLayer');
+        if (layer) {
+          layer.querySelectorAll('.restorer-hotspot-pin').forEach((pin, pIdx) => {
+            pin.classList.toggle('is-active', pIdx === idx);
+          });
+        }
+
+        // Обновление карточки
+        const cardTag = document.getElementById('restorerHotspotTag');
+        const cardTitle = document.getElementById('restorerHotspotTitle');
+        const cardDesc = document.getElementById('restorerHotspotDesc');
+        if (cardTag) cardTag.textContent = h.tag;
+        if (cardTitle) cardTitle.textContent = h.title;
+        if (cardDesc) cardDesc.textContent = h.desc;
+
+        if (playSound) {
+          AudioEngine.playEthnicBell(780, 0.9);
+          logRestorerMessage(`[HOTSPOT] Анализ зоны (${h.x}%, ${h.y}%): ${h.title}`);
+        }
+      }
+
+      function setSpectralMode(mode) {
+        activeSpectralMode = mode;
+        const vp = document.getElementById('restorerViewport');
+        if (vp) {
+          vp.classList.remove('spectral-filter--visible', 'spectral-filter--uv', 'spectral-filter--xray', 'spectral-filter--ir');
+          vp.classList.add(`spectral-filter--${mode}`);
+        }
+
+        const badge = document.getElementById('restorerWavelengthBadge');
+        if (badge) {
+          const map = {
+            visible: 'λ = 380–740 nm · Оптическая детекция',
+            uv: 'λ = 365 nm · УФ Флуоресценция смол и лаков',
+            xray: 'λ = 0.01–10 nm · Рентгеновская томография каркаса',
+            ir: 'λ = 950 nm · Инфракрасная рефлектография клейм'
+          };
+          badge.textContent = map[mode] || mode;
+        }
+
+        document.querySelectorAll('#restorerSpectralModesGroup .pill-filter-btn').forEach(btn => {
+          btn.classList.toggle('is-active', btn.dataset.mode === mode);
+        });
+
+        updateSpectralDescription();
+        logRestorerMessage(`[SPECTRUM] Переключен фильтр: ${mode.toUpperCase()}`);
+      }
+
+      function setRestorerSliderPosition(percent) {
+        const clamped = Math.max(0, Math.min(100, percent));
+        restorerSliderPos = clamped;
+        const vp = document.getElementById('restorerViewport');
+        if (vp) {
+          vp.style.setProperty('--restorer-pos', `${clamped}%`);
+        }
+        const text = document.getElementById('restorerProgressPercentText');
+        if (text) {
+          text.textContent = `До: ${Math.round(clamped)}% / После: ${Math.round(100 - clamped)}%`;
+        }
+        const knob = document.getElementById('restorerDividerKnob');
+        if (knob) {
+          knob.setAttribute('aria-valuenow', Math.round(clamped));
+        }
+      }
+
+      function logRestorerMessage(msg) {
+        const term = document.getElementById('restorerTerminalLog');
+        if (!term) return;
+        const line = document.createElement('div');
+        line.textContent = msg;
+        term.appendChild(line);
+        term.scrollTop = term.scrollHeight;
+      }
+
+      function runRestorationSimulation() {
+        if (isRestorationProcessRunning) return;
+        isRestorationProcessRunning = true;
+
+        const btn = document.getElementById('runRestorationProcessBtn');
+        const beam = document.getElementById('restorerScanBeam');
+        if (btn) {
+          btn.disabled = true;
+          btn.innerHTML = '<span>⏳</span> Выполняется лазерное сканирование...';
+        }
+        if (beam) {
+          beam.classList.add('is-scanning');
+        }
+
+        AudioEngine.playLaserScan(2.4);
+        logRestorerMessage('[START] Инициализация сверточной модели ResNet-Archeo...');
+
+        // Анимация раздвигания шторки до 100% (полное восстановление)
+        let startTime = null;
+        const duration = 2400; // 2.4s
+        const startPos = restorerSliderPos;
+        const targetPos = 0; // Показывает 100% отреставрированного слоя
+
+        setTimeout(() => logRestorerMessage('[PHASE 1] Сегментация оксидных слоев (Ag₂O, CuO)...'), 500);
+        setTimeout(() => logRestorerMessage('[PHASE 2] Расчет векторных кривых филиграни по канону...'), 1100);
+        setTimeout(() => logRestorerMessage('[PHASE 3] Колориметрия сердоликов (CIE L*a*b* ΔE < 0.01)...'), 1700);
+
+        function stepAnim(timestamp) {
+          if (!startTime) startTime = timestamp;
+          const elapsed = timestamp - startTime;
+          const progress = Math.min(1, elapsed / duration);
+          const ease = 0.5 - Math.cos(progress * Math.PI) / 2; // Ease-in-out
+          const current = startPos + (targetPos - startPos) * ease;
+          setRestorerSliderPosition(current);
+
+          if (progress < 1) {
+            requestAnimationFrame(stepAnim);
+          } else {
+            // Завершено
+            if (beam) beam.classList.remove('is-scanning');
+            if (btn) {
+              btn.disabled = false;
+              btn.innerHTML = '<span>✓</span> Реконструкция завершена (Музейный канон)';
+            }
+            AudioEngine.playSuccessTrumpet();
+            logRestorerMessage('[COMPLETE] ИИ-реконструкция завершена! Аутентичный облик сохранен.');
+            setTimeout(() => {
+              if (btn) {
+                btn.innerHTML = '<span>⚡</span> Запустить повторное сканирование';
+              }
+              isRestorationProcessRunning = false;
+            }, 3000);
+          }
+        }
+
+        requestAnimationFrame(stepAnim);
+      }
+
+      function initRestorerLab() {
+        const vp = document.getElementById('restorerViewport');
+        if (!vp) return;
+
+        // Настройка ползунка по умолчанию
+        setRestorerSliderPosition(50);
+
+        // Интерактивное перетаскивание курсором / пальцем
+        let isDragging = false;
+
+        function updateSliderFromEvent(e) {
+          const rect = vp.getBoundingClientRect();
+          const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : rect.left);
+          const x = clientX - rect.left;
+          const percent = (x / rect.width) * 100;
+          setRestorerSliderPosition(percent);
+        }
+
+        vp.addEventListener('pointerdown', (e) => {
+          if (e.target.closest('.restorer-hotspot-pin')) return;
+          isDragging = true;
+          try { vp.setPointerCapture(e.pointerId); } catch(err) {}
+          updateSliderFromEvent(e);
+          AudioEngine.playUiClick();
+        });
+
+        vp.addEventListener('pointermove', (e) => {
+          if (!isDragging) return;
+          updateSliderFromEvent(e);
+        });
+
+        const stopDrag = (e) => {
+          if (isDragging) {
+            isDragging = false;
+            try { vp.releasePointerCapture(e.pointerId); } catch(err) {}
+          }
+        };
+
+        vp.addEventListener('pointerup', stopDrag);
+        vp.addEventListener('pointercancel', stopDrag);
+
+        // Клавиатурная доступность для кноба
+        const knob = document.getElementById('restorerDividerKnob');
+        if (knob) {
+          knob.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+              e.preventDefault();
+              setRestorerSliderPosition(restorerSliderPos - 5);
+              AudioEngine.playUiClick();
+            } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+              e.preventDefault();
+              setRestorerSliderPosition(restorerSliderPos + 5);
+              AudioEngine.playUiClick();
+            }
+          });
+        }
+
+        // Селектор экспонатов
+        document.querySelectorAll('#restorerArtifactSelectGroup .pill-filter-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('#restorerArtifactSelectGroup .pill-filter-btn').forEach(b => b.classList.remove('is-active'));
+            btn.classList.add('is-active');
+            renderRestorerArtifact(btn.dataset.artId);
+            AudioEngine.playUiClick();
+          });
+        });
+
+        // Селектор спектральных режимов
+        document.querySelectorAll('#restorerSpectralModesGroup .pill-filter-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            setSpectralMode(btn.dataset.mode);
+            AudioEngine.playUiClick();
+          });
+        });
+
+        // Кнопка включения/выключения хотспотов
+        const hotBtn = document.getElementById('restorerHotspotsToggleBtn');
+        if (hotBtn) {
+          hotBtn.addEventListener('click', () => {
+            isShowingHotspots = !isShowingHotspots;
+            hotBtn.classList.toggle('is-active', isShowingHotspots);
+            renderRestorerHotspots();
+            AudioEngine.playUiClick();
+          });
+        }
+
+        // Кнопка 3D Пьедестала
+        const pedBtn = document.getElementById('restorer3DPedestalBtn');
+        if (pedBtn) {
+          pedBtn.addEventListener('click', () => {
+            isPedestalView = !isPedestalView;
+            pedBtn.classList.toggle('is-active', isPedestalView);
+            renderRestorerArtifact(activeRestorerArtId);
+            AudioEngine.playEthnicBell(620, 1.0);
+          });
+        }
+
+        // Кнопка запуска нейрореконструкции
+        const runBtn = document.getElementById('runRestorationProcessBtn');
+        if (runBtn) {
+          runBtn.addEventListener('click', () => {
+            runRestorationSimulation();
+          });
+        }
+
+        // Начальная отрисовка
+        renderRestorerArtifact('khasite');
       }
 
       function initAtlasMap() {
@@ -5788,6 +6835,7 @@
       renderRelicsShelf(false);
       generateWorkshopOrnament();
       initAtlasMap();
+      initRestorerLab();
 
       const startHash = window.location.hash.replace('#', '') || 'hero';
       routeTo(startHash, false); // Тихий запуск без звука при открытии страницы

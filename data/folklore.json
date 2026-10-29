@@ -15,7 +15,7 @@
       "Мальчик"
     ],
     "museumSource": "Литературный музей Габдуллы Тукая (Казань)",
-    "img": "./images/v903_453.png"
+    "img": "./images/tatar_su_anasy_masterpiece.jpg"
   },
   {
     "id": "sirin",
@@ -32,7 +32,7 @@
       "Поморский мореход"
     ],
     "museumSource": "Архангельский музей деревянного зодчества «Малые Корелы»",
-    "img": "./images/v906_463.png"
+    "img": "./images/pomorye_bird_of_happiness.jpg"
   },
   {
     "id": "dzhangar",
@@ -49,7 +49,7 @@
       "Богатырь Савар"
     ],
     "museumSource": "Национальный музей Республики Калмыкия им. Н.Н. Пальмова",
-    "img": "./images/v907_522.png"
+    "img": "./images/kalmyk_dzhangar_epic_masterpiece.jpg"
   },
   {
     "id": "geser",
@@ -66,7 +66,7 @@
       "Хан мангатхаев"
     ],
     "museumSource": "Национальный музей Республики Бурятия (Улан-Удэ)",
-    "img": "./images/v904_460.png"
+    "img": "./images/geser_buryat_epic_masterpiece.jpg"
   },
   {
     "id": "geakchaval",
@@ -83,7 +83,7 @@
       "Шаман рода"
     ],
     "museumSource": "Российский государственный музей Арктики и Антарктики",
-    "img": "./images/v907_520.png"
+    "img": "./images/evenk_geakchaval_epic_masterpiece.jpg"
   },
   {
     "id": "kuigorozh",
@@ -100,7 +100,7 @@
       "Старуха"
     ],
     "museumSource": "Мордовский республиканский объединенный краеведческий музей",
-    "img": "./images/v905_462.png"
+    "img": "./images/kuigorozh_mordovia_masterpiece.jpg"
   },
   {
     "id": "bayanay",
@@ -134,6 +134,6 @@
       "Кузнец Тлепш"
     ],
     "museumSource": "Северокавказский филиал Государственного музея Востока",
-    "img": "./images/v785_201.png"
+    "img": "./images/caucasus_nart_tlepsh_masterpiece.jpg"
   }
 ]
