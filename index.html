@@ -10,7 +10,10 @@
   <meta name="theme-color" content="#070d1e" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,4 96,50 50,96 4,50' stroke='%23d4af37' stroke-width='6' fill='%23060b17'/><circle cx='50' cy='50' r='26' stroke='%23c62828' stroke-width='4' fill='none'/><polygon points='50,30 70,50 50,70 30,50' fill='%23d4af37'/></svg>" />
+  <meta name="apple-mobile-web-app-title" content="Artefact" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,4 96,50 50,96 4,50' stroke='%23d4af37' stroke-width='6' fill='%23060b17'/><circle cx='50' cy='50' r='26' stroke='%23c62828' stroke-width='4' fill='none'/><polygon points='50,30 70,50 50,70 30,50' fill='%23d4af37'/></svg>" /><polygon points='50,4 96,50 50,96 4,50' stroke='%23d4af37' stroke-width='6' fill='%23060b17'/><circle cx='50' cy='50' r='26' stroke='%23c62828' stroke-width='4' fill='none'/><polygon points='50,30 70,50 50,70 30,50' fill='%23d4af37'/></svg>" />
 
   <!-- Шрифтовой историко-музейный стек (100% поддержка кириллицы) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,7 +126,7 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    body {
+    html, body {
       font-family: var(--font-ui);
       background-color: var(--bg-page);
       color: var(--text-main);
@@ -434,6 +437,11 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+        #langToggleBtn {
+      min-width: 58px;
+      justify-content: center;
+      gap: 5px;
+    }
     .action-chip:hover {
       border-color: var(--gold);
       box-shadow: 0 0 12px var(--gold-glow);
@@ -2461,6 +2469,7 @@
     @media (max-width: 1240px) {
       .action-chip .chip-label { display: none; }
       .action-chip { padding: 8px; min-width: 36px; justify-content: center; }
+      #langToggleBtn { min-width: 36px; padding: 8px; }
     }
 
     @media (max-width: 1080px) {
@@ -2471,6 +2480,7 @@
       .desktop-nav { display: none; }
       .mobile-burger-btn { display: flex; }
       .mobile-bottom-nav { display: block; }
+      #mobilePreviewToggleBtn { display: none; }
       
       /* Отступ снизу для безопасного скролла над Bottom Nav */
       .app-viewport {
@@ -2505,6 +2515,10 @@
         height: 32px;
         font-size: 13px;
       }
+      #langToggleBtn {
+        min-width: 32px;
+        padding: 6px;
+      }
       .mobile-burger-btn {
         width: 32px;
         height: 32px;
@@ -2533,22 +2547,22 @@
           <polygon points="50,30 70,50 50,70 30,50" fill="var(--gold)"/>
         </svg>
         <div>
-          <span class="brand-logo__title">АРТЕФАКТ</span>
-          <span class="brand-logo__tagline">История оставляет след</span>
+          <span class="brand-logo__title" data-i18n="brand_title">АРТЕФАКТ</span>
+          <span class="brand-logo__tagline" data-i18n="brand_tagline">История оставляет след</span>
         </div>
       </button>
 
       <!-- Десктопное меню -->
       <nav class="desktop-nav" aria-label="Основное меню">
-        <button class="nav-btn is-active" data-route="hero">🏛️ Главная</button>
-        <button class="nav-btn" data-route="cultures">🗺️ Культуры</button>
-        <button class="nav-btn" data-route="quest">🧭 Маршрут</button>
-        <button class="nav-btn" data-route="atlas">🌐 Этноатлас</button>
-        <button class="nav-btn" data-route="restorer">🔬 AI-Лаборатория</button>
-        <button class="nav-btn" data-route="decipherer">⚡ AI-Дешифратор</button>
-        <button class="nav-btn" data-route="folklore">📜 Фольклор</button>
-        <button class="nav-btn" data-route="collection">💎 Награды</button>
-        <button class="nav-btn" data-route="workshop">✨ Мастерская</button>
+        <button class="nav-btn is-active" data-route="hero" data-i18n="nav_hero">🏛️ Главная</button>
+        <button class="nav-btn" data-route="cultures" data-i18n="nav_cultures">🗺️ Культуры</button>
+        <button class="nav-btn" data-route="quest" data-i18n="nav_quest">🧭 Маршрут</button>
+        <button class="nav-btn" data-route="atlas" data-i18n="nav_atlas">🌐 Этноатлас</button>
+        <button class="nav-btn" data-route="restorer" data-i18n="nav_restorer">🔬 AI-Лаборатория</button>
+        <button class="nav-btn" data-route="decipherer" data-i18n="nav_decipherer">⚡ AI-Дешифратор</button>
+        <button class="nav-btn" data-route="folklore" data-i18n="nav_folklore">📜 Фольклор</button>
+        <button class="nav-btn" data-route="collection" data-i18n="nav_collection">💎 Награды</button>
+        <button class="nav-btn" data-route="workshop" data-i18n="nav_workshop">✨ Мастерская</button>
       </nav>
 
       <!-- Действия: Звук, Тема, Режим телефона, Меню -->
@@ -2560,12 +2574,17 @@
 
         <button class="action-chip" id="themeToggleBtn" title="Переключить тему оформления">
           <span id="themeIconSymbol">☀️</span>
-          <span class="chip-label" id="themeLabelText">Светлая</span>
+          <span class="chip-label" id="themeLabelText" data-i18n="theme_light">Светлая</span>
+        </button>
+
+        <button class="action-chip" id="langToggleBtn" title="Сменить язык / Switch language (RU / EN)" aria-label="Сменить язык">
+          <span>🌐</span>
+          <span class="chip-label" id="langLabelText" data-i18n="lang_btn_lbl">EN</span>
         </button>
 
         <button class="action-chip" id="mobilePreviewToggleBtn" title="Эмуляция экрана мобильного">
           <span>📱</span>
-          <span class="chip-label">Вид</span>
+          <span class="chip-label" id="viewModeLabelText" data-i18n="view_mode">Вид</span>
         </button>
 
         <button class="mobile-burger-btn" id="mobileMenuOpenBtn" aria-label="Открыть мобильное меню" aria-expanded="false" aria-controls="mobileDrawerMenu">
@@ -2578,17 +2597,23 @@
     <div class="mobile-drawer" id="mobileDrawerMenu" role="dialog" aria-modal="true" aria-label="Мобильное меню навигации">
       <button class="mobile-drawer-close" id="mobileDrawerCloseBtn" aria-label="Закрыть меню">✕</button>
       <div class="brand-logo" style="margin-bottom: 20px;">
-        <span class="brand-logo__title">АРТЕФАКТ</span>
+        <span class="brand-logo__title" data-i18n="brand_title">АРТЕФАКТ</span>
       </div>
-      <button class="nav-btn is-active" data-route="hero">🏛️ Главная</button>
-      <button class="nav-btn" data-route="cultures">🗺️ Культуры народов</button>
-      <button class="nav-btn" data-route="quest">🧭 Маршрут экспедиции</button>
-      <button class="nav-btn" data-route="atlas">🌐 Интерактивный этноатлас</button>
-      <button class="nav-btn" data-route="restorer">🔬 AI-Лаборатория реставрации</button>
-      <button class="nav-btn" data-route="decipherer">⚡ AI-Дешифратор петроглифов</button>
-      <button class="nav-btn" data-route="folklore">📜 Антология фольклора</button>
-      <button class="nav-btn" data-route="collection">💎 Витрина реликвий</button>
-      <button class="nav-btn" data-route="workshop">✨ ИИ-мастерская оберегов</button>
+      <button class="nav-btn is-active" data-route="hero" data-i18n="nav_hero">🏛️ Главная</button>
+      <button class="nav-btn" data-route="cultures" data-i18n="nav_cultures">🗺️ Культуры народов</button>
+      <button class="nav-btn" data-route="quest" data-i18n="nav_quest">🧭 Маршрут экспедиции</button>
+      <button class="nav-btn" data-route="atlas" data-i18n="nav_atlas">🌐 Интерактивный этноатлас</button>
+      <button class="nav-btn" data-route="restorer" data-i18n="nav_restorer">🔬 AI-Лаборатория реставрации</button>
+      <button class="nav-btn" data-route="decipherer" data-i18n="nav_decipherer">⚡ AI-Дешифратор петроглифов</button>
+      <button class="nav-btn" data-route="folklore" data-i18n="nav_folklore">📜 Антология фольклора</button>
+      <button class="nav-btn" data-route="collection" data-i18n="nav_collection">💎 Витрина реликвий</button>
+      <button class="nav-btn" data-route="workshop" data-i18n="nav_workshop">✨ ИИ-мастерская оберегов</button>
+      <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-gold-subtle);">
+        <button class="action-chip" id="mobileDrawerLangBtn" style="width: 100%; justify-content: center; gap: 8px;">
+          <span>🌐</span>
+          <span id="mobileDrawerLangLabel" data-i18n="lang_drawer_lbl">Language: English (EN)</span>
+        </button>
+      </div>
     </div>
 
     <!-- ========================================================================
@@ -2597,7 +2622,7 @@
     <section class="screen-view is-visible" id="screen-hero">
       <div class="hero-split-canvas">
         <div class="hero-text-side">
-          <span class="gold-badge">✦ Цифровая платформа культурного наследия</span>
+          <span class="gold-badge" data-i18n="hero_badge">✦ Цифровая платформа культурного наследия</span>
           <h1 class="heading-display">История оставляет след.<br/><span style="color:var(--gold); font-style:italic;">Открой её код.</span></h1>
           <p class="lead-paragraph">
             Интерактивное погружение в мифологию, орнаменты и сакральное искусство народов России и мира: от древних легенд до реальных визитов в главные музеи страны.
@@ -2652,13 +2677,13 @@
       <div class="content-canvas">
         <div class="catalog-toolbar">
           <div>
-            <span class="gold-badge">✦ Каталог экспедиций</span>
+            <span class="gold-badge" data-i18n="cult_badge">✦ Каталог экспедиций</span>
             <h2 class="heading-section">Выбери культурный пласт</h2>
           </div>
 
           <div class="filter-pills" id="cultureFilterPillsGroup">
-            <button class="pill-filter-btn is-active" data-rf="all">Все регионы</button>
-            <button class="pill-filter-btn" data-rf="russia">Россия</button>
+            <button class="pill-filter-btn is-active" data-rf="all" data-i18n="cult_filter_all">Все регионы</button>
+            <button class="pill-filter-btn" data-rf="russia" data-i18n="cult_filter_russia">Россия</button>
             <button class="pill-filter-btn" data-rf="world">Мир и Шёлковый путь</button>
           </div>
 
@@ -2686,11 +2711,11 @@
           </div>
 
           <div class="stepper-progress-pills" id="questStepperPillsGroup">
-            <button class="step-pill-btn is-active" data-step="1">01 · Регион</button>
-            <button class="step-pill-btn" data-step="2">02 · Миф и видео</button>
-            <button class="step-pill-btn" data-step="3">03 · Найди след</button>
-            <button class="step-pill-btn" data-step="4">04 · 3D-артефакт</button>
-            <button class="step-pill-btn" data-step="5">05 · Билет в музей</button>
+            <button class="step-pill-btn is-active" data-step="1" data-i18n="step_pill_1">01 · Регион</button>
+            <button class="step-pill-btn" data-step="2" data-i18n="step_pill_2">02 · Миф и видео</button>
+            <button class="step-pill-btn" data-step="3" data-i18n="step_pill_3">03 · Найди след</button>
+            <button class="step-pill-btn" data-step="4" data-i18n="step_pill_4">04 · 3D-артефакт</button>
+            <button class="step-pill-btn" data-step="5" data-i18n="step_pill_5">05 · Билет в музей</button>
           </div>
         </div>
 
@@ -2698,17 +2723,17 @@
         <div class="quest-step-subview" id="questStepSub1">
           <div class="split-layout-2col">
             <div>
-              <span class="gold-badge">Шаг 01 · Временной срез</span>
-              <h3 class="heading-section" style="font-size:var(--font-size-h2);">Город сквозь столетия</h3>
+              <span class="gold-badge" data-i18n="q1_badge">Шаг 01 · Временной срез</span>
+              <h3 class="heading-section" style="font-size:var(--font-size-h2);" data-i18n="q1_heading">Город сквозь столетия</h3>
               <p class="lead-paragraph" id="questStep1LeadText">
                 Перекрёсток цивилизаций Востока и Запада, великое наследие Волжской Булгарии, виртуозная кожаная мозаика и поэзия древнего урмана.
               </p>
 
               <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); padding:16px; border-radius:var(--radius-md); margin-bottom:20px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                  <strong style="color:var(--gold); font-size:13px;">Живое традиционное приветствие:</strong>
+                  <strong style="color:var(--gold); font-size:13px;" data-i18n="q1_greeting_lbl">Живое традиционное приветствие:</strong>
                   <button class="action-chip" id="voiceGreetingSpeakerBtn" style="background:var(--ruby); border-color:var(--ruby); color:#fff;">
-                    <span>🗣️</span> Слушать голос
+                    <span>🗣️</span> <span id="voiceGreetingBtnText" data-i18n="q1_listen_btn">Слушать голос</span>
                   </button>
                 </div>
                 <p id="voiceGreetingQuoteText" style="font-style:italic; font-family:var(--font-editorial); font-size:18px; color:var(--text-main);">
@@ -2718,10 +2743,10 @@
 
               <div style="display:flex; gap:12px; flex-wrap:wrap;">
                 <button class="btn-action btn-action--ruby" onclick="switchQuestStep(2)">
-                  Смотреть сказание и кино →
+                  <span data-i18n="q1_next_btn">Смотреть сказание и кино →</span>
                 </button>
                 <button class="btn-action btn-action--outline" onclick="routeTo('cultures')">
-                  Выбрать другой регион
+                  <span data-i18n="q1_change_cult_btn">Выбрать другой регион</span>
                 </button>
               </div>
             </div>
@@ -2735,8 +2760,8 @@
                 </div>
                 <div class="before-after-stage__divider" id="baDividerLine"></div>
                 <div class="before-after-stage__handle" id="baDividerHandle">‹ ›</div>
-                <span class="ba-badge-pill ba-badge-pill--archive">Архив XIX в.</span>
-                <span class="ba-badge-pill ba-badge-pill--modern">Наши дни</span>
+                <span class="ba-badge-pill ba-badge-pill--archive" data-i18n="q1_archive_tag">Архив XIX в.</span>
+                <span class="ba-badge-pill ba-badge-pill--modern" data-i18n="q1_modern_tag">Наши дни</span>
               </div>
               <input type="range" class="slider-range-control" id="baRangeSliderControl" min="5" max="95" value="50" aria-label="Сравнение было и стало" />
               <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-dim);">
@@ -2793,14 +2818,14 @@
 
             <!-- Лонгрид с исследовательскими табами -->
             <div>
-              <span class="gold-badge">Шаг 02 · Сакральное сказание</span>
+              <span class="gold-badge" data-i18n="q2_badge">Шаг 02 · Сакральное сказание</span>
               <h3 class="heading-section" id="mythTitleHeading" style="font-size:var(--font-size-h2);">Легенда о Шурале</h3>
 
               <div class="filter-pills" id="mythChaptersPills" style="margin-bottom:16px;">
-                <button class="pill-filter-btn is-active" data-chapter="story">История</button>
-                <button class="pill-filter-btn" data-chapter="symbols">Символика</button>
-                <button class="pill-filter-btn" data-chapter="words">Словарь</button>
-                <button class="pill-filter-btn" data-chapter="rituals">Обряды</button>
+                <button class="pill-filter-btn is-active" data-chapter="story" data-i18n="q2_tab_story">История</button>
+                <button class="pill-filter-btn" data-chapter="symbols" data-i18n="q2_tab_symbols">Символика</button>
+                <button class="pill-filter-btn" data-chapter="words" data-i18n="q2_tab_words">Словарь</button>
+                <button class="pill-filter-btn" data-chapter="rituals" data-i18n="q2_tab_rituals">Обряды</button>
               </div>
 
               <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); padding:18px; border-radius:var(--radius-md); min-height:160px; margin-bottom:20px;">
@@ -2810,7 +2835,7 @@
               </div>
 
               <button class="btn-action btn-action--ruby" onclick="switchQuestStep(3)">
-                Перейти к квесту «Найди след» →
+                <span data-i18n="q2_next_btn">Перейти к квесту «Найди след» →</span>
               </button>
             </div>
           </div>
@@ -2820,8 +2845,8 @@
         <div class="quest-step-subview" id="questStepSub3" style="display:none;">
           <div class="split-layout-2col">
             <div>
-              <span class="gold-badge">Шаг 03 · Испытание этнографа</span>
-              <h3 class="heading-section" style="font-size:var(--font-size-h2);">Найди след мастера</h3>
+              <span class="gold-badge" data-i18n="q3_badge">Шаг 03 · Испытание этнографа</span>
+              <h3 class="heading-section" style="font-size:var(--font-size-h2);" data-i18n="q3_heading">Найди след мастера</h3>
               <p class="lead-paragraph" id="quizInstructionText">
                 Перед вами подлинный памятник традиционного мастерства. Используйте сенсорную лупу, чтобы изучить фрагменты ткани и идентифицировать канонический элемент узора.
               </p>
@@ -2838,7 +2863,7 @@
               <div id="quizFeedbackMessage" style="min-height:24px; font-size:13.5px; font-weight:600; margin-bottom:14px;"></div>
 
               <button class="btn-action btn-action--ruby" id="verifyQuizChoiceBtn">
-                Проверить гипотезу ✓
+                <span data-i18n="q3_verify_btn">Проверить гипотезу ✓</span>
               </button>
             </div>
 
@@ -2878,27 +2903,27 @@
             </div>
 
             <div>
-              <span class="gold-badge">Шаг 04 · Научная паспортизация</span>
-              <h3 class="heading-section" id="artifactDetailHeading" style="font-size:var(--font-size-h2);">3D-Инспектор артефакта</h3>
+              <span class="gold-badge" data-i18n="q4_badge">Шаг 04 · Научная паспортизация</span>
+              <h3 class="heading-section" id="artifactDetailHeading" style="font-size:var(--font-size-h2);" data-i18n="q4_heading">3D-Инспектор артефакта</h3>
               <p class="lead-paragraph" id="artifactFullContextText">
                 Вращайте экспонат свайпом пальца или ползунком ракурса. Исследуйте глубину шва, сафьяновую кожу и растительные пигменты.
               </p>
 
               <!-- Слайдер поворота для удобства на смартфонах -->
               <div style="margin-bottom:18px;">
-                <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:6px;">Ракурс поворота экспоната:</label>
+                <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:6px;" data-i18n="q4_slider_lbl">Ракурс поворота экспоната:</label>
                 <input type="range" class="slider-range-control" id="tiltRangeSlider" min="-35" max="35" value="0" aria-label="Вращение артефакта" />
               </div>
 
               <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); padding:16px; border-radius:var(--radius-md); margin-bottom:20px;">
-                <strong style="color:var(--gold); font-size:12.5px; display:block; margin-bottom:4px;">Музейное хранение:</strong>
+                <strong style="color:var(--gold); font-size:12.5px; display:block; margin-bottom:4px;" data-i18n="q4_storage_lbl">Музейное хранение:</strong>
                 <span id="artifactMuseumLocationText" style="font-size:12px; color:var(--text-main);" class="font-slab">
                   Национальный музей Республики Татарстан (ул. Кремлёвская, 2) · Инв. № КП-7482/ЭТ
                 </span>
               </div>
 
               <button class="btn-action btn-action--ruby" onclick="switchQuestStep(5)">
-                Получить персональный билет в музей →
+                <span data-i18n="q4_next_btn">Получить персональный билет в музей →</span>
               </button>
             </div>
           </div>
@@ -2912,7 +2937,7 @@
               <div class="ticket-main-body">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
                   <div>
-                    <span class="gold-badge" style="margin-bottom:6px;">Именной пропуск исследователя</span>
+                    <span class="gold-badge" style="margin-bottom:6px;" data-i18n="q5_badge">Именной пропуск исследователя</span>
                     <h3 id="ticketMuseumNameHeading" class="font-monomakh" style="font-size:clamp(19px, 2.8vw, 26px); color:var(--text-main); line-height:1.2;">
                       Национальный музей Республики Татарстан
                     </h3>
@@ -2920,7 +2945,7 @@
                       г. Казань, ул. Кремлёвская, 2 · Зал этнографии XIX века
                     </span>
                   </div>
-                  <div class="hologram-foil-badge font-slab">
+                  <div class="hologram-foil-badge font-slab" data-i18n="q5_hologram">
                     ✦ ЛЬГОТА -15%
                   </div>
                 </div>
@@ -2953,27 +2978,27 @@
 
                 <!-- Секретный пароль для смотрителя в зале -->
                 <div class="keeper-secret-code-box">
-                  <span style="color:var(--gold-light); font-weight:700;">Секретный пароль смотрителю зала:</span>
+                  <span style="color:var(--gold-light); font-weight:700;" data-i18n="q5_keeper_title">Секретный пароль смотрителю зала:</span>
                   <span id="ticketKeeperSecretWord" class="font-slab" style="color:#fff; letter-spacing:0.08em; margin-left:6px; font-weight:600;">«БЫЛТЫР-1892»</span>
                   <span style="color:var(--text-muted); display:block; font-size:10.5px; margin-top:2px;">(Назовите смотрителю в зале этнографии и получите памятный физический стикерпак экспедиции)</span>
                 </div>
 
                 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
                   <button class="action-chip" id="openYandexMapsBtn">
-                    <span>📍</span> Яндекс Карты
+                    <span>📍</span> <span data-i18n="q5_maps_btn">Яндекс Карты</span>
                   </button>
                   <button class="action-chip" id="simulateGeoCheckinBtn" style="border-color:var(--gold);">
-                    <span>🛰️</span> Спутниковый чекин
+                    <span>🛰️</span> <span data-i18n="q5_geo_btn">Спутниковый чекин</span>
                   </button>
                   <button class="action-chip" id="exportPassportBtn" style="border-color:var(--gold-light);">
-                    <span>📜</span> Полевой паспорт
+                    <span>📜</span> <span data-i18n="q5_passport_btn">Полевой паспорт</span>
                   </button>
                 </div>
               </div>
 
               <!-- Отрывной корешок контроля -->
               <div class="ticket-stub-perforation">
-                <span class="font-slab" style="font-size:9.5px; color:var(--gold); letter-spacing:0.12em; text-transform:uppercase;">КОНТРОЛЬ</span>
+                <span class="font-slab" style="font-size:9.5px; color:var(--gold); letter-spacing:0.12em; text-transform:uppercase;" data-i18n="q5_stub_ctrl">КОНТРОЛЬ</span>
                 
                 <div style="display:flex; gap:2px; height:44px; align-items:flex-end; opacity:0.85; margin:10px 0;" aria-hidden="true">
                   <div style="width:3px; height:100%; background:var(--parchment);"></div>
@@ -3341,18 +3366,18 @@
       <div class="content-canvas">
         <div style="margin-bottom:22px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
           <div>
-            <span class="gold-badge">✦ Археометрический аналитический комплекс · Zero API Key Runtime</span>
-            <h2 class="heading-section">Нейрореставрационная Лаборатория</h2>
-            <p class="lead-paragraph">
+            <span class="gold-badge" data-i18n="restorer_badge">✦ Археометрический аналитический комплекс · Zero API Key Runtime</span>
+            <h2 class="heading-section" data-i18n="restorer_heading">Нейрореставрационная Лаборатория</h2>
+            <p class="lead-paragraph" data-i18n="restorer_lead">
               Интерактивное исследование сакральных экспонатов: оптическая деконволюция, мультиспектральный анализ (UV 365 nm / X-Ray / IR 950 nm) и обратимая цифровая реконструкция музейных утрат.
             </p>
           </div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
             <button class="action-chip is-active" id="restorerHotspotsToggleBtn">
-              <span>📍</span> Метки анализа
+              <span>📍</span> <span data-i18n="restorer_btn_hotspots">Метки анализа</span>
             </button>
             <button class="action-chip" id="restorer3DPedestalBtn">
-              <span>🏺</span> Пьедестал 3D
+              <span>🏺</span> <span data-i18n="restorer_btn_pedestal">Пьедестал 3D</span>
             </button>
           </div>
         </div>
@@ -3373,7 +3398,7 @@
         <!-- Селектор спектральных режимов -->
         <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-sm); padding:10px 14px; margin-bottom:18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--gold); font-weight:700;">Спектральный режим:</span>
+            <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--gold); font-weight:700;" data-i18n="restorer_spectral_lbl">Спектральный режим:</span>
             <div class="filter-pills" id="restorerSpectralModesGroup">
               <button class="pill-filter-btn is-active" data-mode="visible">👁️ Оптический RGB</button>
               <button class="pill-filter-btn" data-mode="uv">🟣 УФ Люминесценция (365 nm)</button>
@@ -3410,8 +3435,8 @@
               <div id="restorerHotspotsLayer"></div>
 
               <!-- Бейджи-подписи -->
-              <div class="restorer-label-tag restorer-label-before">◄ До реставрации</div>
-              <div class="restorer-label-tag restorer-label-after">ИИ-реконструкция ►</div>
+              <div class="restorer-label-tag restorer-label-before" data-i18n="restorer_tag_before">◄ До реставрации</div>
+              <div class="restorer-label-tag restorer-label-after" data-i18n="restorer_tag_after">ИИ-реконструкция ►</div>
             </div>
 
             <!-- Подсказка управления под стейджем -->
@@ -3529,7 +3554,7 @@
         <!-- Шапка экрана -->
         <div style="margin-bottom: 24px;">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:8px;">
-            <span class="gold-badge">⚡ НЕЙРОСЕТЕВАЯ АРХЕОМЕТРИЯ · КОМПЬЮТЕРНОЕ ЗРЕНИЕ В БРАУЗЕРЕ</span>
+            <span class="gold-badge" data-i18n="petro_badge">⚡ НЕЙРОСЕТЕВАЯ АРХЕОМЕТРИЯ · КОМПЬЮТЕРНОЕ ЗРЕНИЕ В БРАУЗЕРЕ</span>
             <div style="display:flex; gap:8px;">
               <span class="chip-label" style="background:rgba(201,156,82,0.15); border:1px solid var(--border-gold); padding:3px 10px; border-radius:12px; font-size:11px; color:var(--gold-light);">
                 ✦ Фильтр Собеля 60 FPS
@@ -3539,8 +3564,8 @@
               </span>
             </div>
           </div>
-          <h2 class="heading-section">AI-Петролинза: Дешифратор Древних Символов</h2>
-          <p class="lead-paragraph">
+          <h2 class="heading-section" data-i18n="petro_heading">AI-Петролинза: Дешифратор Древних Символов</h2>
+          <p class="lead-paragraph" data-i18n="petro_lead">
             Исследуйте древнейшую наскальную эпиграфику Евразии в реальном времени. Перемещайте интерактивную линзу нейросканера по поверхности древнего камня: алгоритмы компьютерного зрения выделяют скрытые линии высечки, анализируют глубину рельефа и расшифровывают сакральный смысл знаков.
           </p>
         </div>
@@ -3686,11 +3711,11 @@
       <div class="content-canvas">
         <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; margin-bottom:24px; flex-wrap:wrap;">
           <div>
-            <span class="gold-badge">Личный кабинет этнографа</span>
-            <h2 class="heading-section">Витрина наград и артефактов</h2>
+            <span class="gold-badge" data-i18n="col_badge">Личный кабинет этнографа</span>
+            <h2 class="heading-section" data-i18n="col_heading">Витрина наград и артефактов</h2>
           </div>
           <button class="btn-action btn-action--outline btn-action--sm" id="unlockAllDemoArtifactsBtn">
-            ✨ Открыть все реликвии
+            <span data-i18n="col_btn_unlock_all">✨ Открыть все реликвии</span>
           </button>
         </div>
 
@@ -3702,8 +3727,8 @@
         <div style="margin-top:34px; padding-top:24px; border-top:1px solid var(--border-gold-subtle);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
             <div>
-              <span class="gold-badge">Совместный прогресс</span>
-              <h3 style="font-family:var(--font-editorial); font-size:22px; color:var(--text-main);">Семейная экспедиция</h3>
+              <span class="gold-badge" data-i18n="col_family_badge">Совместный прогресс</span>
+              <h3 style="font-family:var(--font-editorial); font-size:22px; color:var(--text-main);" data-i18n="col_family_heading">Семейная экспедиция</h3>
             </div>
             <button class="action-chip" id="addNewFamilyMemberActionBtn">
               <span>➕</span> Добавить спутника
@@ -3791,9 +3816,9 @@
       <div class="content-canvas">
         <div class="split-layout-2col">
           <div>
-            <span class="gold-badge">✦ Процедурная сакральная орнаментика</span>
-            <h2 class="heading-section">Мастерская оберегов</h2>
-            <p class="lead-paragraph">
+            <span class="gold-badge" data-i18n="ws_badge">✦ Процедурная сакральная орнаментика</span>
+            <h2 class="heading-section" data-i18n="ws_heading">Мастерская оберегов</h2>
+            <p class="lead-paragraph" data-i18n="ws_lead">
               Сформируйте подлинный сакральный оберег на основе этнографических мотивов народов России. Процедурный генератор синтезирует вековую геометрию, розеточную симметрию и родовые знаки защиты.
             </p>
 
@@ -3943,23 +3968,23 @@
     <div class="bottom-nav-grid">
       <button class="bottom-nav-item is-active" data-route="hero">
         <span class="bnav-icon">🏛️</span>
-        <span class="bnav-label">Главная</span>
+        <span class="bnav-label" data-i18n="bnav_hero">Главная</span>
       </button>
       <button class="bottom-nav-item" data-route="cultures">
         <span class="bnav-icon">🗺️</span>
-        <span class="bnav-label">Культуры</span>
+        <span class="bnav-label" data-i18n="bnav_cultures">Культуры</span>
       </button>
       <button class="bottom-nav-item" data-route="quest">
         <span class="bnav-icon">🧭</span>
-        <span class="bnav-label">Маршрут</span>
+        <span class="bnav-label" data-i18n="bnav_quest">Маршрут</span>
       </button>
       <button class="bottom-nav-item" data-route="folklore">
         <span class="bnav-icon">📜</span>
-        <span class="bnav-label">Фольклор</span>
+        <span class="bnav-label" data-i18n="bnav_folklore">Фольклор</span>
       </button>
       <button class="bottom-nav-item" data-route="collection">
         <span class="bnav-icon">💎</span>
-        <span class="bnav-label">Награды</span>
+        <span class="bnav-label" data-i18n="bnav_collection">Награды</span>
       </button>
     </div>
   </nav>
@@ -3967,9 +3992,28 @@
   <!-- ========================================================================
        JAVASCRIPT: DUAL AUDIO ENGINE, SPA ROUTING, TOUCH GESTURES, DATA
        ======================================================================== -->
+  <script src="./translations.js"></script>
   <script>
     (function() {
       'use strict';
+
+      /* ========================================================================
+         iOS NATIVE WEBKIT HAPTIC FEEDBACK & BRIDGE
+         ======================================================================== */
+      function triggerHaptic(type = 'light') {
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.haptic) {
+          try {
+            window.webkit.messageHandlers.haptic.postMessage({ type: type });
+          } catch (e) {}
+        } else if (navigator.vibrate) {
+          try {
+            if (type === 'success') navigator.vibrate([20, 50, 30]);
+            else if (type === 'heavy') navigator.vibrate(40);
+            else navigator.vibrate(12);
+          } catch (e) {}
+        }
+      }
+      window.triggerHaptic = triggerHaptic;
 
       /* ========================================================================
          1. ДУАЛЬНЫЙ АУДИОДВИЖОК ДЛЯ iOS SAFARI & TOUCH ДЕВАЙСОВ
@@ -5137,15 +5181,19 @@
         // При смене культуры моментально глушим диктора
         AudioEngine.stopSpeech();
 
-        const data = ETHNO_DATABASE[cultId];
+        const data = (window.I18N && window.I18N.getEthnoData) ? window.I18N.getEthnoData(cultId, ETHNO_DATABASE) : ETHNO_DATABASE[cultId];
         if (!data) return;
         activeCultureId = cultId;
+        const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
 
         // Обновление заголовков и текстов шага 1
         const badgeEl = document.getElementById('questCultureCategoryBadge');
         if (badgeEl) badgeEl.textContent = data.sub;
         const titleEl = document.getElementById('questCultureMainTitle');
-        if (titleEl) titleEl.innerHTML = `${data.title} <span>· Наследие мастеров</span>`;
+        if (titleEl) {
+          const suffix = isEn ? '· Master Heritage' : '· Наследие мастеров';
+          titleEl.innerHTML = `${data.title} <span>${suffix}</span>`;
+        }
         const leadEl = document.getElementById('questStep1LeadText');
         if (leadEl) leadEl.textContent = data.lead;
         const quoteEl = document.getElementById('voiceGreetingQuoteText');
@@ -5169,7 +5217,7 @@
         const playBtn = document.getElementById('videoPlayPauseMockBtn');
         if (playBtn) playBtn.textContent = '▶';
         const videoStatus = document.getElementById('videoStatusPillLabel');
-        if (videoStatus) videoStatus.textContent = 'Режиссёрская экспозиция · 16:9';
+        if (videoStatus) videoStatus.textContent = isEn ? "Director's Cut · 16:9" : 'Режиссёрская экспозиция · 16:9';
 
         const mythTitle = document.getElementById('mythTitleHeading');
         if (mythTitle) mythTitle.textContent = data.mythTitle;
@@ -5193,7 +5241,8 @@
         const discoveryBanner = document.getElementById('loupeDiscoveryStatusBanner');
         if (discoveryBanner) {
           discoveryBanner.style.display = 'none';
-          discoveryBanner.innerHTML = `✦ <strong>Сакральный след зафиксирован:</strong> ${data.loupeScannerClue || ''}`;
+          const pfx = isEn ? '✦ <strong>Sacred trace locked:</strong> ' : '✦ <strong>Сакральный след зафиксирован:</strong> ';
+          discoveryBanner.innerHTML = `${pfx}${data.loupeScannerClue || ''}`;
         }
 
         // Шаг 4: 3D Артефакт
@@ -5212,7 +5261,7 @@
         const tCity = document.getElementById('ticketCityLabel');
         if (tCity) tCity.textContent = `${data.museumCity} · ${data.invNumber}`;
         const tPassCode = document.getElementById('ticketPassCodeLabel');
-        if (tPassCode) tPassCode.textContent = `Код: ${data.museumPassCode}`;
+        if (tPassCode) tPassCode.textContent = (isEn ? 'Code: ' : 'Код: ') + data.museumPassCode;
         const tKeeper = document.getElementById('ticketKeeperSecretWord');
         if (tKeeper) tKeeper.textContent = data.keeperSecretWord || '«БЫЛТЫР-1892»';
         const tSerial = document.getElementById('ticketStubSerial');
@@ -5223,7 +5272,7 @@
         if (stubPerfor) stubPerfor.classList.remove('is-torn');
         const tearBtn = document.getElementById('tearOffTicketStubBtn');
         if (tearBtn) {
-          tearBtn.textContent = 'Оторвать корешок';
+          tearBtn.textContent = isEn ? 'Tear Stub' : 'Оторвать корешок';
           tearBtn.disabled = false;
           tearBtn.style.color = '';
           tearBtn.style.borderColor = 'var(--ruby)';
@@ -5239,6 +5288,7 @@
       function switchQuestStep(stepNum, shouldAudioClick = true) {
         // При смене шага экспедиции диктор умолкает
         AudioEngine.stopSpeech();
+        triggerHaptic('light');
 
         activeQuestStep = stepNum;
         document.querySelectorAll('.quest-step-subview').forEach((s, idx) => {
@@ -5276,24 +5326,32 @@
         const container = document.getElementById('culturesCatalogCardsGrid');
         if (!container) return;
         const q = (document.getElementById('cultureSearchTextInput')?.value || '').toLowerCase().trim();
+        const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
 
-        const items = Object.values(ETHNO_DATABASE).filter(c => {
+        const items = Object.values(ETHNO_DATABASE).map(c => {
+          return (window.I18N && window.I18N.getEthnoData) ? window.I18N.getEthnoData(c.id, ETHNO_DATABASE) : c;
+        }).filter(c => {
           const matchCat = (currentRegionFilter === 'all') || (c.category === currentRegionFilter);
           const matchQ = !q || c.title.toLowerCase().includes(q) || c.lead.toLowerCase().includes(q);
           return matchCat && matchQ;
         });
 
+        const tagRussia = isEn ? 'Russia' : 'Россия';
+        const tagSilk = isEn ? 'Silk Road' : 'Шёлковый путь';
+        const expLabel = isEn ? 'Expedition 01–05' : 'Экспедиция 01–05';
+        const ariaPrefix = isEn ? 'Explore culture: ' : 'Исследовать культуру: ';
+
         container.innerHTML = items.map(c => `
-          <div class="culture-item-card" role="button" tabindex="0" aria-label="Исследовать культуру: ${c.title}" onclick="setupQuestCulture('${c.id}'); routeTo('quest');" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); setupQuestCulture('${c.id}'); routeTo('quest');}">
+          <div class="culture-item-card" role="button" tabindex="0" aria-label="${ariaPrefix}${c.title}" onclick="setupQuestCulture('${c.id}'); routeTo('quest'); triggerHaptic('light');" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); setupQuestCulture('${c.id}'); routeTo('quest'); triggerHaptic('light');}">
             <div class="culture-item-card__img-wrap">
               <img src="${c.imgModern}" alt="${c.title}" loading="lazy" />
-              <span class="culture-item-card__tag">${c.category === 'russia' ? 'Россия' : 'Шёлковый путь'}</span>
+              <span class="culture-item-card__tag">${c.category === 'russia' ? tagRussia : tagSilk}</span>
             </div>
             <div class="culture-item-card__body">
               <h3 class="culture-item-card__title">${c.title}</h3>
               <p class="culture-item-card__desc">${c.lead}</p>
               <div class="culture-item-card__footer">
-                <span>Экспедиция 01–05</span>
+                <span>${expLabel}</span>
                 <span class="circle-arrow-btn">→</span>
               </div>
             </div>
@@ -5573,11 +5631,14 @@
           instrEl.textContent = cultureData.loupeScannerClue;
         }
 
-        const letters = ['А', 'Б', 'В', 'Г'];
+        const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
+        const letters = isEn ? ['A', 'B', 'C', 'D'] : ['А', 'Б', 'В', 'Г'];
+        const varWord = isEn ? 'OPTION' : 'ВАРИАНТ';
+        const ariaWord = isEn ? 'Option' : 'Вариант';
         grid.innerHTML = cultureData.quizOptions.map((opt, idx) => `
-          <div class="quiz-option-card ${idx === 0 ? 'is-selected' : ''}" role="button" tabindex="0" aria-label="Вариант ${letters[idx] || (idx + 1)}: ${opt.name}" data-opt-id="${opt.id}">
+          <div class="quiz-option-card ${idx === 0 ? 'is-selected' : ''}" role="button" tabindex="0" aria-label="${ariaWord} ${letters[idx] || (idx + 1)}: ${opt.name}" data-opt-id="${opt.id}">
             <div class="quiz-option-card__header">
-              <span class="quiz-option-card__badge">0${idx + 1} · ВАРИАНТ ${letters[idx] || (idx + 1)}</span>
+              <span class="quiz-option-card__badge">0${idx + 1} · ${varWord} ${letters[idx] || (idx + 1)}</span>
               <span class="quiz-option-card__radio" aria-hidden="true"></span>
             </div>
             <div class="quiz-option-card__img-container">
@@ -5618,8 +5679,10 @@
           const fb = document.getElementById('quizFeedbackMessage');
           const grid = document.getElementById('quizOrnamentCards');
 
+          const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
           if (selectedQuizOption === data.correctChoice) {
             AudioEngine.playSuccessTrumpet();
+            triggerHaptic('success');
             unlockRelicForCulture(activeCultureId);
             if (grid) {
               const correctCard = grid.querySelector(`[data-opt-id="${data.correctChoice}"]`);
@@ -5627,17 +5690,22 @@
             }
             if (fb) {
               fb.style.color = '#34d399';
-              fb.innerHTML = '✦ <strong>Блестяще!</strong> Сакральный орнамент подлинника верифицирован. Артефакт разблокирован в вашей коллекции!';
+              fb.innerHTML = isEn
+                ? '✦ <strong>Brilliant!</strong> Sacred authentic ornament verified. Artifact unlocked in your treasury!'
+                : '✦ <strong>Блестяще!</strong> Сакральный орнамент подлинника верифицирован. Артефакт разблокирован в вашей коллекции!';
             }
-            triggerToast('✦ Реликвия открыта и добавлена в вашу коллекцию!');
+            triggerToast(isEn ? '✦ Relic unlocked and added to your collection!' : '✦ Реликвия открыта и добавлена в вашу коллекцию!');
             setTimeout(() => switchQuestStep(4), 1000);
           } else {
             AudioEngine.playEthnicBell(330, 0.8);
+            triggerHaptic('error');
             if (fb) {
               fb.style.color = 'var(--ruby)';
-              fb.textContent = 'Присмотритесь через лупу: изучите структуру шва и подсказку этнографа.';
+              fb.textContent = isEn
+                ? 'Look closer through the lens: examine weave structure and ethnographer hint.'
+                : 'Присмотритесь через лупу: изучите структуру шва и подсказку этнографа.';
             }
-            triggerToast('Попробуйте ещё раз, исследовав деталь через лупу.');
+            triggerToast(isEn ? 'Try once more after inspecting details with the loupe.' : 'Попробуйте ещё раз, исследовав деталь через лупу.');
           }
         });
       }
@@ -5944,11 +6012,16 @@
       function renderFolkloreAnthology() {
         const container = document.getElementById('folkloreCardsContainer');
         if (!container) return;
+        const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
+        const list = (window.I18N && window.I18N.getFolkloreList) ? window.I18N.getFolkloreList(FOLKLORE_ANTHOLOGY) : FOLKLORE_ANTHOLOGY;
 
-        const filtered = FOLKLORE_ANTHOLOGY.filter(item => {
+        const filtered = list.filter(item => {
           if (currentFolkloreCategory === 'all') return true;
           return item.catType === currentFolkloreCategory;
         });
+
+        const moralLabel = isEn ? 'Moral:' : 'Мораль:';
+        const readBtnLabel = isEn ? 'Read & Explore →' : 'Читать и исследовать →';
 
         container.innerHTML = filtered.map(item => `
           <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-md); padding:20px; display:flex; gap:16px; transition:transform 0.25s ease, border-color 0.25s ease;">
@@ -5962,12 +6035,12 @@
                 ${item.synopsis}
               </p>
               <div style="font-size:11px; color:var(--gold-light); margin-bottom:8px;">
-                <strong>Мораль:</strong> ${item.moral}
+                <strong>${moralLabel}</strong> ${item.moral}
               </div>
               <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                 <span style="font-size:10.5px; color:var(--text-dim);">${item.museumSource}</span>
-                <button class="action-chip" onclick="setupQuestCulture('${item.cultId}'); routeTo('quest');">
-                  Читать и исследовать →
+                <button class="action-chip" onclick="setupQuestCulture('${item.cultId}'); routeTo('quest'); triggerHaptic('light');">
+                  ${readBtnLabel}
                 </button>
               </div>
             </div>
@@ -6003,7 +6076,8 @@
       let currentAtlasFilter = 'all';
 
       function selectAtlasRegion(regionId) {
-        const data = ETHNO_DATABASE[regionId];
+        const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
+        const data = (window.I18N && window.I18N.getEthnoData) ? window.I18N.getEthnoData(regionId, ETHNO_DATABASE) : ETHNO_DATABASE[regionId];
         if (!data) return;
         activeAtlasRegionId = regionId;
 
@@ -6031,7 +6105,8 @@
 
         const dTitle = document.getElementById('atlasDossierTitle');
         if (dTitle) {
-          dTitle.innerHTML = `${data.title} <span>· Паспорт экспедиции</span>`;
+          const suffix = isEn ? '· Expedition Dossier' : '· Паспорт экспедиции';
+          dTitle.innerHTML = `${data.title} <span>${suffix}</span>`;
         }
 
         const dGreeting = document.getElementById('atlasDossierGreeting');
@@ -6245,7 +6320,8 @@
       let isRestorerLabInitialized = false;
 
       function renderRestorerArtifact(artId) {
-        const d = AI_RESTORER_DATABASE[artId];
+        const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
+        const d = (window.I18N && window.I18N.getRestorerData) ? window.I18N.getRestorerData(artId, AI_RESTORER_DATABASE) : AI_RESTORER_DATABASE[artId];
         if (!d) return;
         activeRestorerArtId = artId;
 
@@ -6597,42 +6673,45 @@
             const depth = parseFloat(depthSlider.value);
             const valText = document.getElementById('restorerDepthValText');
             const descText = document.getElementById('restorerDepthLayerDesc');
+            const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
             
-            let phaseName = '0.0–0.6 мм · Оксидная патина';
-            let desc = '0.0 – 0.6 мм: Оксидная патина (Ag₂O, CuCO₃), поверхностная минерализация и аутентичный налёт веков.';
+            let phaseName = isEn ? '0.0–0.6 mm · Oxide Patina' : '0.0–0.6 мм · Оксидная патина';
+            let desc = isEn ? '0.0 – 0.6 mm: Oxide patina (Ag₂O, CuCO₃), surface mineralization, and authentic patina of centuries.' : '0.0 – 0.6 мм: Оксидная патина (Ag₂O, CuCO₃), поверхностная минерализация и аутентичный налёт веков.';
             let contrast = 1;
             let brightness = 1;
 
             if (depth <= 0.6) {
-              phaseName = '0.0–0.6 мм · Оксидная патина';
-              desc = '0.0 – 0.6 мм: Оксидная патина (Ag₂O, CuCO₃), поверхностная минерализация и аутентичный налёт веков.';
+              phaseName = isEn ? '0.0–0.6 mm · Oxide Patina' : '0.0–0.6 мм · Оксидная патина';
+              desc = isEn ? '0.0 – 0.6 mm: Oxide patina (Ag₂O, CuCO₃), surface mineralization, and authentic patina of centuries.' : '0.0 – 0.6 мм: Оксидная патина (Ag₂O, CuCO₃), поверхностная минерализация и аутентичный налёт веков.';
               contrast = 1.0 + (depth * 0.15);
               brightness = 1.0 - (depth * 0.08);
             } else if (depth <= 1.4) {
-              phaseName = '0.7–1.4 мм · Ювелирное амальгамное золочение';
-              desc = '0.7 – 1.4 мм: Слой золочения высшей пробы, филигранная скань и ювелирная зернь. Детекция скрытых гравировок мастера.';
+              phaseName = isEn ? '0.7–1.4 mm · Amalgam Fire Gilding' : '0.7–1.4 мм · Ювелирное амальгамное золочение';
+              desc = isEn ? '0.7 – 1.4 mm: High-grade gilding layer, filigree wirework, and granule beadwork. Detection of master engravings.' : '0.7 – 1.4 мм: Слой золочения высшей пробы, филигранная скань и ювелирная зернь. Детекция скрытых гравировок мастера.';
               contrast = 1.15 + ((depth - 0.6) * 0.2);
               brightness = 0.95 + ((depth - 0.6) * 0.1);
             } else if (depth <= 2.2) {
-              phaseName = '1.5–2.2 мм · Кованый несущий сплав';
-              desc = '1.5 – 2.2 мм: Базовый кованый серебряно-медный каркас, волосяные микротрещины литья и структурный износ.';
+              phaseName = isEn ? '1.5–2.2 mm · Forged Load-Bearing Alloy' : '1.5–2.2 мм · Кованый несущий сплав';
+              desc = isEn ? '1.5 – 2.2 mm: Primary forged silver-copper matrix, casting micro-fissures, and structural wear.' : '1.5 – 2.2 мм: Базовый кованый серебряно-медный каркас, волосяные микротрещины литья и структурный износ.';
               contrast = 1.35;
               brightness = 0.88;
             } else {
-              phaseName = '2.3–3.0 мм · Глубинная кристаллическая решетка';
-              desc = '2.3 – 3.0 мм: Внутренняя рентгеноструктурная томография. Исследование микрокаверн и плотности металла.';
+              phaseName = isEn ? '2.3–3.0 mm · Deep Crystal Lattice' : '2.3–3.0 мм · Глубинная кристаллическая решетка';
+              desc = isEn ? '2.3 – 3.0 mm: Internal X-ray structural tomography. Investigation of micro-voids and metal density.' : '2.3 – 3.0 мм: Внутренняя рентгеноструктурная томография. Исследование микрокаверн и плотности металла.';
               contrast = 1.5;
               brightness = 0.80;
             }
 
-            if (valText) valText.textContent = `${depth.toFixed(1)} мм · ${phaseName.split('·')[1]?.trim() || phaseName}`;
+            const mmUnit = isEn ? 'mm' : 'мм';
+            if (valText) valText.textContent = `${depth.toFixed(1)} ${mmUnit} · ${phaseName.split('·')[1]?.trim() || phaseName}`;
             if (descText) descText.textContent = desc;
 
             if (vp) {
               vp.style.setProperty('--strata-contrast', contrast);
               vp.style.setProperty('--strata-brightness', brightness);
             }
-            logRestorerMessage(`[STRATA] Глубина среза: ${depth.toFixed(1)} мм · ${phaseName}`);
+            logRestorerMessage(isEn ? `[STRATA] Slice depth: ${depth.toFixed(1)} mm · ${phaseName}` : `[STRATA] Глубина среза: ${depth.toFixed(1)} мм · ${phaseName}`);
+            triggerHaptic('light');
             AudioEngine.playUiClick();
           });
         }
@@ -6759,7 +6838,14 @@
           { id: 'caucasus', name: 'Кубачинский мучал', reg: 'Кавказ', icon: './images/quiz/caucasus_2.jpg' }
         ];
 
-        shelf.innerHTML = relics.map(r => {
+        const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
+        const list = relics.map(r => {
+          return (window.I18N && window.I18N.getRelicInfo) ? window.I18N.getRelicInfo(r.id, r) : r;
+        });
+        const unlockedLabel = isEn ? '✓ Unlocked' : '✓ Разблокировано';
+        const lockedLabel = isEn ? '🔒 Locked' : '🔒 Заблокировано';
+
+        shelf.innerHTML = list.map(r => {
           const isUnlocked = unlockAll || unlockedRelicIds.has(r.id);
           return `
             <div class="relic-item-box ${isUnlocked ? 'is-unlocked' : 'is-locked'}" data-relic-id="${r.id}">
@@ -6767,7 +6853,7 @@
               <strong style="font-size:12.5px; color:var(--text-main); display:block;">${r.name}</strong>
               <span style="font-size:11px; color:var(--gold);">${r.reg}</span>
               <span style="display:block; font-size:10px; margin-top:4px; color:${isUnlocked ? '#34d399' : 'var(--text-dim)'}; font-weight:${isUnlocked ? '700' : '400'};">
-                ${isUnlocked ? '✓ Разблокировано' : '🔒 Заблокировано'}
+                ${isUnlocked ? unlockedLabel : lockedLabel}
               </span>
             </div>
           `;
@@ -7205,17 +7291,31 @@
         AudioEngine.playVarganTwang(105, 1.4);
         setTimeout(() => AudioEngine.playEthnicBell(880, 1.8), 120);
 
+        const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
         SacredOrnamentEngine.drawOrnament(canvas, motifsToUse, selectedSymmetry, selectedPalette, () => {
           if (card) {
             card.style.opacity = '1';
             card.style.transform = 'scale(1)';
           }
-          document.getElementById('aiPostcardTitleHeading').textContent = `Оберег: ${motifsText}`;
-          document.getElementById('aiPostcardMeaningText').textContent =
-            `Синтез сакральных мотивов (${motifsText}): розеточная симметрия ${selectedSymmetry} лучей, защита родового очага и преемственность поколений.`;
-          document.getElementById('aiPostcardMetadata').textContent =
-            `✦ Сакральный канон: ${selectedPalette === 'gold_sapphire' ? 'Золото и сапфир' : selectedPalette === 'ruby_graphite' ? 'Северная киноварь' : 'Поморский лен'} · РЭМ № OBR-${selectedSymmetry}-${Date.now().toString().slice(-4)}`;
-          triggerToast('✨ Сакральный оберег выкован!');
+          const titleHeading = document.getElementById('aiPostcardTitleHeading');
+          if (titleHeading) {
+            titleHeading.textContent = isEn ? `Amulet: ${motifsText}` : `Оберег: ${motifsText}`;
+          }
+          const meaningText = document.getElementById('aiPostcardMeaningText');
+          if (meaningText) {
+            meaningText.textContent = isEn
+              ? `Synthesis of sacred motifs (${motifsText}): rosette symmetry of ${selectedSymmetry} rays, protection of the ancestral hearth, and continuity of generations.`
+              : `Синтез сакральных мотивов (${motifsText}): розеточная симметрия ${selectedSymmetry} лучей, защита родового очага и преемственность поколений.`;
+          }
+          const metaText = document.getElementById('aiPostcardMetadata');
+          if (metaText) {
+            const palName = selectedPalette === 'gold_sapphire' ? (isEn ? 'Gold & Sapphire' : 'Золото и сапфир') :
+                            selectedPalette === 'ruby_graphite' ? (isEn ? 'Northern Cinnabar' : 'Северная киноварь') : (isEn ? 'Pomeranian Linen' : 'Поморский лен');
+            metaText.textContent = isEn
+              ? `✦ Sacred standard: ${palName} · REM No. OBR-${selectedSymmetry}-${Date.now().toString().slice(-4)}`
+              : `✦ Сакральный канон: ${palName} · РЭМ № OBR-${selectedSymmetry}-${Date.now().toString().slice(-4)}`;
+          }
+          triggerToast(isEn ? '✨ Sacred amulet synthesized!' : '✨ Сакральный оберег выкован!');
         });
       }
 
@@ -7352,11 +7452,74 @@
           const newTheme = (currentTheme === 'dark') ? 'cream' : 'dark';
           html.setAttribute('data-theme', newTheme);
           document.getElementById('themeIconSymbol').textContent = (newTheme === 'dark') ? '☀️' : '🌙';
-          document.getElementById('themeLabelText').textContent = (newTheme === 'dark') ? 'Светлая' : 'Тёмная';
+          const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
+          document.getElementById('themeLabelText').textContent = (newTheme === 'dark') ? (isEn ? 'Light' : 'Светлая') : (isEn ? 'Dark' : 'Тёмная');
+          triggerHaptic('light');
           AudioEngine.playUiClick();
-          triggerToast(`Тема переключена: ${newTheme === 'dark' ? 'Тёмная ночь' : 'Пергамент'}`);
+          triggerToast(isEn ? `Theme switched: ${newTheme === 'dark' ? 'Dark Night' : 'Parchment'}` : `Тема переключена: ${newTheme === 'dark' ? 'Тёмная ночь' : 'Пергамент'}`);
         });
       }
+
+      /* ========================================================================
+         ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА (RU / EN) С СОХРАНЕНИЕМ И РЕАКТИВНОЙ ПЕРЕРИСОВКОЙ
+         ======================================================================== */
+      const langBtn = document.getElementById('langToggleBtn');
+      if (langBtn) {
+        langBtn.addEventListener('click', () => {
+          if (window.I18N) {
+            const next = window.I18N.toggleLanguage();
+            triggerHaptic('medium');
+            AudioEngine.playUiClick();
+            triggerToast(next === 'en' ? 'Language switched to English' : 'Язык изменён на русский');
+          }
+        });
+      }
+
+      const mobileDrawerLangBtn = document.getElementById('mobileDrawerLangBtn');
+      if (mobileDrawerLangBtn) {
+        mobileDrawerLangBtn.addEventListener('click', () => {
+          if (window.I18N) {
+            const next = window.I18N.toggleLanguage();
+            triggerHaptic('medium');
+            AudioEngine.playUiClick();
+            triggerToast(next === 'en' ? 'Language switched to English' : 'Язык изменён на русский');
+          }
+        });
+      }
+
+      window.addEventListener('artefact:languageChanged', (e) => {
+        const lang = e.detail ? e.detail.lang : 'ru';
+        
+        // Re-render active views
+        if (typeof renderCulturesCatalog === 'function') renderCulturesCatalog();
+        if (typeof setupQuestCulture === 'function') setupQuestCulture(activeCultureId, false);
+        if (typeof selectAtlasRegion === 'function') selectAtlasRegion(activeAtlasRegionId);
+        if (typeof renderRestorerArtifact === 'function') renderRestorerArtifact(activeRestorerArtId);
+        if (typeof renderPetroArtifact === 'function') renderPetroArtifact(activePetroId);
+        if (typeof renderFolkloreAnthology === 'function') renderFolkloreAnthology();
+        if (typeof renderRelicsShelf === 'function') renderRelicsShelf();
+        if (typeof generateWorkshopOrnament === 'function') generateWorkshopOrnament();
+
+        // Update sound label
+        const sndLbl = document.getElementById('soundLabelText');
+        if (sndLbl) {
+          const isPlaying = AudioEngine && AudioEngine.isAmbientPlaying && AudioEngine.isAmbientPlaying();
+          sndLbl.textContent = isPlaying ? (lang === 'en' ? 'Playing' : 'Играет') : (lang === 'en' ? 'Ambient' : 'Эмбиент');
+        }
+
+        // Update theme label
+        const thmLbl = document.getElementById('themeLabelText');
+        if (thmLbl) {
+          const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+          thmLbl.textContent = (currentTheme === 'dark') ? (lang === 'en' ? 'Light' : 'Светлая') : (lang === 'en' ? 'Dark' : 'Тёмная');
+        }
+
+        // Update view label
+        const viewLbl = document.getElementById('viewModeLabelText');
+        if (viewLbl) {
+          viewLbl.textContent = (lang === 'en' ? 'View' : 'Вид');
+        }
+      });
 
       const mobilePreviewBtn = document.getElementById('mobilePreviewToggleBtn');
       if (mobilePreviewBtn) {
@@ -7377,6 +7540,7 @@
         openDrawerBtn.addEventListener('click', () => {
           const isOpen = drawerMenu.classList.toggle('is-open');
           openDrawerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+          triggerHaptic('light');
           AudioEngine.playUiClick();
         });
       }
@@ -7385,6 +7549,7 @@
         closeDrawerBtn.addEventListener('click', () => {
           drawerMenu.classList.remove('is-open');
           if (openDrawerBtn) openDrawerBtn.setAttribute('aria-expanded', 'false');
+          triggerHaptic('light');
           AudioEngine.playUiClick();
         });
       }
@@ -7497,7 +7662,8 @@
       let isPetroInitialized = false;
 
       function renderPetroArtifact(petroId) {
-        const d = PETROGLYPHS_DATABASE[petroId];
+        const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
+        const d = (window.I18N && window.I18N.getPetroData) ? window.I18N.getPetroData(petroId, PETROGLYPHS_DATABASE) : PETROGLYPHS_DATABASE[petroId];
         if (!d) return;
         activePetroId = petroId;
 
@@ -7514,7 +7680,7 @@
         const sacredEl = document.getElementById('petroHudSacred');
         if (sacredEl) sacredEl.textContent = d.sacredMeaning;
         const sourceEl = document.getElementById('petroHudSource');
-        if (sourceEl) sourceEl.textContent = `Источник: ${d.source}`;
+        if (sourceEl) sourceEl.textContent = (isEn ? 'Source: ' : 'Источник: ') + d.source;
 
         // Обновляем список ключевых узлов
         const list = document.getElementById('petroHotspotsList');
@@ -7878,6 +8044,9 @@ ${d.svgCode}`;
       const initialCulture = (initialRoute.cultureId && ETHNO_DATABASE[initialRoute.cultureId]) ? initialRoute.cultureId : 'tatarstan';
       const initialStep = (initialRoute.step && initialRoute.step >= 1 && initialRoute.step <= 5) ? initialRoute.step : 1;
 
+      if (window.I18N) {
+        window.I18N.setLanguage(window.I18N.getLang());
+      }
       setupQuestCulture(initialCulture, false);
       switchQuestStep(initialStep, false);
       renderCulturesCatalog();

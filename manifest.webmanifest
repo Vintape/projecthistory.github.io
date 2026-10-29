@@ -1,0 +1,32 @@
+{
+  "name": "АРТЕФАКТ — Цифровой этнографический музей",
+  "short_name": "АРТЕФАКТ",
+  "description": "Интерактивная цифровая платформа культурного наследия: мифология, эпос, 3D-артефакты, AI-реставрация и дешифровка петроглифов.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#070d1e",
+  "theme_color": "#070d1e",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./images/app_icon_192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./images/app_icon_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["education", "museum", "culture", "travel"],
+  "lang": "ru"
+}

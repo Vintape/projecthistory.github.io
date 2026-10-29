@@ -275,28 +275,159 @@ def run_cdp_test():
         print(f"  -> Relics rendered on shelf: {relics_count}")
         assert relics_count == 8, f"Expected 8 relics, got {relics_count}"
 
-        # 5.8 Test Responsive Mobile Viewport (375x812)
-        print("\nTesting Responsive Mobile Viewport (375px):")
-        send_cmd('Emulation.setDeviceMetricsOverride', {
-            'width': 375,
-            'height': 812,
-            'deviceScaleFactor': 3,
-            'mobile': True
-        })
-        time.sleep(0.5)
-        m_desktop_nav = exec_js('window.getComputedStyle(document.querySelector(".desktop-nav")).display')
-        m_burger = exec_js('window.getComputedStyle(document.querySelector(".mobile-burger-btn")).display')
-        m_scroll_w = exec_js('document.documentElement.scrollWidth')
-        print(f"  -> Mobile desktop_nav display: {m_desktop_nav} (expected 'none')")
-        print(f"  -> Mobile burger display: {m_burger} (expected 'flex')")
-        print(f"  -> Mobile scrollWidth: {m_scroll_w} (expected <= 376)")
-        assert m_desktop_nav == "none", f"desktop-nav not hidden on mobile: {m_desktop_nav}"
-        assert m_burger == "flex", f"burger not visible on mobile: {m_burger}"
-        assert m_scroll_w <= 376, f"Horizontal overflow on mobile: scrollWidth={m_scroll_w}"
+        # 5.8 Test Responsive Mobile Viewports (375px SE & 390px iPhone 14/15 Pro)
+        print("\nTesting Responsive Mobile Viewports (375px SE & 390px iPhone 14/15 Pro):")
+        for width, height, name in [(375, 812, "iPhone SE/Mini"), (390, 844, "iPhone 14/15 Pro")]:
+            send_cmd('Emulation.setDeviceMetricsOverride', {
+                'width': width,
+                'height': height,
+                'deviceScaleFactor': 3,
+                'mobile': True
+            })
+            time.sleep(0.4)
+            m_desktop_nav = exec_js('window.getComputedStyle(document.querySelector(".desktop-nav")).display')
+            m_burger = exec_js('window.getComputedStyle(document.querySelector(".mobile-burger-btn")).display')
+            m_scroll_w = exec_js('document.documentElement.scrollWidth')
+            print(f"  -> [{name} {width}x{height}] desktop_nav: {m_desktop_nav} | burger: {m_burger} | scrollWidth: {m_scroll_w} (expected <= {width})")
+            assert m_desktop_nav == "none", f"desktop-nav not hidden on {name}: {m_desktop_nav}"
+            assert m_burger == "flex", f"burger not visible on {name}: {m_burger}"
+            assert m_scroll_w <= width, f"Horizontal overflow on {name}: scrollWidth={m_scroll_w} > {width}"
+
+        # 5.9 Test iOS Native Haptic Feedback Bridge
+        print("\nTesting iOS Native WebKit Haptic Bridge:")
+        exec_js('''(() => {
+            window._hapticCalls = [];
+            window.webkit = {
+                messageHandlers: {
+                    haptic: {
+                        postMessage: function(msg) {
+                            window._hapticCalls.push(msg);
+                        }
+                    }
+                }
+            };
+        })()''')
+
+        # Trigger haptics via bridge calls
+        exec_js('triggerHaptic("medium");')
+        exec_js('triggerHaptic("success");')
+        haptic_count = exec_js('window._hapticCalls.length')
+        last_haptic = exec_js('window._hapticCalls[window._hapticCalls.length - 1].type')
+        print(f"  -> Haptic bridge calls recorded: {haptic_count} | Last type: {last_haptic}")
+        assert haptic_count >= 2 and last_haptic == "success", "Haptic bridge failed"
+
+        # 5.10 Test Mobile Drawer Navigation & Drawer Language Switch
+        print("\nTesting Mobile Drawer Navigation & Language Switch:")
+        exec_js('document.getElementById("mobileMenuOpenBtn").click();')
+        time.sleep(0.3)
+        drawer_active = exec_js('document.getElementById("mobileDrawerMenu").classList.contains("is-open")')
+        print(f"  -> Mobile drawer open: {drawer_active}")
+        assert drawer_active, "Mobile drawer failed to open"
+
+        # Switch language to English from mobile drawer
+        exec_js('document.getElementById("mobileDrawerLangBtn").click();')
+        time.sleep(0.3)
+        current_lang = exec_js('window.I18N.getLang()')
+        stored_lang = exec_js('localStorage.getItem("artefact_lang")')
+        print(f"  -> Lang switched via drawer: {current_lang} | LocalStorage: {stored_lang}")
+        assert current_lang == "en" and stored_lang == "en", "Language switch failed"
+
+        # Close drawer
+        exec_js('document.getElementById("mobileDrawerCloseBtn").click();')
+        time.sleep(0.3)
+        drawer_closed = not exec_js('document.getElementById("mobileDrawerMenu").classList.contains("is-open")')
+        print(f"  -> Mobile drawer closed: {drawer_closed}")
+        assert drawer_closed, "Mobile drawer failed to close"
 
         # Restore desktop viewport
         send_cmd('Emulation.clearDeviceMetricsOverride')
         time.sleep(0.3)
+
+        # 5.11 Comprehensive English Localization Verification across All Screens
+        print("\nVerifying Complete English Localization across All Screens:")
+        en_title = exec_js('document.title')
+        print(f"  -> English Document title: {en_title}")
+        assert "History Leaves a Trace" in en_title or "ARTEFACT" in en_title, f"Unexpected title: {en_title}"
+
+        lang_btn_lbl = exec_js('document.getElementById("langLabelText").textContent')
+        print(f"  -> Desktop Lang Toggle button label: {lang_btn_lbl} (should suggest switching to RU)")
+        assert lang_btn_lbl == "RU", f"Expected 'RU' toggle label in English mode, got '{lang_btn_lbl}'"
+
+        # Screen 1: Hero
+        exec_js('routeTo("hero", false);')
+        hero_tag = exec_js('document.querySelector(\'[data-i18n="hero_badge"]\').textContent')
+        print(f"  -> Hero tag: {hero_tag}")
+        assert "Digital Cultural Heritage" in hero_tag, f"Hero tag not translated: {hero_tag}"
+
+        # Screen 2: Cultures Catalog
+        exec_js('routeTo("cultures", false);')
+        first_cult_card_tag = exec_js('document.querySelector(".culture-item-card__tag").textContent')
+        first_cult_card_footer = exec_js('document.querySelector(".culture-item-card__footer span").textContent')
+        print(f"  -> Cultures catalog card: tag='{first_cult_card_tag}', footer='{first_cult_card_footer}'")
+        assert first_cult_card_tag in ("Russia", "Silk Road"), f"Culture tag not in English: {first_cult_card_tag}"
+        assert "Expedition" in first_cult_card_footer, f"Culture footer not in English: {first_cult_card_footer}"
+
+        # Screen 3: Quest
+        exec_js('routeTo("quest", false);')
+        exec_js('setupQuestCulture("pomorye", false);')
+        quest_badge = exec_js('document.getElementById("questCultureCategoryBadge").textContent')
+        quest_title = exec_js('document.getElementById("questCultureMainTitle").textContent')
+        print(f"  -> Quest Pomorye badge: '{quest_badge}' | Title: '{quest_title}'")
+        assert "Master Heritage" in quest_title, f"Quest title missing Master Heritage: {quest_title}"
+
+        # Screen 4: EthnoAtlas
+        exec_js('routeTo("atlas", false);')
+        exec_js('selectAtlasRegion("pomorye");')
+        atlas_title = exec_js('document.getElementById("atlasDossierTitle").textContent')
+        print(f"  -> Atlas Dossier title: '{atlas_title}'")
+        assert "Expedition Dossier" in atlas_title, f"Atlas title not in English: {atlas_title}"
+
+        # Screen 5: AI Restorer
+        exec_js('routeTo("restorer", false);')
+        exec_js('renderRestorerArtifact("khasite");')
+        rest_title = exec_js('document.getElementById("restorerArtTitle").textContent')
+        print(f"  -> AI Restorer title: '{rest_title}'")
+        assert "Khasite" in rest_title or "Breast" in rest_title, f"Restorer title not in English: {rest_title}"
+
+        # Screen 6: AI Petro-Lens Decipherer
+        exec_js('routeTo("decipherer", false);')
+        exec_js('renderPetroArtifact("altai");')
+        petro_title = exec_js('document.getElementById("petroHudTitle").textContent')
+        print(f"  -> Petro Decipherer title: '{petro_title}'")
+        assert "Deer" in petro_title or "Kalbak-Tash" in petro_title, f"Petro title not in English: {petro_title}"
+
+        # Screen 7: Folklore Anthology
+        exec_js('routeTo("folklore", false);')
+        folk_story_title = exec_js('document.querySelector("#folkloreCardsContainer h3").textContent')
+        folk_moral_label = exec_js('document.querySelector("#folkloreCardsContainer strong").textContent')
+        print(f"  -> Folklore story title: '{folk_story_title}' | Moral label: '{folk_moral_label}'")
+        assert "Moral:" in folk_moral_label, f"Folklore moral label not in English: {folk_moral_label}"
+
+        # Screen 8: Relics Collection
+        exec_js('routeTo("collection", false);')
+        relic_name = exec_js('document.querySelector("#relicsShelfContainer strong").textContent')
+        print(f"  -> Relic shelf item: '{relic_name}'")
+        assert relic_name, "Relic shelf empty in English"
+
+        # Screen 9: Craft Workshop
+        exec_js('routeTo("workshop", false);')
+        exec_js('document.getElementById("runAiPostcardGenerationBtn").click();')
+        time.sleep(0.3)
+        amulet_title = exec_js('document.getElementById("aiPostcardTitleHeading").textContent')
+        print(f"  -> Workshop amulet title: '{amulet_title}'")
+        assert "Amulet:" in amulet_title, f"Amulet title not in English: {amulet_title}"
+
+        # 5.12 Switch back to Russian and verify restore
+        print("\nTesting Language Switch back to Russian:")
+        exec_js('document.getElementById("langToggleBtn").click();')
+        time.sleep(0.3)
+        ru_lang = exec_js('window.I18N.getLang()')
+        ru_title = exec_js('document.title')
+        ru_btn_lbl = exec_js('document.getElementById("langLabelText").textContent')
+        print(f"  -> Switched back to: {ru_lang} | Title: {ru_title} | Toggle Button: {ru_btn_lbl}")
+        assert ru_lang == "ru", "Failed switching back to Russian"
+        assert "АРТЕФАКТ" in ru_title, f"Unexpected Russian title: {ru_title}"
+        assert ru_btn_lbl == "EN", f"Expected toggle button 'EN' in Russian mode, got '{ru_btn_lbl}'"
 
         # 6. Check console errors and exceptions
         print("\n" + "=" * 70)
