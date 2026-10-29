@@ -136,21 +136,21 @@ def run_cdp_test():
         print("\nVerifying screen transitions:")
         for sc in screens:
             active_id = exec_js(f'''(async () => {{
-                routeTo("{sc}", false);
+                window.routeTo("{sc}", false);
                 await new Promise(r => setTimeout(r, 80));
                 const s = document.getElementById("screen-{sc}");
                 return s && s.classList.contains("is-visible") ? "OK" : "FAILED";
             }})()''')
-            print(f"  -> routeTo('{sc}'): {active_id}")
+            print(f"  -> window.routeTo('{sc}'): {active_id}")
             assert active_id == "OK", f"Screen {sc} failed to become visible"
 
         # 4. Test EthnoAtlas Map (Screen 9) & Map pins hover / click stability
         print("\nTesting EthnoAtlas map pins and hover stability (Screen 9):")
-        exec_js('routeTo("atlas", false);')
+        exec_js('window.routeTo("atlas", false);')
         atlas_regions = ['pomorye', 'tatarstan', 'caucasus', 'altai', 'yakutia', 'kamchatka', 'kazakhstan', 'uzbekistan']
         for reg in atlas_regions:
             sel_res = exec_js(f'''(() => {{
-                selectAtlasRegion("{reg}");
+                window.selectAtlasRegion("{reg}");
                 const node = document.getElementById("node-{reg}");
                 const isActive = node && node.classList.contains("is-active");
                 const dossierTitle = document.getElementById("atlasDossierTitle").textContent;
@@ -178,7 +178,7 @@ def run_cdp_test():
 
         # 5. Test AI Archaeometric Restorer & Spectral Scanner
         print("\nTesting AI Archaeometric Restorer (Screen 10):")
-        exec_js('routeTo("restorer", false);')
+        exec_js('window.routeTo("restorer", false);')
 
         # Test artifact switching & dedicated 3D pedestal photos
         for art in ['khasite', 'scythian', 'yakut']:
@@ -227,7 +227,7 @@ def run_cdp_test():
 
         # 5.5 Test AI Petro-Lens & Symbol Decipherer (Screen 11)
         print("\nTesting AI Petro-Lens & Symbol Decipherer (Screen 11):")
-        exec_js('routeTo("decipherer", false);')
+        exec_js('window.routeTo("decipherer", false);')
 
         # Test switching across all 5 petroglyphs
         petros = ['altai', 'pomorye', 'bulgar', 'yakut', 'scythian']
@@ -260,7 +260,7 @@ def run_cdp_test():
 
         # 5.6 Test Workshop & Vision AI Symbol Decoder (Screen 8)
         print("\nTesting Craft Workshop & Vision AI Symbol Decoder (Screen 8):")
-        exec_js('routeTo("workshop", false);')
+        exec_js('window.routeTo("workshop", false);')
         exec_js('document.getElementById("runAiSymbolVisionBtn").click();')
         time.sleep(1.4)
         vision_display = exec_js('document.getElementById("aiSymbolVisionResultCard").style.display')
@@ -270,7 +270,7 @@ def run_cdp_test():
 
         # 5.7 Test Relics Treasury persistence (Screen 11)
         print("\nTesting Relics Treasury & Unlocking Persistence:")
-        exec_js('routeTo("collection", false);')
+        exec_js('window.routeTo("collection", false);')
         relics_count = exec_js('document.querySelectorAll("#relicsShelfContainer .relic-item-box").length')
         print(f"  -> Relics rendered on shelf: {relics_count}")
         assert relics_count == 8, f"Expected 8 relics, got {relics_count}"
@@ -354,13 +354,13 @@ def run_cdp_test():
         assert lang_btn_lbl == "RU", f"Expected 'RU' toggle label in English mode, got '{lang_btn_lbl}'"
 
         # Screen 1: Hero
-        exec_js('routeTo("hero", false);')
+        exec_js('window.routeTo("hero", false);')
         hero_tag = exec_js('document.querySelector(\'[data-i18n="hero_badge"]\').textContent')
         print(f"  -> Hero tag: {hero_tag}")
         assert "Digital Cultural Heritage" in hero_tag, f"Hero tag not translated: {hero_tag}"
 
         # Screen 2: Cultures Catalog
-        exec_js('routeTo("cultures", false);')
+        exec_js('window.routeTo("cultures", false);')
         first_cult_card_tag = exec_js('document.querySelector(".culture-item-card__tag").textContent')
         first_cult_card_footer = exec_js('document.querySelector(".culture-item-card__footer span").textContent')
         print(f"  -> Cultures catalog card: tag='{first_cult_card_tag}', footer='{first_cult_card_footer}'")
@@ -368,7 +368,7 @@ def run_cdp_test():
         assert "Expedition" in first_cult_card_footer, f"Culture footer not in English: {first_cult_card_footer}"
 
         # Screen 3: Quest
-        exec_js('routeTo("quest", false);')
+        exec_js('window.routeTo("quest", false);')
         exec_js('setupQuestCulture("pomorye", false);')
         quest_badge = exec_js('document.getElementById("questCultureCategoryBadge").textContent')
         quest_title = exec_js('document.getElementById("questCultureMainTitle").textContent')
@@ -376,41 +376,41 @@ def run_cdp_test():
         assert "Master Heritage" in quest_title, f"Quest title missing Master Heritage: {quest_title}"
 
         # Screen 4: EthnoAtlas
-        exec_js('routeTo("atlas", false);')
-        exec_js('selectAtlasRegion("pomorye");')
+        exec_js('window.routeTo("atlas", false);')
+        exec_js('window.selectAtlasRegion("pomorye");')
         atlas_title = exec_js('document.getElementById("atlasDossierTitle").textContent')
         print(f"  -> Atlas Dossier title: '{atlas_title}'")
         assert "Expedition Dossier" in atlas_title, f"Atlas title not in English: {atlas_title}"
 
         # Screen 5: AI Restorer
-        exec_js('routeTo("restorer", false);')
+        exec_js('window.routeTo("restorer", false);')
         exec_js('renderRestorerArtifact("khasite");')
         rest_title = exec_js('document.getElementById("restorerArtTitle").textContent')
         print(f"  -> AI Restorer title: '{rest_title}'")
         assert "Khasite" in rest_title or "Breast" in rest_title, f"Restorer title not in English: {rest_title}"
 
         # Screen 6: AI Petro-Lens Decipherer
-        exec_js('routeTo("decipherer", false);')
+        exec_js('window.routeTo("decipherer", false);')
         exec_js('renderPetroArtifact("altai");')
         petro_title = exec_js('document.getElementById("petroHudTitle").textContent')
         print(f"  -> Petro Decipherer title: '{petro_title}'")
         assert "Deer" in petro_title or "Kalbak-Tash" in petro_title, f"Petro title not in English: {petro_title}"
 
         # Screen 7: Folklore Anthology
-        exec_js('routeTo("folklore", false);')
+        exec_js('window.routeTo("folklore", false);')
         folk_story_title = exec_js('document.querySelector("#folkloreCardsContainer h3").textContent')
         folk_moral_label = exec_js('document.querySelector("#folkloreCardsContainer strong").textContent')
         print(f"  -> Folklore story title: '{folk_story_title}' | Moral label: '{folk_moral_label}'")
         assert "Moral:" in folk_moral_label, f"Folklore moral label not in English: {folk_moral_label}"
 
         # Screen 8: Relics Collection
-        exec_js('routeTo("collection", false);')
+        exec_js('window.routeTo("collection", false);')
         relic_name = exec_js('document.querySelector("#relicsShelfContainer strong").textContent')
         print(f"  -> Relic shelf item: '{relic_name}'")
         assert relic_name, "Relic shelf empty in English"
 
         # Screen 9: Craft Workshop
-        exec_js('routeTo("workshop", false);')
+        exec_js('window.routeTo("workshop", false);')
         exec_js('document.getElementById("runAiPostcardGenerationBtn").click();')
         time.sleep(0.3)
         amulet_title = exec_js('document.getElementById("aiPostcardTitleHeading").textContent')
@@ -419,7 +419,7 @@ def run_cdp_test():
         assert "Kazan Tulip" in amulet_title or "Tulip" in amulet_title, f"Motif names not translated in amulet title: {amulet_title}"
 
         # Test EthnoAtlas Territory Cards in English
-        exec_js('routeTo("atlas", false);')
+        exec_js('window.routeTo("atlas", false);')
         first_card_btn = exec_js('document.querySelector("#atlasTerritoryGrid .atlas-territory-card div:last-child span:last-child").textContent')
         print(f"  -> Atlas territory card action label: '{first_card_btn}'")
         assert "Select →" in first_card_btn, f"Atlas territory card not in English: {first_card_btn}"
@@ -434,14 +434,14 @@ def run_cdp_test():
         assert geo_ural == "URAL MOUNTAINS", f"Ural not translated: {geo_ural}"
 
         # Test Quest Step 4 Era Tag
-        exec_js('routeTo("quest", false);')
+        exec_js('window.routeTo("quest", false);')
         exec_js('switchQuestStep(4);')
         era_tag_val = exec_js('document.getElementById("artifactEraTag").textContent')
         print(f"  -> Quest Step 4 Era Tag: '{era_tag_val}'")
         assert ("19th" in era_tag_val or "century" in era_tag_val.lower() or "c." in era_tag_val), f"Era tag not localized in English: {era_tag_val}"
 
         # Test Folklore Read Time in English
-        exec_js('routeTo("folklore", false);')
+        exec_js('window.routeTo("folklore", false);')
         folk_span = exec_js('document.querySelector("#folkloreCardsContainer span").textContent')
         print(f"  -> Folklore card header: '{folk_span}'")
         assert "min" in folk_span and "мин" not in folk_span, f"Folklore read time not localized: {folk_span}"
@@ -450,7 +450,7 @@ def run_cdp_test():
         print("\nVerifying Zero Cyrillic Nodes Across All 9 Screens (English Mode):")
         screens_to_check = ["hero", "cultures", "quest", "atlas", "restorer", "decipherer", "folklore", "collection", "workshop"]
         for sc in screens_to_check:
-            exec_js(f'routeTo("{sc}", false);')
+            exec_js(f'window.routeTo("{sc}", false);')
             time.sleep(0.05)
             cyr_count = exec_js(f'''(() => {{
                 const el = document.getElementById("screen-{sc}");
@@ -472,7 +472,7 @@ def run_cdp_test():
             assert cyr_count == 0, f"Found {cyr_count} Cyrillic text nodes on screen '{sc}' in English mode"
 
         # Test Field Passport Modal in English
-        exec_js('routeTo("quest", false);')
+        exec_js('window.routeTo("quest", false);')
         exec_js('const btn = document.getElementById("exportPassportBtn"); if (btn) btn.click();')
         time.sleep(0.2)
         passport_title = exec_js('document.getElementById("passportModalTitle").textContent')
