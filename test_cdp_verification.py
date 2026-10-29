@@ -159,7 +159,7 @@ def run_cdp_test():
             print(f"  -> Atlas region '{reg}': {sel_res}")
             assert sel_res != "FAILED", f"Region {reg} failed activation"
 
-        # Check sonar-ring pointer-events rule
+        # Check sonar-ring and hitbox pointer-events rules (jitter-free guarantee)
         sonar_pe = exec_js('''(() => {
             const ring = document.querySelector(".sonar-ring");
             return window.getComputedStyle(ring).pointerEvents;
@@ -167,21 +167,31 @@ def run_cdp_test():
         print(f"  -> .sonar-ring computed pointer-events: {sonar_pe}")
         assert sonar_pe == "none", f"Expected pointer-events: none on sonar-ring, got {sonar_pe}"
 
+        hitboxes_count = exec_js('document.querySelectorAll(".map-node-hitbox").length')
+        print(f"  -> Static map pin hitboxes: {hitboxes_count}")
+        assert hitboxes_count == 8, f"Expected 8 hitboxes, got {hitboxes_count}"
+
+        hitbox_pe = exec_js('window.getComputedStyle(document.querySelector(".map-node-hitbox")).pointerEvents')
+        circle_pe = exec_js('window.getComputedStyle(document.querySelector(".map-region-node circle:not(.sonar-ring)")).pointerEvents')
+        print(f"  -> Hitbox pointer-events: {hitbox_pe} | Circle pointer-events: {circle_pe}")
+        assert hitbox_pe == "all" and circle_pe == "none", "Jitter-free pointer-events violation"
+
         # 5. Test AI Archaeometric Restorer & Spectral Scanner
         print("\nTesting AI Archaeometric Restorer (Screen 10):")
         exec_js('routeTo("restorer", false);')
 
-        # Test artifact switching
+        # Test artifact switching & dedicated 3D pedestal photos
         for art in ['khasite', 'scythian', 'yakut']:
             art_res = exec_js(f'''(() => {{
                 renderRestorerArtifact("{art}");
                 const title = document.getElementById("restorerArtTitle").textContent;
                 const before = document.getElementById("restorerImgBefore").getAttribute("src");
                 const after = document.getElementById("restorerImgAfter").getAttribute("src");
-                return {{ title, before, after }};
+                const d = AI_RESTORER_DATABASE["{art}"];
+                return {{ title, before, after, pedestal: d.pedestalImg }};
             }})()''')
-            print(f"  -> Artifact '{art}': {art_res['title']} | Before: {art_res['before']} | After: {art_res['after']}")
-            assert art_res['before'] and art_res['after'], f"Missing image for {art}"
+            print(f"  -> Artifact '{art}': {art_res['title']} | Before: {art_res['before']} | Pedestal: {art_res['pedestal']}")
+            assert art_res['before'] and art_res['after'] and art_res['pedestal'], f"Missing image for {art}"
 
         # Test spectral modes
         for mode in ['visible', 'uv', 'xray', 'ir']:
@@ -201,6 +211,19 @@ def run_cdp_test():
         hotspot_count = exec_js('document.querySelectorAll(".restorer-hotspot-pin").length')
         print(f"  -> Active hotspots on artifact: {hotspot_count}")
         assert hotspot_count >= 3, f"Expected at least 3 hotspots, got {hotspot_count}"
+
+        # Test Micro-CT Stratigraphy Slicer
+        print("  -> Testing Micro-CT Stratigraphy Slicer...")
+        exec_js('''(() => {
+            const s = document.getElementById("restorerDepthSlider");
+            if (s) {
+                s.value = "1.2";
+                s.dispatchEvent(new Event("input"));
+            }
+        })()''')
+        depth_val = exec_js('document.getElementById("restorerDepthValText").textContent')
+        print(f"  -> Stratigraphy depth 1.2mm readout: {depth_val}")
+        assert "1.2" in depth_val, f"Unexpected stratigraphy depth readout: {depth_val}"
 
         # 5.5 Test AI Petro-Lens & Symbol Decipherer (Screen 11)
         print("\nTesting AI Petro-Lens & Symbol Decipherer (Screen 11):")
@@ -234,6 +257,46 @@ def run_cdp_test():
         coords = exec_js('document.getElementById("petroLensCoords").textContent')
         print(f"  -> Lens coordinates at (300, 200): {coords}")
         assert "300" in coords and "200" in coords, f"Coordinates update failed: {coords}"
+
+        # 5.6 Test Workshop & Vision AI Symbol Decoder (Screen 8)
+        print("\nTesting Craft Workshop & Vision AI Symbol Decoder (Screen 8):")
+        exec_js('routeTo("workshop", false);')
+        exec_js('document.getElementById("runAiSymbolVisionBtn").click();')
+        time.sleep(1.4)
+        vision_display = exec_js('document.getElementById("aiSymbolVisionResultCard").style.display')
+        vision_conf = exec_js('document.getElementById("aiSymbolMatchConfidence").textContent')
+        print(f"  -> Vision AI result display: {vision_display} | Match: {vision_conf}")
+        assert vision_display == "block", "Vision AI result failed to display"
+
+        # 5.7 Test Relics Treasury persistence (Screen 11)
+        print("\nTesting Relics Treasury & Unlocking Persistence:")
+        exec_js('routeTo("collection", false);')
+        relics_count = exec_js('document.querySelectorAll("#relicsShelfContainer .relic-item-box").length')
+        print(f"  -> Relics rendered on shelf: {relics_count}")
+        assert relics_count == 8, f"Expected 8 relics, got {relics_count}"
+
+        # 5.8 Test Responsive Mobile Viewport (375x812)
+        print("\nTesting Responsive Mobile Viewport (375px):")
+        send_cmd('Emulation.setDeviceMetricsOverride', {
+            'width': 375,
+            'height': 812,
+            'deviceScaleFactor': 3,
+            'mobile': True
+        })
+        time.sleep(0.5)
+        m_desktop_nav = exec_js('window.getComputedStyle(document.querySelector(".desktop-nav")).display')
+        m_burger = exec_js('window.getComputedStyle(document.querySelector(".mobile-burger-btn")).display')
+        m_scroll_w = exec_js('document.documentElement.scrollWidth')
+        print(f"  -> Mobile desktop_nav display: {m_desktop_nav} (expected 'none')")
+        print(f"  -> Mobile burger display: {m_burger} (expected 'flex')")
+        print(f"  -> Mobile scrollWidth: {m_scroll_w} (expected <= 376)")
+        assert m_desktop_nav == "none", f"desktop-nav not hidden on mobile: {m_desktop_nav}"
+        assert m_burger == "flex", f"burger not visible on mobile: {m_burger}"
+        assert m_scroll_w <= 376, f"Horizontal overflow on mobile: scrollWidth={m_scroll_w}"
+
+        # Restore desktop viewport
+        send_cmd('Emulation.clearDeviceMetricsOverride')
+        time.sleep(0.3)
 
         # 6. Check console errors and exceptions
         print("\n" + "=" * 70)
