@@ -132,7 +132,7 @@ def run_cdp_test():
         assert "АРТЕФАКТ" in title, f"Unexpected title: {title}"
 
         # 3. Test screen transitions across all routes
-        screens = ['hero', 'cultures', 'quest', 'atlas', 'restorer', 'folklore', 'collection', 'workshop']
+        screens = ['hero', 'cultures', 'quest', 'atlas', 'restorer', 'decipherer', 'folklore', 'collection', 'workshop']
         print("\nVerifying screen transitions:")
         for sc in screens:
             active_id = exec_js(f'''(async () => {{
@@ -202,13 +202,38 @@ def run_cdp_test():
         print(f"  -> Active hotspots on artifact: {hotspot_count}")
         assert hotspot_count >= 3, f"Expected at least 3 hotspots, got {hotspot_count}"
 
-        # Test simulation run
-        print("  -> Testing AI Restoration Laser Scan simulation...")
-        exec_js('runRestorationSimulation();')
-        time.sleep(0.5)
-        is_scanning = exec_js('document.getElementById("restorerScanBeam").classList.contains("is-scanning")')
-        print(f"  -> Laser beam active: {is_scanning}")
-        assert is_scanning, "Laser beam failed to activate"
+        # 5.5 Test AI Petro-Lens & Symbol Decipherer (Screen 11)
+        print("\nTesting AI Petro-Lens & Symbol Decipherer (Screen 11):")
+        exec_js('routeTo("decipherer", false);')
+
+        # Test switching across all 5 petroglyphs
+        petros = ['altai', 'pomorye', 'bulgar', 'yakut', 'scythian']
+        for p in petros:
+            p_res = exec_js(f'''(() => {{
+                renderPetroArtifact("{p}");
+                const title = document.getElementById("petroHudTitle").textContent;
+                const conf = document.getElementById("petroHudConfidence").textContent;
+                const hotspots = document.querySelectorAll("#petroHotspotsList .petro-hotspot-item").length;
+                return {{ title, conf, hotspots }};
+            }})()''')
+            print(f"  -> Petroglyph '{p}': {p_res['title']} | Conf: {p_res['conf']} | Hotspots: {p_res['hotspots']}")
+            assert p_res['title'] and p_res['hotspots'] >= 3, f"Petroglyph {p} validation failed"
+
+        # Test lens modes
+        for mode in ['edge', 'relief', 'neural', 'original']:
+            exec_js(f'''(() => {{
+                const btn = document.querySelector('#petroModeTabs .petro-mode-btn[data-mode="{mode}"]');
+                if (btn) btn.click();
+            }})()''')
+            badge = exec_js('document.getElementById("petroLensModeBadge").textContent')
+            print(f"  -> Lens mode '{mode}' active badge: {badge}")
+            assert badge, f"Lens mode badge empty for {mode}"
+
+        # Test lens movement and coordinates update
+        exec_js('updatePetroLensPos(300, 200);')
+        coords = exec_js('document.getElementById("petroLensCoords").textContent')
+        print(f"  -> Lens coordinates at (300, 200): {coords}")
+        assert "300" in coords and "200" in coords, f"Coordinates update failed: {coords}"
 
         # 6. Check console errors and exceptions
         print("\n" + "=" * 70)

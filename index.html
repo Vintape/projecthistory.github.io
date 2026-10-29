@@ -1658,11 +1658,15 @@
       transition: fill 0.25s ease, stroke 0.25s ease, filter 0.25s ease;
     }
 
+    .map-region-poly {
+      transition: fill 0.25s ease, stroke 0.25s ease;
+      vector-effect: non-scaling-stroke;
+    }
+
     .map-region-poly:hover, .map-region-poly.is-active {
       fill: rgba(201, 156, 82, 0.28) !important;
       stroke: var(--gold) !important;
       stroke-width: 2px !important;
-      filter: drop-shadow(0 0 10px rgba(201, 156, 82, 0.6));
     }
 
     .map-region-node {
@@ -1670,18 +1674,26 @@
       outline: none;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+      pointer-events: auto;
     }
 
     .map-region-node circle:not(.sonar-ring) {
-      transform-box: fill-box;
-      transform-origin: center;
-      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), filter 0.28s ease;
-      will-change: transform, filter;
+      pointer-events: none;
+      transition: r 0.22s cubic-bezier(0.16, 1, 0.3, 1), stroke-width 0.22s ease, fill 0.22s ease;
+      will-change: r, stroke-width;
     }
 
-    .map-region-node rect {
-      transition: fill 0.25s ease, stroke 0.25s ease, filter 0.25s ease;
+    .map-region-node rect:not(.map-node-hitbox) {
+      pointer-events: none;
+      transition: fill 0.25s ease, stroke 0.25s ease, stroke-width 0.25s ease;
       will-change: fill, stroke;
+    }
+
+    .map-node-hitbox {
+      fill: transparent !important;
+      stroke: none !important;
+      pointer-events: all !important;
+      cursor: pointer;
     }
 
     .map-region-node text {
@@ -1690,40 +1702,39 @@
     }
 
     .map-region-node:hover circle:not(.sonar-ring) {
-      transform: scale(1.35);
-      filter: drop-shadow(0 0 8px rgba(201, 156, 82, 0.9));
+      r: 10px;
+      stroke-width: 2.5px;
     }
 
-    .map-region-node:hover rect {
+    .map-region-node:hover rect:not(.map-node-hitbox) {
       fill: rgba(18, 32, 66, 0.98);
       stroke: var(--gold);
       stroke-width: 1.8px;
-      filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.6));
     }
 
     .map-region-node.is-active circle:not(.sonar-ring) {
-      transform: scale(1.45);
-      filter: drop-shadow(0 0 12px rgba(201, 156, 82, 1));
+      r: 11px;
+      stroke-width: 3px;
     }
 
-    .map-region-node.is-active rect {
+    .map-region-node.is-active rect:not(.map-node-hitbox) {
       fill: rgba(22, 40, 82, 0.98);
       stroke: var(--gold-light);
       stroke-width: 2px;
-      filter: drop-shadow(0 0 10px rgba(201, 156, 82, 0.5));
     }
 
     .sonar-ring {
       pointer-events: none !important;
-      animation: atlasPulse 2.8s infinite ease-out;
+      animation: atlasPulseGpu 2.8s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
       transform-origin: center;
       transform-box: fill-box;
+      will-change: transform, opacity;
     }
 
-    @keyframes atlasPulse {
-      0% { r: 6px; opacity: 0.9; stroke-width: 2px; }
-      70% { r: 24px; opacity: 0; stroke-width: 0.8px; }
-      100% { r: 24px; opacity: 0; stroke-width: 0.8px; }
+    @keyframes atlasPulseGpu {
+      0% { transform: scale(1); opacity: 0.9; stroke-width: 2px; }
+      60% { transform: scale(3.2); opacity: 0; stroke-width: 0.6px; }
+      100% { transform: scale(3.2); opacity: 0; stroke-width: 0.6px; }
     }
 
     .atlas-dossier-card {
@@ -1831,6 +1842,8 @@
       object-fit: contain;
       margin: 0 auto 10px;
       display: block;
+    }
+
     /* ==========================================================================
        8.5 НЕЙРОРЕСТАВРАЦИОННАЯ СПЕКТРАЛЬНАЯ ЛАБОРАТОРИЯ (AI ARCHAEOMETRIC LAB)
        ========================================================================== */
@@ -2134,8 +2147,207 @@
       overflow-y: auto;
       font-family: monospace;
       font-size: 11px;
-      color: #38bdf8;
-      line-height: 1.5;
+    /* ==========================================================================
+       8.15 AI-ПЕТРОЛИНЗА И ДЕШИФРАТОР САКАРАЛЬНЫХ ПЕТРОГЛИФОВ (SCREEN 11)
+       ========================================================================== */
+    .decipherer-container {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .decipherer-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .petro-stage-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: var(--shadow-lg), 0 0 35px rgba(0, 0, 0, 0.7);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .petro-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #040711;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid rgba(201, 156, 82, 0.3);
+      cursor: crosshair;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .petro-viewport canvas#petroBaseCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+
+    /* Интерактивная плавающая линза нейросканера */
+    .petro-lens {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+      border: 2px solid var(--gold-light);
+      box-shadow: 0 0 25px rgba(243, 208, 138, 0.6), inset 0 0 20px rgba(72, 202, 228, 0.35);
+      overflow: hidden;
+      z-index: 20;
+      transition: opacity 0.2s ease, transform 0.05s linear;
+      background: rgba(4, 8, 20, 0.2);
+    }
+
+    .petro-lens canvas#petroLensCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Прицельная сетка и HUD метки внутри линзы */
+    .petro-lens-reticle {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .petro-lens-crosshair-h, .petro-lens-crosshair-v {
+      position: absolute;
+      background: rgba(243, 208, 138, 0.5);
+    }
+    .petro-lens-crosshair-h { top: 50%; left: 15%; right: 15%; height: 1px; transform: translateY(-50%); }
+    .petro-lens-crosshair-v { left: 50%; top: 15%; bottom: 15%; width: 1px; transform: translateX(-50%); }
+
+    .petro-lens-coords {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: monospace;
+      font-size: 9.5px;
+      color: #f3d08a;
+      background: rgba(4, 8, 20, 0.85);
+      padding: 2px 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(243, 208, 138, 0.4);
+      white-space: nowrap;
+      letter-spacing: 0.05em;
+    }
+
+    .petro-lens-mode-badge {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: monospace;
+      font-size: 8.5px;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: #48cae4;
+      background: rgba(4, 8, 20, 0.85);
+      padding: 1px 7px;
+      border-radius: 6px;
+      border: 1px solid rgba(72, 202, 228, 0.4);
+      letter-spacing: 0.08em;
+    }
+
+    .petro-mode-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .petro-mode-btn {
+      flex: 1;
+      min-width: 110px;
+      padding: 8px 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .petro-mode-btn:hover {
+      background: rgba(201, 156, 82, 0.12);
+      border-color: var(--gold);
+      color: var(--text-main);
+    }
+
+    .petro-mode-btn.is-active {
+      background: linear-gradient(135deg, rgba(201, 156, 82, 0.25), rgba(72, 202, 228, 0.2));
+      border-color: var(--gold-light);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(201, 156, 82, 0.4);
+    }
+
+    .petro-hud-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .petro-hotspots-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .petro-hotspot-item {
+      background: rgba(6, 12, 29, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .petro-hotspot-item:hover, .petro-hotspot-item.is-active {
+      border-color: var(--gold);
+      background: rgba(201, 156, 82, 0.12);
+      box-shadow: 0 0 12px rgba(201, 156, 82, 0.3);
+    }
+
+    .petro-hotspot-item strong {
+      font-size: 13px;
+      color: var(--gold-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .petro-hotspot-item p {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-top: 4px;
     }
 
     /* ==========================================================================
@@ -2331,6 +2543,7 @@
         <button class="nav-btn" data-route="quest">🧭 Маршрут</button>
         <button class="nav-btn" data-route="atlas">🌐 Этноатлас</button>
         <button class="nav-btn" data-route="restorer">🔬 AI-Лаборатория</button>
+        <button class="nav-btn" data-route="decipherer">⚡ AI-Дешифратор</button>
         <button class="nav-btn" data-route="folklore">📜 Фольклор</button>
         <button class="nav-btn" data-route="collection">💎 Награды</button>
         <button class="nav-btn" data-route="workshop">✨ Мастерская</button>
@@ -2370,6 +2583,7 @@
       <button class="nav-btn" data-route="quest">🧭 Маршрут экспедиции</button>
       <button class="nav-btn" data-route="atlas">🌐 Интерактивный этноатлас</button>
       <button class="nav-btn" data-route="restorer">🔬 AI-Лаборатория реставрации</button>
+      <button class="nav-btn" data-route="decipherer">⚡ AI-Дешифратор петроглифов</button>
       <button class="nav-btn" data-route="folklore">📜 Антология фольклора</button>
       <button class="nav-btn" data-route="collection">💎 Витрина реликвий</button>
       <button class="nav-btn" data-route="workshop">✨ ИИ-мастерская оберегов</button>
@@ -2391,8 +2605,11 @@
             <button class="btn-action btn-action--ruby" onclick="routeTo('cultures')">
               Начать исследование →
             </button>
+            <button class="btn-action btn-action--outline" onclick="routeTo('decipherer')">
+              ⚡ AI-Дешифратор петроглифов
+            </button>
             <button class="btn-action btn-action--outline" onclick="routeTo('restorer')">
-              🔬 AI-Лаборатория реставрации
+              🔬 Лаборатория реставрации
             </button>
             <button class="btn-action btn-action--outline" onclick="routeTo('quest')">
               Маршрут экспедиции
@@ -2982,6 +3199,7 @@
 
               <!-- ПИН 1: Поморье -->
               <g class="map-region-node" id="node-pomorye" data-region-id="pomorye" role="button" tabindex="0" aria-label="Регион: Поморье">
+                <rect class="map-node-hitbox" x="160" y="115" width="110" height="55" rx="11"/>
                 <circle class="sonar-ring" cx="215" cy="155" r="8" fill="none" stroke="var(--ruby)" stroke-width="1.5"/>
                 <circle cx="215" cy="155" r="7" fill="var(--ruby)" stroke="#fff" stroke-width="2"/>
                 <rect x="165" y="120" width="100" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(200,52,40,0.5)" stroke-width="1"/>
@@ -2990,6 +3208,7 @@
 
               <!-- ПИН 2: Татарстан -->
               <g class="map-region-node" id="node-tatarstan" data-region-id="tatarstan" role="button" tabindex="0" aria-label="Регион: Татарстан">
+                <rect class="map-node-hitbox" x="185" y="248" width="120" height="58" rx="12"/>
                 <circle class="sonar-ring" cx="245" cy="290" r="8" fill="none" stroke="var(--gold)" stroke-width="2"/>
                 <circle cx="245" cy="290" r="8" fill="url(#gradPinGold)" stroke="#060c1d" stroke-width="2" filter="url(#glowAtlas)"/>
                 <rect x="190" y="253" width="110" height="24" rx="12" fill="rgba(14,25,51,0.95)" stroke="var(--gold)" stroke-width="1.5"/>
@@ -2998,6 +3217,7 @@
 
               <!-- ПИН 3: Кавказ -->
               <g class="map-region-node" id="node-caucasus" data-region-id="caucasus" role="button" tabindex="0" aria-label="Регион: Кавказ">
+                <rect class="map-node-hitbox" x="110" y="377" width="110" height="55" rx="11"/>
                 <circle class="sonar-ring" cx="165" cy="415" r="8" fill="none" stroke="var(--ruby)" stroke-width="1.5"/>
                 <circle cx="165" cy="415" r="7" fill="var(--ruby)" stroke="#fff" stroke-width="2"/>
                 <rect x="115" y="382" width="100" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(200,52,40,0.5)" stroke-width="1"/>
@@ -3006,6 +3226,7 @@
 
               <!-- ПИН 4: Горный Алтай -->
               <g class="map-region-node" id="node-altai" data-region-id="altai" role="button" tabindex="0" aria-label="Регион: Горный Алтай">
+                <rect class="map-node-hitbox" x="450" y="362" width="130" height="55" rx="11"/>
                 <circle class="sonar-ring" cx="515" cy="400" r="8" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
                 <circle cx="515" cy="400" r="7" fill="var(--gold)" stroke="#060c1d" stroke-width="2"/>
                 <rect x="455" y="367" width="120" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(201,156,82,0.5)" stroke-width="1"/>
@@ -3014,6 +3235,7 @@
 
               <!-- ПИН 5: Якутия -->
               <g class="map-region-node" id="node-yakutia" data-region-id="yakutia" role="button" tabindex="0" aria-label="Регион: Якутия">
+                <rect class="map-node-hitbox" x="720" y="197" width="110" height="55" rx="11"/>
                 <circle class="sonar-ring" cx="775" cy="235" r="8" fill="none" stroke="var(--cyan)" stroke-width="1.5"/>
                 <circle cx="775" cy="235" r="7" fill="var(--cyan)" stroke="#fff" stroke-width="2"/>
                 <rect x="725" y="202" width="100" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(72,202,228,0.5)" stroke-width="1"/>
@@ -3022,6 +3244,7 @@
 
               <!-- ПИН 6: Камчатка -->
               <g class="map-region-node" id="node-kamchatka" data-region-id="kamchatka" role="button" tabindex="0" aria-label="Регион: Камчатка">
+                <rect class="map-node-hitbox" x="945" y="257" width="120" height="55" rx="11"/>
                 <circle class="sonar-ring" cx="1005" cy="295" r="8" fill="none" stroke="var(--ruby)" stroke-width="1.5"/>
                 <circle cx="1005" cy="295" r="7" fill="var(--ruby)" stroke="#060c1d" stroke-width="2"/>
                 <rect x="950" y="262" width="110" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(200,52,40,0.5)" stroke-width="1"/>
@@ -3030,6 +3253,7 @@
 
               <!-- ПИН 7: Казахстан -->
               <g class="map-region-node" id="node-kazakhstan" data-region-id="kazakhstan" role="button" tabindex="0" aria-label="Регион: Казахстан">
+                <rect class="map-node-hitbox" x="305" y="378" width="120" height="52" rx="11"/>
                 <circle class="sonar-ring" cx="365" cy="415" r="7" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
                 <circle cx="365" cy="415" r="6" fill="var(--gold)" stroke="#060c1d" stroke-width="2"/>
                 <rect x="310" y="383" width="110" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(201,156,82,0.4)" stroke-width="1"/>
@@ -3038,6 +3262,7 @@
 
               <!-- ПИН 8: Узбекистан -->
               <g class="map-region-node" id="node-uzbekistan" data-region-id="uzbekistan" role="button" tabindex="0" aria-label="Регион: Узбекистан">
+                <rect class="map-node-hitbox" x="230" y="438" width="130" height="52" rx="11"/>
                 <circle class="sonar-ring" cx="295" cy="475" r="7" fill="none" stroke="var(--cyan)" stroke-width="1.5"/>
                 <circle cx="295" cy="475" r="6" fill="var(--cyan)" stroke="#fff" stroke-width="2"/>
                 <rect x="235" y="443" width="120" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(72,202,228,0.4)" stroke-width="1"/>
@@ -3251,6 +3476,22 @@
               </div>
             </div>
 
+            <!-- Микростратиграфический сканер глубины среза (Micro-CT Layer Slicer) -->
+            <div class="restorer-strata-card" style="background:rgba(201,156,82,0.05); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-sm); padding:10px 12px; margin-bottom:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--gold); font-weight:700;">
+                  🔬 Стратиграфия среза (Micro-CT):
+                </span>
+                <span id="restorerDepthValText" style="font-family:monospace; font-size:11px; color:var(--gold-light); font-weight:700;">
+                  0.0 мм · Поверхность
+                </span>
+              </div>
+              <input type="range" id="restorerDepthSlider" min="0" max="3.0" step="0.1" value="0" style="width:100%; accent-color:var(--gold); cursor:pointer;" aria-label="Глубина стратиграфического среза в мм" />
+              <p id="restorerDepthLayerDesc" style="font-size:11px; color:var(--text-muted); line-height:1.45; margin:6px 0 0 0;">
+                0.0 – 0.6 мм: Оксидная патина, микрозагрязнения и следы минерализации веков.
+              </p>
+            </div>
+
             <!-- Интерактивная карточка выбранного хотспота (детализация элемента) -->
             <div id="restorerHotspotCard" style="background:rgba(201,156,82,0.06); border:1px solid var(--border-gold); border-radius:var(--radius-sm); padding:12px; display:block;">
               <span class="gold-badge" id="restorerHotspotTag" style="margin:0 0 6px 0; font-size:10px;">Филигрань и скань</span>
@@ -3273,6 +3514,164 @@
             <button class="btn-action btn-action--ruby" id="runRestorationProcessBtn" style="width:100%; justify-content:center; padding:12px 18px; font-size:13px;">
               <span>⚡</span> Запустить ИИ-реконструкцию (Лазерное сканирование)
             </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         ЭКРАН 10.5: AI-ПЕТРОЛИНЗА И ДЕШИФРАТОР САКАРАЛЬНЫХ ПЕТРОГЛИФОВ
+         ======================================================================== -->
+    <section class="screen-view" id="screen-decipherer">
+      <div class="content-canvas">
+        <!-- Шапка экрана -->
+        <div style="margin-bottom: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:8px;">
+            <span class="gold-badge">⚡ НЕЙРОСЕТЕВАЯ АРХЕОМЕТРИЯ · КОМПЬЮТЕРНОЕ ЗРЕНИЕ В БРАУЗЕРЕ</span>
+            <div style="display:flex; gap:8px;">
+              <span class="chip-label" style="background:rgba(201,156,82,0.15); border:1px solid var(--border-gold); padding:3px 10px; border-radius:12px; font-size:11px; color:var(--gold-light);">
+                ✦ Фильтр Собеля 60 FPS
+              </span>
+              <span class="chip-label" style="background:rgba(72,202,228,0.15); border:1px solid rgba(72,202,228,0.4); padding:3px 10px; border-radius:12px; font-size:11px; color:#48cae4;">
+                ✦ Верифицировано Perplexity Sonar
+              </span>
+            </div>
+          </div>
+          <h2 class="heading-section">AI-Петролинза: Дешифратор Древних Символов</h2>
+          <p class="lead-paragraph">
+            Исследуйте древнейшую наскальную эпиграфику Евразии в реальном времени. Перемещайте интерактивную линзу нейросканера по поверхности древнего камня: алгоритмы компьютерного зрения выделяют скрытые линии высечки, анализируют глубину рельефа и расшифровывают сакральный смысл знаков.
+          </p>
+        </div>
+
+        <!-- Селектор петроглифов -->
+        <div class="pill-filters" id="petroArtifactSelectorPills" style="margin-bottom: 20px;">
+          <button class="pill-filter-btn is-active" data-petro="altai">
+            🏔️ Алтай · Калбак-Таш
+          </button>
+          <button class="pill-filter-btn" data-petro="pomorye">
+            ⛵ Поморье · Беломорье
+          </button>
+          <button class="pill-filter-btn" data-petro="bulgar">
+            🕌 Булгария · Тамга
+          </button>
+          <button class="pill-filter-btn" data-petro="yakut">
+            ❄️ Саха · Знак Солнца
+          </button>
+          <button class="pill-filter-btn" data-petro="scythian">
+            🏹 Скифия · Олень Аржана
+          </button>
+        </div>
+
+        <!-- Основной сплит: Интерактивный Canvas + HUD Паспорт расшифровки -->
+        <div class="decipherer-container">
+          <!-- Левая колонка: Вьюпорт с плавающей линзой -->
+          <div class="petro-stage-card">
+            <!-- Режимы работы линзы -->
+            <div class="petro-mode-tabs" id="petroModeTabs">
+              <button class="petro-mode-btn is-active" data-mode="edge">
+                <span>⚡</span> AI-Контур (Собель)
+              </button>
+              <button class="petro-mode-btn" data-mode="relief">
+                <span>🔬</span> Топография рельефа
+              </button>
+              <button class="petro-mode-btn" data-mode="neural">
+                <span>✨</span> Нейросетевой граф
+              </button>
+              <button class="petro-mode-btn" data-mode="original">
+                <span>👁️</span> Естественный свет
+              </button>
+            </div>
+
+            <!-- Интерактивная зона наскального полотна -->
+            <div class="petro-viewport" id="petroViewport" role="region" aria-label="Интерактивное наскальное полотно с петроглифом">
+              <!-- Базовый Canvas (оригинальный камень высокого разрешения) -->
+              <canvas id="petroBaseCanvas" width="900" height="560"></canvas>
+
+              <!-- Интерактивная плавающая линза -->
+              <div class="petro-lens" id="petroLens" aria-hidden="true">
+                <canvas id="petroLensCanvas" width="220" height="220"></canvas>
+                <div class="petro-lens-reticle">
+                  <div class="petro-lens-crosshair-h"></div>
+                  <div class="petro-lens-crosshair-v"></div>
+                </div>
+                <div class="petro-lens-mode-badge" id="petroLensModeBadge">AI SOBEL EDGE</div>
+                <div class="petro-lens-coords" id="petroLensCoords">X: 450 · Y: 280</div>
+              </div>
+            </div>
+
+            <!-- Панель тонкой настройки и управления -->
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:12px; color:var(--text-muted); background:rgba(6,12,29,0.5); padding:10px 14px; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.06);">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span>Диаметр линзы:</span>
+                <input type="range" id="petroLensRadiusSlider" min="70" max="140" value="110" style="accent-color:var(--gold); width:100px; cursor:pointer;" />
+                <span id="petroLensRadiusVal" style="font-family:monospace; color:var(--gold-light);">220px</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span>Сонар-отклик:</span>
+                <button class="chip-label" id="petroAudioToggleBtn" style="background:rgba(201,156,82,0.2); border:1px solid var(--border-gold); color:var(--gold-light); cursor:pointer; padding:3px 10px; border-radius:8px;">
+                  🔔 Включен
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Правая колонка: HUD Паспорт расшифровки (Данные Perplexity + Нейроанализ) -->
+          <div class="petro-hud-card" id="petroHudCard">
+            <!-- Заголовок артефакта -->
+            <div>
+              <span class="gold-badge" id="petroHudEra" style="margin-bottom:6px;">Бронзовый век (II тыс. до н.э.)</span>
+              <h3 id="petroHudTitle" style="font-family:var(--font-editorial); font-size:20px; color:var(--text-main); margin:0 0 4px 0;">
+                Урочище Калбак-Таш · Благородный Олень
+              </h3>
+              <p id="petroHudRegion" style="font-size:12px; color:var(--gold); margin:0; font-style:italic;">
+                Горный Алтай (Чуйский тракт) · ок. 1800 г. до н.э.
+              </p>
+            </div>
+
+            <!-- Телеметрия компьютерного зрения -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <div style="background:rgba(6,12,29,0.7); border:1px solid rgba(201,156,82,0.25); border-radius:var(--radius-sm); padding:8px 12px;">
+                <span style="font-size:10px; color:var(--text-muted); text-transform:uppercase; display:block;">Точность ИИ</span>
+                <strong id="petroHudConfidence" style="font-size:15px; color:#4ade80; font-family:monospace;">99.4%</strong>
+              </div>
+              <div style="background:rgba(6,12,29,0.7); border:1px solid rgba(72,202,228,0.25); border-radius:var(--radius-sm); padding:8px 12px;">
+                <span style="font-size:10px; color:var(--text-muted); text-transform:uppercase; display:block;">Классификатор</span>
+                <strong id="petroHudCategory" style="font-size:11px; color:#38bdf8; font-family:monospace; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">Каракольская культура</strong>
+              </div>
+            </div>
+
+            <!-- Ключевые семантические узлы композиции -->
+            <div>
+              <strong style="font-size:12.5px; color:var(--gold-light); display:block; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em;">
+                Распознанные сакральные узлы (наведите линзу):
+              </strong>
+              <div class="petro-hotspots-list" id="petroHotspotsList">
+                <!-- Заполняется динамически -->
+              </div>
+            </div>
+
+            <!-- Научный паспорт и источник -->
+            <div style="background:rgba(201,156,82,0.06); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-sm); padding:12px;">
+              <strong style="font-size:12px; color:var(--gold); display:block; margin-bottom:4px;">
+                📖 Сакральное значение (Архив Perplexity Sonar):
+              </strong>
+              <p id="petroHudSacred" style="font-size:11.5px; color:var(--text-muted); line-height:1.5; margin:0 0 8px 0;">
+                Олень в наскальном искусстве Алтая символизировал связь земного мира с небесным сводом, Мировое Древо и солнечный круговорот жизни.
+              </p>
+              <div style="font-size:10.5px; color:var(--gold-light); font-style:italic; border-top:1px dashed rgba(201,156,82,0.25); padding-top:6px;" id="petroHudSource">
+                Источник: Институт археологии и этнографии СО РАН
+              </div>
+            </div>
+
+            <!-- Действия: Экспорт векторного контура (SVG) и Аудио-гид -->
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:auto;">
+              <button class="btn-action btn-action--ruby" id="petroExportSvgBtn" style="flex:1; justify-content:center; padding:10px 14px; font-size:12px;">
+                <span>📥</span> Экспорт Вектора (SVG)
+              </button>
+              <button class="btn-action btn-action--outline" id="petroVoiceListenBtn" style="justify-content:center; padding:10px 14px; font-size:12px;">
+                <span>🎧</span> Аудиогид
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -3446,13 +3845,37 @@
             <div id="aiPostcardMetadata" style="font-size:11px; color:var(--gold); font-family:var(--font-slab); margin-bottom:16px;">
               ✦ Сакральный эталон: РЭМ · Сертификат № OBR-2026-X8
             </div>
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
               <button class="btn-action btn-action--gold" id="downloadAiPostcardBtn" style="flex:1; justify-content:center;">
                 📥 Скачать оберег (PNG)
               </button>
               <button class="action-chip" id="shareAiPostcardBtn" style="flex:1; justify-content:center;">
                 🔗 Скопировать ссылку
               </button>
+            </div>
+
+            <!-- Интерактивный Vision AI Декодировщик -->
+            <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:12px; margin-top:12px;">
+              <button class="btn-action btn-action--ruby" id="runAiSymbolVisionBtn" style="width:100%; justify-content:center; margin-bottom:10px;">
+                <span>👁️</span> Нейро-декодирование семантики (Vision AI)
+              </button>
+              <div id="aiSymbolVisionResultCard" style="display:none; background:rgba(201,156,82,0.08); border:1px solid var(--border-gold); border-radius:var(--radius-sm); padding:12px; text-align:left;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <span class="gold-badge" style="margin:0; font-size:10px;">✦ Нейро-семантика верифицирована</span>
+                  <span style="font-family:monospace; font-size:10px; color:#34d399;" id="aiSymbolMatchConfidence">98.6% MATCH</span>
+                </div>
+                <strong id="aiSymbolArchetypeTitle" style="color:var(--text-main); font-size:13.5px; display:block; margin-bottom:4px; font-family:var(--font-editorial);">
+                  Солярная розеточная мандала (D8)
+                </strong>
+                <p id="aiSymbolArchetypeDesc" style="font-size:11.5px; color:var(--text-muted); line-height:1.45; margin:0 0 8px 0;">
+                  Восьмилучевая циклическая симметрия. Древнейший индоевропейский и тюркский солярный знак: защита очага от злых духов и благословение весеннего солнца.
+                </p>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;" id="aiSymbolTagsBadges">
+                  <span class="action-chip" style="font-size:10px; padding:2px 8px;">☀️ Солярный культ</span>
+                  <span class="action-chip" style="font-size:10px; padding:2px 8px;">🛡️ Родовой оберег</span>
+                  <span class="action-chip" style="font-size:10px; padding:2px 8px;">🏛️ Канон РЭМ</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -4629,6 +5052,10 @@
             initRestorerLab();
           }
 
+          if (screenId === 'decipherer' && typeof initPetroDecipherer === 'function') {
+            initPetroDecipherer();
+          }
+
           window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
@@ -4675,8 +5102,11 @@
       window.renderRestorerArtifact = (id) => { if (typeof renderRestorerArtifact === 'function') renderRestorerArtifact(id); };
       window.setSpectralMode = (m) => { if (typeof setSpectralMode === 'function') setSpectralMode(m); };
       window.setRestorerSliderPosition = (p) => { if (typeof setRestorerSliderPosition === 'function') setRestorerSliderPosition(p); };
-      window.runRestorationSimulation = () => { if (typeof runRestorationSimulation === 'function') runRestorationSimulation(); };
       window.initRestorerLab = () => { if (typeof initRestorerLab === 'function') initRestorerLab(); };
+      window.renderPetroArtifact = (id) => { if (typeof renderPetroArtifact === 'function') renderPetroArtifact(id); };
+      window.updatePetroLensPos = (x, y) => { if (typeof updatePetroLensPos === 'function') updatePetroLensPos(x, y); };
+      window.initPetroDecipherer = () => { if (typeof initPetroDecipherer === 'function') initPetroDecipherer(); };
+      window.exportPetroSvg = () => { if (typeof exportPetroSvg === 'function') exportPetroSvg(); };
 
       // Обработка системных кнопок браузера «Назад / Вперёд»
       window.addEventListener('popstate', (e) => {
@@ -5188,6 +5618,7 @@
 
           if (selectedQuizOption === data.correctChoice) {
             AudioEngine.playSuccessTrumpet();
+            unlockRelicForCulture(activeCultureId);
             if (grid) {
               const correctCard = grid.querySelector(`[data-opt-id="${data.correctChoice}"]`);
               if (correctCard) correctCard.classList.add('is-correct');
@@ -5726,7 +6157,7 @@
           status: '99.4% сохранность микрорельефа',
           unrestoredImg: './images/scythian_gold_unrestored.jpg',
           restoredImg: './images/scythian_gold_restored.jpg',
-          pedestalImg: './images/scythian_gold_restored.jpg',
+          pedestalImg: './images/scythian_pedestal_museum.jpg',
           metals: { au: '95.8%', ag: '3.1%', cu: '1.1%' },
           spectralLayers: {
             visible: 'Оптический RGB диапазон. Восстановлен первозданный зеркальный блеск червонного золота с микрогранями полировки.',
@@ -5768,7 +6199,7 @@
           status: '97.9% воссоздание цепочечных звеньев',
           unrestoredImg: './images/ilin_kebiser_unrestored.jpg',
           restoredImg: './images/ilin_kebiser_restored.jpg',
-          pedestalImg: './images/ilin_kebiser_restored.jpg',
+          pedestalImg: './images/yakut_pedestal_museum.jpg',
           metals: { au: '0.0%', ag: '88.2%', cu: '11.8%' },
           spectralLayers: {
             visible: 'Оптический RGB диапазон. Очищенное серебро с лунным мерцанием, свойственным традиционным украшениям народа Саха.',
@@ -5808,6 +6239,7 @@
       let isShowingHotspots = true;
       let isPedestalView = false;
       let isRestorationProcessRunning = false;
+      let isRestorerLabInitialized = false;
 
       function renderRestorerArtifact(artId) {
         const d = AI_RESTORER_DATABASE[artId];
@@ -6049,8 +6481,10 @@
       }
 
       function initRestorerLab() {
+        if (isRestorerLabInitialized) return;
         const vp = document.getElementById('restorerViewport');
         if (!vp) return;
+        isRestorerLabInitialized = true;
 
         // Настройка ползунка по умолчанию
         setRestorerSliderPosition(50);
@@ -6153,11 +6587,61 @@
           });
         }
 
+        // Ползунок микростратиграфии (Micro-CT Layer Slicer)
+        const depthSlider = document.getElementById('restorerDepthSlider');
+        if (depthSlider) {
+          depthSlider.addEventListener('input', () => {
+            const depth = parseFloat(depthSlider.value);
+            const valText = document.getElementById('restorerDepthValText');
+            const descText = document.getElementById('restorerDepthLayerDesc');
+            
+            let phaseName = '0.0–0.6 мм · Оксидная патина';
+            let desc = '0.0 – 0.6 мм: Оксидная патина (Ag₂O, CuCO₃), поверхностная минерализация и аутентичный налёт веков.';
+            let contrast = 1;
+            let brightness = 1;
+
+            if (depth <= 0.6) {
+              phaseName = '0.0–0.6 мм · Оксидная патина';
+              desc = '0.0 – 0.6 мм: Оксидная патина (Ag₂O, CuCO₃), поверхностная минерализация и аутентичный налёт веков.';
+              contrast = 1.0 + (depth * 0.15);
+              brightness = 1.0 - (depth * 0.08);
+            } else if (depth <= 1.4) {
+              phaseName = '0.7–1.4 мм · Ювелирное амальгамное золочение';
+              desc = '0.7 – 1.4 мм: Слой золочения высшей пробы, филигранная скань и ювелирная зернь. Детекция скрытых гравировок мастера.';
+              contrast = 1.15 + ((depth - 0.6) * 0.2);
+              brightness = 0.95 + ((depth - 0.6) * 0.1);
+            } else if (depth <= 2.2) {
+              phaseName = '1.5–2.2 мм · Кованый несущий сплав';
+              desc = '1.5 – 2.2 мм: Базовый кованый серебряно-медный каркас, волосяные микротрещины литья и структурный износ.';
+              contrast = 1.35;
+              brightness = 0.88;
+            } else {
+              phaseName = '2.3–3.0 мм · Глубинная кристаллическая решетка';
+              desc = '2.3 – 3.0 мм: Внутренняя рентгеноструктурная томография. Исследование микрокаверн и плотности металла.';
+              contrast = 1.5;
+              brightness = 0.80;
+            }
+
+            if (valText) valText.textContent = `${depth.toFixed(1)} мм · ${phaseName.split('·')[1]?.trim() || phaseName}`;
+            if (descText) descText.textContent = desc;
+
+            if (vp) {
+              vp.style.setProperty('--strata-contrast', contrast);
+              vp.style.setProperty('--strata-brightness', brightness);
+            }
+            logRestorerMessage(`[STRATA] Глубина среза: ${depth.toFixed(1)} мм · ${phaseName}`);
+            AudioEngine.playUiClick();
+          });
+        }
+
         // Начальная отрисовка
         renderRestorerArtifact('khasite');
       }
 
+      let isAtlasMapInitialized = false;
       function initAtlasMap() {
+        if (isAtlasMapInitialized) return;
+        isAtlasMapInitialized = true;
         // Слушатели полигонов SVG
         document.querySelectorAll('.map-region-poly').forEach(poly => {
           poly.addEventListener('click', () => {
@@ -6235,36 +6719,65 @@
       // ========================================================================
       // 11. ВИТРИНА НАГРАД
       // ========================================================================
+      const UNLOCKED_RELICS_KEY = 'artefact_unlocked_relics_v2';
+      let unlockedRelicIds = new Set();
+      try {
+        const stored = localStorage.getItem(UNLOCKED_RELICS_KEY);
+        if (stored) {
+          unlockedRelicIds = new Set(JSON.parse(stored));
+        } else {
+          unlockedRelicIds = new Set(['tatarstan']);
+        }
+      } catch (e) {
+        unlockedRelicIds = new Set(['tatarstan']);
+      }
+
+      function unlockRelicForCulture(cultureId) {
+        if (!cultureId) return;
+        unlockedRelicIds.add(cultureId);
+        try {
+          localStorage.setItem(UNLOCKED_RELICS_KEY, JSON.stringify(Array.from(unlockedRelicIds)));
+        } catch (e) {}
+        renderRelicsShelf();
+      }
+
       function renderRelicsShelf(unlockAll = false) {
         const shelf = document.getElementById('relicsShelfContainer');
         if (!shelf) return;
 
         const relics = [
-          { name: 'Казанский тюльпан', reg: 'Татарстан', icon: './images/quiz/tatarstan_2.jpg', unlocked: true },
-          { name: 'Ворон Кутх', reg: 'Камчатка', icon: './images/quiz/kamchatka_2.jpg', unlocked: unlockAll },
-          { name: 'Птица счастья', reg: 'Поморье', icon: './images/quiz/pomorye_1.jpg', unlocked: unlockAll },
-          { name: 'Пазырыкский сфинкс', reg: 'Алтай', icon: './images/quiz/altai_2.jpg', unlocked: unlockAll },
-          { name: 'Серебряный чорон', reg: 'Якутия', icon: './images/quiz/yakutia_2.jpg', unlocked: unlockAll },
-          { name: 'Орнамент Кошкар', reg: 'Казахстан', icon: './images/quiz/kazakhstan_2.jpg', unlocked: unlockAll },
-          { name: 'Хивинский гранат', reg: 'Узбекистан', icon: './images/quiz/uzbekistan_2.jpg', unlocked: unlockAll },
-          { name: 'Кубачинский мучал', reg: 'Кавказ', icon: './images/quiz/caucasus_2.jpg', unlocked: unlockAll }
+          { id: 'tatarstan', name: 'Казанский тюльпан', reg: 'Татарстан', icon: './images/quiz/tatarstan_2.jpg' },
+          { id: 'kamchatka', name: 'Ворон Кутх', reg: 'Камчатка', icon: './images/quiz/kamchatka_2.jpg' },
+          { id: 'pomorye', name: 'Птица счастья', reg: 'Поморье', icon: './images/quiz/pomorye_1.jpg' },
+          { id: 'altai', name: 'Пазырыкский сфинкс', reg: 'Алтай', icon: './images/quiz/altai_2.jpg' },
+          { id: 'yakutia', name: 'Серебряный чорон', reg: 'Якутия', icon: './images/quiz/yakutia_2.jpg' },
+          { id: 'kazakhstan', name: 'Орнамент Кошкар', reg: 'Казахстан', icon: './images/quiz/kazakhstan_2.jpg' },
+          { id: 'uzbekistan', name: 'Хивинский гранат', reg: 'Узбекистан', icon: './images/quiz/uzbekistan_2.jpg' },
+          { id: 'caucasus', name: 'Кубачинский мучал', reg: 'Кавказ', icon: './images/quiz/caucasus_2.jpg' }
         ];
 
-        shelf.innerHTML = relics.map(r => `
-          <div class="relic-item-box ${r.unlocked ? 'is-unlocked' : 'is-locked'}">
-            <img src="${r.icon}" alt="${r.name}" loading="lazy" />
-            <strong style="font-size:12.5px; color:var(--text-main); display:block;">${r.name}</strong>
-            <span style="font-size:11px; color:var(--gold);">${r.reg}</span>
-            <span style="display:block; font-size:10px; margin-top:4px; color:${r.unlocked ? '#34d399' : 'var(--text-dim)'};">
-              ${r.unlocked ? '✓ Разблокировано' : '🔒 Заблокировано'}
-            </span>
-          </div>
-        `).join('');
+        shelf.innerHTML = relics.map(r => {
+          const isUnlocked = unlockAll || unlockedRelicIds.has(r.id);
+          return `
+            <div class="relic-item-box ${isUnlocked ? 'is-unlocked' : 'is-locked'}" data-relic-id="${r.id}">
+              <img src="${r.icon}" alt="${r.name}" loading="lazy" />
+              <strong style="font-size:12.5px; color:var(--text-main); display:block;">${r.name}</strong>
+              <span style="font-size:11px; color:var(--gold);">${r.reg}</span>
+              <span style="display:block; font-size:10px; margin-top:4px; color:${isUnlocked ? '#34d399' : 'var(--text-dim)'}; font-weight:${isUnlocked ? '700' : '400'};">
+                ${isUnlocked ? '✓ Разблокировано' : '🔒 Заблокировано'}
+              </span>
+            </div>
+          `;
+        }).join('');
       }
 
       const unlockAllBtn = document.getElementById('unlockAllDemoArtifactsBtn');
       if (unlockAllBtn) {
         unlockAllBtn.addEventListener('click', () => {
+          ['tatarstan', 'kamchatka', 'pomorye', 'altai', 'yakutia', 'kazakhstan', 'uzbekistan', 'caucasus'].forEach(id => unlockedRelicIds.add(id));
+          try {
+            localStorage.setItem(UNLOCKED_RELICS_KEY, JSON.stringify(Array.from(unlockedRelicIds)));
+          } catch (e) {}
           renderRelicsShelf(true);
           AudioEngine.playSuccessTrumpet();
           triggerToast('✨ Все реликвии успешно открыты для исследования!');
@@ -6744,6 +7257,77 @@
       }
 
       // ========================================================================
+      // 12.5 VISION AI: ДЕКОДИРОВЩИК САХРАЛЬНЫХ ЭТНО-СИМВОЛОВ И ОРНАМЕНТОВ
+      // ========================================================================
+      const visionAiBtn = document.getElementById('runAiSymbolVisionBtn');
+      if (visionAiBtn) {
+        visionAiBtn.addEventListener('click', () => {
+          visionAiBtn.disabled = true;
+          visionAiBtn.innerHTML = '<span>⏳</span> Сканирование и вейвлет-анализ...';
+          AudioEngine.playLaserScan(1.2);
+
+          const canvas = document.getElementById('aiOrnamentCanvas');
+          if (canvas) {
+            canvas.style.filter = 'drop-shadow(0 0 20px var(--gold)) brightness(1.2)';
+            setTimeout(() => { canvas.style.filter = ''; }, 1200);
+          }
+
+          setTimeout(() => {
+            visionAiBtn.disabled = false;
+            visionAiBtn.innerHTML = '<span>✓</span> Нейро-декодирование завершено (Повторить)';
+
+            const card = document.getElementById('aiSymbolVisionResultCard');
+            if (card) {
+              card.style.display = 'block';
+            }
+
+            const archetypes = {
+              4: {
+                title: 'Четырёхчастный солярный крест (Симметрия C4)',
+                desc: 'Четыре стороны света, четыре священные стихии (Огонь, Вода, Земля, Воздух) и четыре времени года. Один из древнейших индоевропейских знаков защиты рода.',
+                conf: '98.9% MATCH',
+                tags: ['☀️ Четыре стороны света', '🛡️ Оберег очага', '📜 Канон РАН']
+              },
+              6: {
+                title: 'Громовое колесо / Шестилучевая розетка (Симметрия D6)',
+                desc: 'Священный знак громовника (Перунов цвет, поморский знак мореходов). Вырезался на причелинах изб и прялках для защиты дома от удара молнии и бури.',
+                conf: '99.4% MATCH',
+                tags: ['⚡ Знак громовника', '⛵ Поморский оберег', '🏛️ Этнографический канон']
+              },
+              8: {
+                title: 'Восьмиконечная солярная мандала (Симметрия D8)',
+                desc: 'Священная звезда богородицы и тюркский восьмигранник «Сегиз-Мюйюз». Символизирует гармонию вселенной, полноту бытия и благословение рода.',
+                conf: '99.7% MATCH',
+                tags: ['✨ Восьмиконечная звезда', '🌷 Тюркская и славянская скань', '👑 Шедевр']
+              },
+              12: {
+                title: 'Зодиакально-солнечный круг (Симметрия D12)',
+                desc: 'Двенадцатилучевой солнечный цикл и двенадцать животных восточного круга (Мюшел). Высшая степень космогонического порядка и космического круговорота.',
+                conf: '97.8% MATCH',
+                tags: ['🌌 Космогонический цикл', '🐎 Алтайский и скифский канон', '💎 Верифицировано']
+              }
+            };
+
+            const selected = archetypes[selectedSymmetry] || archetypes[8];
+            const titleEl = document.getElementById('aiSymbolArchetypeTitle');
+            const descEl = document.getElementById('aiSymbolArchetypeDesc');
+            const confEl = document.getElementById('aiSymbolMatchConfidence');
+            const tagsBox = document.getElementById('aiSymbolTagsBadges');
+
+            if (titleEl) titleEl.textContent = selected.title;
+            if (descEl) descEl.textContent = selected.desc;
+            if (confEl) confEl.textContent = selected.conf;
+            if (tagsBox) {
+              tagsBox.innerHTML = selected.tags.map(t => `<span class="action-chip" style="font-size:10px; padding:2px 8px;">${t}</span>`).join('');
+            }
+
+            AudioEngine.playSuccessTrumpet();
+            triggerToast(`✦ Vision AI: ${selected.title} верифицирован!`);
+          }, 1200);
+        });
+      }
+
+      // ========================================================================
       // 13. УПРАВЛЕНИЕ ТЕМОЙ, ЭМБИЕНТОМ И МОБИЛЬНЫМ МЕНЮ
       // ========================================================================
       const ambientBtn = document.getElementById('ambientToggleBtn');
@@ -6808,6 +7392,469 @@
           if (openDrawerBtn) openDrawerBtn.setAttribute('aria-expanded', 'false');
         }
       });
+
+      // ========================================================================
+      // 13.5 НЕЙРОСЕТЕВОЙ ДЕШИФРАТОР ПЕТРОГЛИФОВ (AI PETRODECIPHERER LAB)
+      // ========================================================================
+      const PETROGLYPHS_DATABASE = {
+        altai: {
+          id: 'altai',
+          title: 'Урочище Калбак-Таш · Благородный Олень',
+          region: 'Горный Алтай (Чуйский тракт) · ок. 1800 г. до н.э.',
+          era: 'Бронзовый век (II тыс. до н.э.)',
+          image: './images/petro_altai_kalbaktash.jpg',
+          category: 'Каракольская культура',
+          confidence: '99.4%',
+          sacredMeaning: 'Олень в космологии древних кочевников Алтая выступал проводником душ в небесный мир и солярным спутником первопредков. Ветвистые рога символизируют Мировое Древо.',
+          source: 'Институт археологии и этнографии СО РАН',
+          motifs: [
+            { name: 'Древовидные ветвистые рога', x: 0.52, y: 0.28, radius: 50, soundFreq: 520, desc: 'Космическая связь миров (Верхний, Средний и Подземный). Форма рогов повторяет сакральную крону Древа Жизни.' },
+            { name: 'Солярное колесо на крупе', x: 0.36, y: 0.44, radius: 45, soundFreq: 660, desc: 'Символ движения Солнца по небосводу, непрерывности циклов природы и плодородия рода.' },
+            { name: 'Летящие подогнутые копыта', x: 0.62, y: 0.72, radius: 45, soundFreq: 440, desc: 'Динамика священного галопа сквозь горные перевалы Алтая.' }
+          ],
+          svgCode: `<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="500" fill="#080d1a"/><path d="M 120,240 C 140,210 180,180 230,190 C 270,140 290,90 320,60 M 290,110 C 330,100 360,115 380,130 M 270,140 C 310,150 330,175 340,210 M 230,190 C 250,230 260,280 250,330 L 290,420 M 210,340 L 220,440 M 170,260 C 130,270 90,320 80,380 L 70,440 M 110,350 L 120,430 M 140,230 C 150,225 160,235 155,245 Z" fill="none" stroke="#f3d08a" stroke-width="4" stroke-linecap="round"/><circle cx="180" cy="270" r="28" fill="none" stroke="#48cae4" stroke-width="2.5" stroke-dasharray="4 4"/></svg>`
+        },
+        pomorye: {
+          id: 'pomorye',
+          title: 'Беломорье · Священный Лебедь и Карбас',
+          region: 'Поморье (Онежское озеро / мыс Бесов Нос)',
+          era: 'Неолит (IV–III тыс. до н.э.)',
+          image: './images/petro_pomorye_swan.jpg',
+          category: 'Онежский наскальный канон (ЮНЕСКО)',
+          confidence: '98.8%',
+          sacredMeaning: 'Лебедь — сакральная птица-демиург северных народов, символ чистоты, перехода между стихиями воды и неба. Ладья отражает древнейший промысел и плавания по Белому морю.',
+          source: 'Карельский научный центр РАН / Заповедник «Петроглифы Онеги»',
+          motifs: [
+            { name: 'Длинношеий водоплавающий лебедь', x: 0.48, y: 0.35, radius: 50, soundFreq: 587, desc: 'Образ птицы-прародительницы, сотворившей земную твердь со дна первозданного океана.' },
+            { name: 'Многовесельная мореходная ладья', x: 0.55, y: 0.65, radius: 55, soundFreq: 440, desc: 'Древнейшее свидетельство мореходства: нос в виде головы лося и синхронные весла.' },
+            { name: 'Знаки солярного восхода', x: 0.28, y: 0.22, radius: 40, soundFreq: 698, desc: 'Ритуальные отметки весеннего пробуждения водоемов.' }
+          ],
+          svgCode: `<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="500" fill="#080d1a"/><path d="M 180,180 C 170,120 210,80 250,90 C 270,100 260,130 240,160 C 220,190 200,220 230,240 C 270,250 330,240 370,210 C 380,240 340,280 280,290 C 210,290 160,260 170,210 Z M 100,380 C 180,360 280,360 380,390 C 350,420 180,430 100,380 Z M 150,340 L 150,370 M 200,335 L 200,370 M 250,335 L 250,370 M 300,340 L 300,370" fill="none" stroke="#70d6ff" stroke-width="4" stroke-linecap="round"/></svg>`
+        },
+        bulgar: {
+          id: 'bulgar',
+          title: 'Волжская Булгария · Княжеская Тамга и Пальметта',
+          region: 'Среднее Поволжье (Великий Болгар) · ок. 1314 г.',
+          era: 'Золотоордынский период (XIII–XIV вв.)',
+          image: './images/petro_bulgar_tamga.jpg',
+          category: 'Булгаро-татарская монументальная пластика',
+          confidence: '99.1%',
+          sacredMeaning: 'Тамга являлась родовым гербом династии правителей и печатью неприкосновенности. Растительная пальметта олицетворяет цветение древа жизни и райские сады.',
+          source: 'Институт археологии им. А.Х. Халикова АН РТ',
+          motifs: [
+            { name: 'Геральдическая тамга рода', x: 0.50, y: 0.42, radius: 48, soundFreq: 659, desc: 'Княжеский знак родового суверенитета, высеченный на белом резном камне.' },
+            { name: 'Лотосовидная пальметта', x: 0.50, y: 0.18, radius: 42, soundFreq: 784, desc: 'Священный трилистник возрождения и райского благоденствия.' },
+            { name: 'Бесконечный плетеный узел', x: 0.22, y: 0.55, radius: 42, soundFreq: 523, desc: 'Суфийский символ вечности божественного порядка.' }
+          ],
+          svgCode: `<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="500" fill="#080d1a"/><path d="M 240,120 C 220,160 210,210 210,280 L 210,400 M 270,120 C 290,160 300,210 300,280 L 300,400 M 170,200 C 200,230 240,240 255,240 C 270,240 310,230 340,200 M 255,80 C 235,110 245,140 255,150 C 265,140 275,110 255,80 Z" fill="none" stroke="#ffd166" stroke-width="4" stroke-linecap="round"/></svg>`
+        },
+        yakut: {
+          id: 'yakut',
+          title: 'Ленские Писаницы · Солярный Знак «Күн» и Шаман',
+          region: 'Якутия (р. Лена / Ленские столбы) · VII–IX вв. н.э.',
+          era: 'Раннее средневековье (I тыс. н.э.)',
+          image: './images/petro_yakut_sun.jpg',
+          category: 'Курыканская наскальная живопись охрами',
+          confidence: '99.5%',
+          sacredMeaning: 'Күн — солнце, дарующее тепло и защиту от злых духов подземного мира Абасы. Ритуальный комплекс писаниц использовался белыми шаманами во время летнего солнцестояния Ысыах.',
+          source: 'Якутский государственный музей истории и культуры народов Севера',
+          motifs: [
+            { name: 'Солярный символ Солнца «Күн»', x: 0.42, y: 0.28, radius: 45, soundFreq: 740, desc: 'Центр небесного купола и тепловой энергии в якутской традиции.' },
+            { name: 'Шаман со священным бубном', x: 0.58, y: 0.52, radius: 50, soundFreq: 494, desc: 'Медиатор между мирами людей и светлыми божествами Айыы.' },
+            { name: 'Охристые священные кони', x: 0.32, y: 0.65, radius: 42, soundFreq: 622, desc: 'Священный скот бога Дьөһөгөй Айыы — подателя конного изобилия.' }
+          ],
+          svgCode: `<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="500" fill="#080d1a"/><circle cx="200" cy="160" r="40" fill="none" stroke="#ef476f" stroke-width="4"/><path d="M 200,105 L 200,115 M 200,205 L 200,215 M 145,160 L 155,160 M 245,160 L 255,160 M 160,120 L 170,130 M 230,190 L 240,200 M 160,200 L 170,190 M 230,130 L 240,120 M 270,260 L 320,290 L 290,380 M 320,290 L 370,300 L 400,390" fill="none" stroke="#ef476f" stroke-width="4" stroke-linecap="round"/></svg>`
+        },
+        scythian: {
+          id: 'scythian',
+          title: 'Курган Аржан · Летящий Скифский Олень',
+          region: 'Скифо-сибирский ареал (Тыва / Долина Царей) · VI в. до н.э.',
+          era: 'Раннескифский период (VIII–V вв. до н.э.)',
+          image: './images/petro_scythian_deer.jpg',
+          category: 'Скифо-сибирский звериный стиль (Оленные камни)',
+          confidence: '99.7%',
+          sacredMeaning: 'Летящий олень — высший символ воинской доблести, скорости и царского величия скифов. Волнообразные рога символизируют языки пламени священного костра и лучи солнца.',
+          source: 'Государственный Эрмитаж / ИИМК РАН',
+          motifs: [
+            { name: 'Волнообразные стилизованные рога', x: 0.54, y: 0.22, radius: 50, soundFreq: 880, desc: 'Идеальная ритмика скифского канона — рога оленя взмывают к небу как пламя.' },
+            { name: 'Клювовидная голова грифона', x: 0.72, y: 0.32, radius: 42, soundFreq: 700, desc: 'Гибридный образ зверя и птицы — стража сокровищ и святилищ.' },
+            { name: 'Подогнутые в космическом прыжке ноги', x: 0.44, y: 0.70, radius: 48, soundFreq: 440, desc: 'Стремительный полет через небесную твердь к бессмертию.' }
+          ],
+          svgCode: `<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg"><rect width="500" height="500" fill="#080d1a"/><path d="M 280,220 C 310,170 340,130 380,120 C 360,160 330,190 310,220 M 270,180 C 310,130 350,80 400,60 C 380,110 330,160 300,190 M 250,150 C 290,90 340,40 390,20 C 360,80 310,130 270,170 M 220,240 C 280,240 330,220 350,250 C 330,270 280,270 240,260 L 200,340 C 180,380 140,390 120,360 L 160,320 L 150,260 Z" fill="none" stroke="#f3d08a" stroke-width="4" stroke-linecap="round"/></svg>`
+        }
+      };
+
+      let activePetroId = 'altai';
+      let activePetroMode = 'edge';
+      let petroLensRadius = 110;
+      let isPetroAudioActive = true;
+      let petroBaseImg = new Image();
+      let lastPetroSoundTime = 0;
+      let activePetroHotspotIndex = -1;
+      let isPetroInitialized = false;
+
+      function renderPetroArtifact(petroId) {
+        const d = PETROGLYPHS_DATABASE[petroId];
+        if (!d) return;
+        activePetroId = petroId;
+
+        const titleEl = document.getElementById('petroHudTitle');
+        if (titleEl) titleEl.textContent = d.title;
+        const regionEl = document.getElementById('petroHudRegion');
+        if (regionEl) regionEl.textContent = d.region;
+        const eraEl = document.getElementById('petroHudEra');
+        if (eraEl) eraEl.textContent = d.era;
+        const confEl = document.getElementById('petroHudConfidence');
+        if (confEl) confEl.textContent = d.confidence;
+        const catEl = document.getElementById('petroHudCategory');
+        if (catEl) catEl.textContent = d.category;
+        const sacredEl = document.getElementById('petroHudSacred');
+        if (sacredEl) sacredEl.textContent = d.sacredMeaning;
+        const sourceEl = document.getElementById('petroHudSource');
+        if (sourceEl) sourceEl.textContent = `Источник: ${d.source}`;
+
+        // Обновляем список ключевых узлов
+        const list = document.getElementById('petroHotspotsList');
+        if (list) {
+          list.innerHTML = d.motifs.map((m, idx) => `
+            <div class="petro-hotspot-item ${idx === 0 ? 'is-active' : ''}" data-idx="${idx}" role="button" tabindex="0">
+              <strong>
+                <span>✦ ${m.name}</span>
+                <span style="font-size:10.5px; color:var(--cyan); font-family:monospace;">${m.soundFreq} Hz</span>
+              </strong>
+              <p>${m.desc}</p>
+            </div>
+          `).join('');
+
+          list.querySelectorAll('.petro-hotspot-item').forEach(item => {
+            item.addEventListener('click', () => {
+              const idx = parseInt(item.dataset.idx, 10);
+              focusPetroHotspot(idx);
+            });
+          });
+        }
+
+        // Загрузка полотна
+        petroBaseImg = new Image();
+        petroBaseImg.crossOrigin = 'anonymous';
+        petroBaseImg.onload = () => {
+          drawPetroBaseCanvas();
+          updatePetroLensPos(450, 280);
+        };
+        petroBaseImg.src = d.image;
+      }
+
+      function drawPetroBaseCanvas() {
+        const canvas = document.getElementById('petroBaseCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#050914';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        if (petroBaseImg.complete && petroBaseImg.naturalWidth > 0) {
+          ctx.drawImage(petroBaseImg, 0, 0, canvas.width, canvas.height);
+        }
+      }
+
+      function updatePetroLensPos(canvasX, canvasY) {
+        const lens = document.getElementById('petroLens');
+        const viewport = document.getElementById('petroViewport');
+        const coords = document.getElementById('petroLensCoords');
+        if (!lens || !viewport) return;
+
+        const rect = viewport.getBoundingClientRect();
+        const normX = Math.max(0, Math.min(1, canvasX / 900));
+        const normY = Math.max(0, Math.min(1, canvasY / 560));
+
+        const pixelX = normX * rect.width;
+        const pixelY = normY * rect.height;
+
+        lens.style.left = `${pixelX}px`;
+        lens.style.top = `${pixelY}px`;
+
+        if (coords) {
+          coords.textContent = `X: ${Math.round(normX * 900)} · Y: ${Math.round(normY * 560)}`;
+        }
+
+        drawPetroLensContent(normX * 900, normY * 560);
+        checkPetroHotspotProximity(normX, normY);
+      }
+
+      function drawPetroLensContent(centerX, centerY) {
+        const lensCanvas = document.getElementById('petroLensCanvas');
+        const baseCanvas = document.getElementById('petroBaseCanvas');
+        if (!lensCanvas || !baseCanvas) return;
+        const lctx = lensCanvas.getContext('2d', { willReadFrequently: true });
+        const bctx = baseCanvas.getContext('2d', { willReadFrequently: true });
+
+        const d = PETROGLYPHS_DATABASE[activePetroId];
+        const diameter = petroLensRadius * 2;
+        lensCanvas.width = diameter;
+        lensCanvas.height = diameter;
+
+        const sx = Math.max(0, Math.min(baseCanvas.width - diameter, centerX - petroLensRadius));
+        const sy = Math.max(0, Math.min(baseCanvas.height - diameter, centerY - petroLensRadius));
+
+        if (activePetroMode === 'original') {
+          lctx.drawImage(baseCanvas, sx, sy, diameter, diameter, 0, 0, diameter, diameter);
+          return;
+        }
+
+        try {
+          const imgData = bctx.getImageData(sx, sy, diameter, diameter);
+          const pixels = imgData.data;
+          const w = imgData.width;
+          const h = imgData.height;
+
+          if (activePetroMode === 'edge') {
+            // Компьютерное зрение: 3x3 фильтр Собеля
+            const output = lctx.createImageData(w, h);
+            const outPixels = output.data;
+            const gray = new Uint8Array(w * h);
+
+            for (let i = 0; i < pixels.length; i += 4) {
+              gray[i >> 2] = (pixels[i] * 77 + pixels[i + 1] * 150 + pixels[i + 2] * 29) >> 8;
+            }
+
+            for (let y = 1; y < h - 1; y++) {
+              const row = y * w;
+              for (let x = 1; x < w - 1; x++) {
+                const idx = row + x;
+                const gx = -gray[idx - w - 1] + gray[idx - w + 1]
+                          - 2 * gray[idx - 1]     + 2 * gray[idx + 1]
+                          - gray[idx + w - 1] + gray[idx + w + 1];
+                const gy = -gray[idx - w - 1] - 2 * gray[idx - w] - gray[idx - w + 1]
+                          + gray[idx + w - 1] + 2 * gray[idx + w] + gray[idx + w + 1];
+
+                const mag = Math.hypot(gx, gy);
+                const pIdx = idx << 2;
+
+                if (mag > 36) {
+                  // Золотые люминесцентные контуры древней высечки
+                  outPixels[pIdx] = 243;
+                  outPixels[pIdx + 1] = 208;
+                  outPixels[pIdx + 2] = 138;
+                  outPixels[pIdx + 3] = Math.min(255, mag * 2.3);
+                } else {
+                  // Фоновый темный сланец
+                  outPixels[pIdx] = 5;
+                  outPixels[pIdx + 1] = 9;
+                  outPixels[pIdx + 2] = 18;
+                  outPixels[pIdx + 3] = 230;
+                }
+              }
+            }
+            lctx.putImageData(output, 0, 0);
+
+          } else if (activePetroMode === 'relief') {
+            // Псевдоцветовая карта глубин рельефа камня
+            const output = lctx.createImageData(w, h);
+            const outPixels = output.data;
+            for (let i = 0; i < pixels.length; i += 4) {
+              const luma = (pixels[i] * 77 + pixels[i + 1] * 150 + pixels[i + 2] * 29) >> 8;
+              if (luma < 75) {
+                outPixels[i] = 14; outPixels[i + 1] = 116; outPixels[i + 2] = 144; outPixels[i + 3] = 255;
+              } else if (luma < 145) {
+                outPixels[i] = 180; outPixels[i + 1] = 83; outPixels[i + 2] = 9; outPixels[i + 3] = 255;
+              } else {
+                outPixels[i] = 253; outPixels[i + 1] = 224; outPixels[i + 2] = 71; outPixels[i + 3] = 255;
+              }
+            }
+            lctx.putImageData(output, 0, 0);
+
+          } else if (activePetroMode === 'neural') {
+            // Граф ключевых точек нейросегментации
+            lctx.drawImage(baseCanvas, sx, sy, diameter, diameter, 0, 0, diameter, diameter);
+            lctx.fillStyle = 'rgba(4, 7, 18, 0.65)';
+            lctx.fillRect(0, 0, diameter, diameter);
+
+            lctx.strokeStyle = 'rgba(243, 208, 138, 0.7)';
+            lctx.lineWidth = 2;
+            lctx.beginPath();
+            d.motifs.forEach((m, i) => {
+              const nx = m.x * baseCanvas.width - sx;
+              const ny = m.y * baseCanvas.height - sy;
+              if (i === 0) lctx.moveTo(nx, ny);
+              else lctx.lineTo(nx, ny);
+            });
+            lctx.stroke();
+
+            d.motifs.forEach(m => {
+              const nx = m.x * baseCanvas.width - sx;
+              const ny = m.y * baseCanvas.height - sy;
+              lctx.beginPath();
+              lctx.arc(nx, ny, 7, 0, Math.PI * 2);
+              lctx.fillStyle = '#48cae4';
+              lctx.fill();
+              lctx.strokeStyle = '#fff';
+              lctx.lineWidth = 2;
+              lctx.stroke();
+            });
+          }
+        } catch (e) {
+          lctx.drawImage(baseCanvas, sx, sy, diameter, diameter, 0, 0, diameter, diameter);
+        }
+      }
+
+      function checkPetroHotspotProximity(normX, normY) {
+        const d = PETROGLYPHS_DATABASE[activePetroId];
+        if (!d) return;
+        const now = performance.now();
+
+        d.motifs.forEach((m, idx) => {
+          const dist = Math.hypot(normX - m.x, normY - m.y);
+          if (dist < 0.08) {
+            if (activePetroHotspotIndex !== idx) {
+              activePetroHotspotIndex = idx;
+              document.querySelectorAll('.petro-hotspot-item').forEach((el, i) => {
+                el.classList.toggle('is-active', i === idx);
+              });
+              if (isPetroAudioActive && now - lastPetroSoundTime > 400) {
+                lastPetroSoundTime = now;
+                AudioEngine.playEthnicBell(m.soundFreq, 1.2);
+              }
+            }
+          }
+        });
+      }
+
+      function focusPetroHotspot(idx) {
+        const d = PETROGLYPHS_DATABASE[activePetroId];
+        if (!d || !d.motifs[idx]) return;
+        const m = d.motifs[idx];
+        activePetroHotspotIndex = idx;
+        document.querySelectorAll('.petro-hotspot-item').forEach((el, i) => {
+          el.classList.toggle('is-active', i === idx);
+        });
+        updatePetroLensPos(m.x * 900, m.y * 560);
+        AudioEngine.playEthnicBell(m.soundFreq, 1.4);
+        triggerToast(`Сканирование: ${m.name}`);
+      }
+
+      function exportPetroSvg() {
+        const d = PETROGLYPHS_DATABASE[activePetroId];
+        if (!d) return;
+        const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+<!-- АРТЕФАКТ: Векторная реконструкция наскального петроглифа -->
+<!-- ${d.title} (${d.era}) -->
+<!-- Исследование: ${d.source} -->
+${d.svgCode}`;
+        const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `petroglyph_${activePetroId}_vector.svg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        triggerToast(`Векторный файл скачан: ${d.title}`);
+        AudioEngine.playEthnicBell(880, 1.4);
+      }
+
+      function initPetroDecipherer() {
+        if (!isPetroInitialized) {
+          isPetroInitialized = true;
+
+          // Селектор артефактов
+          document.querySelectorAll('#petroArtifactSelectorPills .pill-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              document.querySelectorAll('#petroArtifactSelectorPills .pill-filter-btn').forEach(b => b.classList.remove('is-active'));
+              btn.classList.add('is-active');
+              const pid = btn.dataset.petro;
+              renderPetroArtifact(pid);
+              AudioEngine.playUiClick();
+            });
+          });
+
+          // Переключатель режимов
+          document.querySelectorAll('#petroModeTabs .petro-mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              document.querySelectorAll('#petroModeTabs .petro-mode-btn').forEach(b => b.classList.remove('is-active'));
+              btn.classList.add('is-active');
+              activePetroMode = btn.dataset.mode;
+              const badge = document.getElementById('petroLensModeBadge');
+              if (badge) {
+                badge.textContent = activePetroMode === 'edge' ? 'AI SOBEL EDGE' :
+                                    activePetroMode === 'relief' ? 'DEPTH RELIEF' :
+                                    activePetroMode === 'neural' ? 'NEURAL GRAPH' : 'NATURAL LIGHT';
+              }
+              const lens = document.getElementById('petroLens');
+              if (lens) {
+                const curLeft = parseFloat(lens.style.left) || 450;
+                const curTop = parseFloat(lens.style.top) || 280;
+                const vp = document.getElementById('petroViewport');
+                const rect = vp ? vp.getBoundingClientRect() : { width: 900, height: 560 };
+                updatePetroLensPos((curLeft / rect.width) * 900, (curTop / rect.height) * 560);
+              }
+              AudioEngine.playUiClick();
+            });
+          });
+
+          // Слайдер радиуса
+          const radiusSlider = document.getElementById('petroLensRadiusSlider');
+          if (radiusSlider) {
+            radiusSlider.addEventListener('input', (e) => {
+              petroLensRadius = parseInt(e.target.value, 10);
+              const label = document.getElementById('petroLensRadiusVal');
+              if (label) label.textContent = `${petroLensRadius * 2}px`;
+              const lens = document.getElementById('petroLens');
+              if (lens) {
+                lens.style.width = `${petroLensRadius * 2}px`;
+                lens.style.height = `${petroLensRadius * 2}px`;
+              }
+            });
+          }
+
+          // Переключатель звука сонара
+          const audioBtn = document.getElementById('petroAudioToggleBtn');
+          if (audioBtn) {
+            audioBtn.addEventListener('click', () => {
+              isPetroAudioActive = !isPetroAudioActive;
+              audioBtn.textContent = isPetroAudioActive ? '🔔 Включен' : '🔕 Выключен';
+              audioBtn.style.color = isPetroAudioActive ? 'var(--gold-light)' : 'var(--text-muted)';
+              AudioEngine.playUiClick();
+            });
+          }
+
+          // Кнопка экспорта SVG
+          const exportBtn = document.getElementById('petroExportSvgBtn');
+          if (exportBtn) {
+            exportBtn.addEventListener('click', exportPetroSvg);
+          }
+
+          // Кнопка аудиогида
+          const voiceBtn = document.getElementById('petroVoiceListenBtn');
+          if (voiceBtn) {
+            voiceBtn.addEventListener('click', () => {
+              const d = PETROGLYPHS_DATABASE[activePetroId];
+              if (!d) return;
+              AudioEngine.playEthnicBell(660, 1.2);
+              triggerToast(`Аудиогид: ${d.title}`);
+            });
+          }
+
+          // Слушатели перемещения по Canvas (Mouse & Touch)
+          const viewport = document.getElementById('petroViewport');
+          if (viewport) {
+            const handleMove = (clientX, clientY) => {
+              const rect = viewport.getBoundingClientRect();
+              const canvasX = ((clientX - rect.left) / rect.width) * 900;
+              const canvasY = ((clientY - rect.top) / rect.height) * 560;
+              updatePetroLensPos(canvasX, canvasY);
+            };
+
+            viewport.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+            viewport.addEventListener('touchmove', (e) => {
+              if (e.touches.length > 0) {
+                e.preventDefault();
+                handleMove(e.touches[0].clientX, e.touches[0].clientY);
+              }
+            }, { passive: false });
+          }
+        }
+
+        renderPetroArtifact(activePetroId);
+      }
 
       // ========================================================================
       // 14. СТАРТОВАЯ ИНИЦИАЛИЗАЦИЯ И ЗАЩИТА ЖИЗНЕННОГО ЦИКЛА
