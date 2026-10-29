@@ -596,28 +596,32 @@
     "en": "Export Vector Trace (SVG)"
   },
   "folklore_badge": {
-    "ru": "✦ Живое устное наследие",
+    "ru": "✦ Устное народное творчество",
     "en": "✦ Living Oral Heritage"
   },
   "folklore_heading": {
-    "ru": "Антология фольклора и эпоса",
+    "ru": "Антология преданий и эпоса",
     "en": "Anthology of Folklore & Epics"
   },
+  "folklore_lead": {
+    "ru": "Собрание сказов, былин и космогонических мифов, записанных выдающимися этнографами в экспедициях XIX–XX веков.",
+    "en": "A treasury of tales, heroic epics, and cosmogonic legends recorded by leading ethnographers during 19th–20th century expeditions."
+  },
   "folklore_filter_all": {
-    "ru": "Все сказания",
-    "en": "All Tales"
+    "ru": "Все сказания (8)",
+    "en": "All Tales (8)"
   },
   "folklore_filter_epics": {
-    "ru": "Богатырский эпос",
+    "ru": "Эпосы и богатыри",
     "en": "Heroic Epics"
   },
   "folklore_filter_tales": {
-    "ru": "Сказки и притчи",
-    "en": "Fairy Tales & Parables"
+    "ru": "Сказки и мультфильмы",
+    "en": "Tales & Cartoons"
   },
   "folklore_filter_nature": {
-    "ru": "Мифы о сотворении",
-    "en": "Creation Myths"
+    "ru": "Духи природы",
+    "en": "Nature Spirits"
   },
   "folklore_btn_read": {
     "ru": "Читать и исследовать →",
@@ -754,6 +758,442 @@
   "ws_vision_btn": {
     "ru": "✨ Запустить сканер символики",
     "en": "✨ Run Symbol Vision AI"
+  },
+  "hero_btn_explore": {
+    "ru": "Начать исследование →",
+    "en": "Start Exploration →"
+  },
+  "hero_btn_decipherer": {
+    "ru": "⚡ AI-Дешифратор петроглифов",
+    "en": "⚡ AI Petro-Lens Decipherer"
+  },
+  "hero_btn_restorer": {
+    "ru": "🔬 Лаборатория реставрации",
+    "en": "🔬 Restoration Laboratory"
+  },
+  "hero_btn_quest": {
+    "ru": "Маршрут экспедиции",
+    "en": "Expedition Route"
+  },
+  "cult_filter_world": {
+    "ru": "Мир и Шёлковый путь",
+    "en": "World & Silk Road"
+  },
+  "q1_listen_btn_text": {
+    "ru": "Слушать голос",
+    "en": "Listen Voice"
+  },
+  "q1_stop_btn_text": {
+    "ru": "Остановить диктора",
+    "en": "Stop Narrator"
+  },
+  "q1_slider_left": {
+    "ru": "← Потяните слайдер или коснитесь пальцем",
+    "en": "← Drag slider or swipe touch"
+  },
+  "q1_slider_right": {
+    "ru": "Архив vs Современность →",
+    "en": "Archive vs Present →"
+  },
+  "q2_subtitle_default": {
+    "ru": "«В глухой чаще векового урмана открывается сакральная тропа предков...»",
+    "en": "«In the deep grove of primeval forest, the sacred trail of ancestors opens...»"
+  },
+  "q2_timecode_1": {
+    "ru": "Вход в лес",
+    "en": "Entering Forest"
+  },
+  "q2_timecode_2": {
+    "ru": "Встреча с духом",
+    "en": "Meeting the Spirit"
+  },
+  "q2_timecode_3": {
+    "ru": "Загадка орнамента",
+    "en": "Ornament Riddle"
+  },
+  "q2_timecode_4": {
+    "ru": "Разгадка кода",
+    "en": "Deciphering Code"
+  },
+  "q2_scene_desc_default": {
+    "ru": "Вход под сень векового дубового леса. Молодой дровосек замечает таинственные метки на коре и слышит шелест листьев.",
+    "en": "Entering under the canopy of an ancient oak forest. The young woodcutter observes mystical carvings on the bark and hears the rustle of leaves."
+  },
+  "q4_rotate_hint": {
+    "ru": "Вращайте экспонат свайпом пальца или ползунком ракурса. Исследуйте глубину шва, сафьяновую кожу и растительные пигменты.",
+    "en": "Rotate exhibit with touch swipe or rotation slider. Examine stitch depth, morocco leather, and mineral pigments."
+  },
+  "q5_bridge_badge": {
+    "ru": "Мост в реальный мир",
+    "en": "Bridge to the Real World"
+  },
+  "q5_bridge_heading": {
+    "ru": "От цифрового к подлиннику",
+    "en": "From Digital to Authentic Masterpiece"
+  },
+  "q5_bridge_desc": {
+    "ru": "Цифровое путешествие завершается встречей с настоящим историческим артефактом в зале одного из ведущих музеев.",
+    "en": "The digital journey culminates in an encounter with an authentic historical artifact in the halls of a leading museum."
+  },
+  "q5_bridge_status_lbl": {
+    "ru": "✦ Статус экспедиции:",
+    "en": "✦ Expedition Status:"
+  },
+  "q5_bridge_status_val": {
+    "ru": "След разгадан! Артефакт сохранён в вашей витрине наград.",
+    "en": "Trace deciphered! Artifact preserved in your treasury showcase."
+  },
+  "q5_btn_treasury": {
+    "ru": "Перейти в витрину наград →",
+    "en": "Go to Treasury Showcase →"
+  },
+  "q5_btn_atlas": {
+    "ru": "Открыть Этноатлас",
+    "en": "Open EthnoAtlas"
+  },
+  "atlas_lead": {
+    "ru": "Исследуйте карту культурных ареалов. Выберите маркер региона, чтобы изучить полевой формуляр экспедиции, сакральный артефакт и музейное хранение.",
+    "en": "Explore the map of cultural realms. Select a region marker to inspect the expedition field dossier, sacred artifact, and museum repository."
+  },
+  "atlas_stat_1_lbl": {
+    "ru": "Культурных ареалов",
+    "en": "Cultural Realms"
+  },
+  "atlas_stat_2_lbl": {
+    "ru": "Верифицированных символа",
+    "en": "Verified Symbols"
+  },
+  "atlas_stat_3_lbl": {
+    "ru": "Ведущих музеев РФ",
+    "en": "Leading Museums"
+  },
+  "atlas_stat_4_lbl": {
+    "ru": "Научный канон РАН",
+    "en": "RAS Academic Canon"
+  },
+  "atlas_map_hint": {
+    "ru": "💡 Кликайте по полигонам или меткам регионов на карте для перехода к формуляру экспедиции",
+    "en": "💡 Click map polygons or region markers to view expedition field dossier"
+  },
+  "atlas_card_select": {
+    "ru": "Выбрать →",
+    "en": "Select →"
+  },
+  "atlas_lbl_storage": {
+    "ru": "Хранение:",
+    "en": "Repository:"
+  },
+  "atlas_lbl_artifact": {
+    "ru": "Артефакт:",
+    "en": "Artifact:"
+  },
+  "atlas_lbl_greeting": {
+    "ru": "Приветствие:",
+    "en": "Greeting:"
+  },
+  "restorer_lbl_xrf": {
+    "ru": "Рентгенофлуоресцентный анализ сплава (XRF):",
+    "en": "X-Ray Fluorescence Alloy Profile (XRF):"
+  },
+  "restorer_metal_au": {
+    "ru": "Золото (Au)",
+    "en": "Gold (Au)"
+  },
+  "restorer_metal_ag": {
+    "ru": "Серебро (Ag)",
+    "en": "Silver (Ag)"
+  },
+  "restorer_metal_cu": {
+    "ru": "Медь (Cu)",
+    "en": "Copper (Cu)"
+  },
+  "restorer_strat_section": {
+    "ru": "🔬 Стратиграфия среза (Micro-CT):",
+    "en": "🔬 Micro-CT Stratigraphy Slicer:"
+  },
+  "restorer_btn_recon": {
+    "ru": "Запустить ИИ-реконструкцию (Лазерное сканирование)",
+    "en": "Launch AI Reconstruction (Laser Scan)"
+  },
+  "restorer_pedestal_3d": {
+    "ru": "3D-Постамент (Музейная экспозиция)",
+    "en": "3D Pedestal (Museum Showcase)"
+  },
+  "restorer_pedestal_flat": {
+    "ru": "Плоский срез",
+    "en": "Flat Section"
+  },
+  "petro_art_altai": {
+    "ru": "🏔️ Алтай · Калбак-Таш",
+    "en": "🏔️ Altai · Kalbak-Tash"
+  },
+  "petro_art_pomorye": {
+    "ru": "⛵ Поморье · Беломорье",
+    "en": "⛵ Pomorye · White Sea"
+  },
+  "petro_art_bulgar": {
+    "ru": "🕌 Булгария · Тамга",
+    "en": "🕌 Bulgaria · Tamga"
+  },
+  "petro_art_yakut": {
+    "ru": "❄️ Саха · Знак Солнца",
+    "en": "❄️ Sakha · Sun Glyph"
+  },
+  "petro_art_scythian": {
+    "ru": "🏹 Скифия · Олень Аржана",
+    "en": "🏹 Scythia · Arzhan Stag"
+  },
+  "petro_lbl_diameter": {
+    "ru": "Диаметр линзы:",
+    "en": "Lens Diameter:"
+  },
+  "petro_lbl_sonar": {
+    "ru": "Сонар-отклик:",
+    "en": "Sonar Feedback:"
+  },
+  "petro_audio_on": {
+    "ru": "🔔 Включен",
+    "en": "🔔 Active"
+  },
+  "petro_audio_off": {
+    "ru": "🔕 Выключен",
+    "en": "🔕 Muted"
+  },
+  "petro_lbl_ai_conf": {
+    "ru": "Точность ИИ",
+    "en": "AI Precision"
+  },
+  "petro_lbl_classifier": {
+    "ru": "Классификатор",
+    "en": "Classifier"
+  },
+  "petro_lbl_sacred_nodes": {
+    "ru": "Распознанные сакральные узлы (наведите линзу):",
+    "en": "Identified Sacred Nodes (hover lens):"
+  },
+  "petro_lbl_sonar_archive": {
+    "ru": "📖 Сакральное значение (Архив Perplexity Sonar):",
+    "en": "📖 Sacred Meaning (Perplexity Sonar Archive):"
+  },
+  "petro_btn_export_svg": {
+    "ru": "Экспорт Вектора (SVG)",
+    "en": "Export Vector (SVG)"
+  },
+  "petro_btn_audioguide": {
+    "ru": "Аудиогид",
+    "en": "Audio Guide"
+  },
+  "col_member_mama": {
+    "ru": "Мама (Хранитель)",
+    "en": "Mother (Keeper)"
+  },
+  "col_member_timur": {
+    "ru": "Тимур (Следопыт)",
+    "en": "Timur (Tracker)"
+  },
+  "col_member_papa": {
+    "ru": "Папа (Навигатор)",
+    "en": "Father (Navigator)"
+  },
+  "col_member_solved_12": {
+    "ru": "12 артефактов разгадано",
+    "en": "12 artifacts deciphered"
+  },
+  "col_member_solved_9": {
+    "ru": "9 артефактов разгадано",
+    "en": "9 artifacts deciphered"
+  },
+  "col_member_solved_7": {
+    "ru": "7 артефактов разгадано",
+    "en": "7 artifacts deciphered"
+  },
+  "ws_btn_vision_run": {
+    "ru": "Нейро-декодирование семантики (Vision AI)",
+    "en": "Neural Semantics Decoding (Vision AI)"
+  },
+  "ws_vision_badge": {
+    "ru": "✦ Нейро-семантика верифицирована",
+    "en": "✦ Neural Semantics Verified"
+  },
+  "ws_archetype_title": {
+    "ru": "Солярная розеточная мандала (D8)",
+    "en": "Solar Rosette Mandala (D8)"
+  },
+  "ws_archetype_desc": {
+    "ru": "Восьмилучевая циклическая симметрия. Древнейший индоевропейский и тюркский солярный знак: защита очага от злых духов и благословение весеннего солнца.",
+    "en": "Eight-ray cyclic symmetry. Ancient Indo-European and Turkic solar emblem: protecting the hearth from malevolent spirits and blessing with the vernal sun."
+  },
+  "ws_tag_solar": {
+    "ru": "☀️ Солярный культ",
+    "en": "☀️ Solar Cult"
+  },
+  "ws_tag_amulet": {
+    "ru": "🛡️ Родовой оберег",
+    "en": "🛡️ Clan Talisman"
+  },
+  "ws_tag_rem": {
+    "ru": "🏛️ Канон РЭМ",
+    "en": "🏛️ REM Canon"
+  },
+  "modal_passport_org": {
+    "ru": "Российский этнографический союз",
+    "en": "Russian Ethnographical Union"
+  },
+  "modal_passport_title": {
+    "ru": "Полевой паспорт этнографа",
+    "en": "Field Ethnographer Dossier"
+  },
+  "modal_passport_lbl_researcher": {
+    "ru": "Исследователь:",
+    "en": "Researcher:"
+  },
+  "modal_passport_val_researcher": {
+    "ru": "Следопыт Артефакта",
+    "en": "Artefact Pathfinder"
+  },
+  "modal_passport_lbl_region": {
+    "ru": "Регион экспедиции:",
+    "en": "Expedition Region:"
+  },
+  "modal_passport_lbl_artifact": {
+    "ru": "Открытый артефакт:",
+    "en": "Discovered Artifact:"
+  },
+  "modal_passport_lbl_museum": {
+    "ru": "Музейный архив:",
+    "en": "Museum Archive:"
+  },
+  "modal_passport_lbl_status": {
+    "ru": "Статус верификации:",
+    "en": "Verification Status:"
+  },
+  "modal_passport_val_status": {
+    "ru": "✓ СЛЕД ВЕРИФИЦИРОВАН",
+    "en": "✓ TRACE VERIFIED"
+  },
+  "modal_passport_btn_copy": {
+    "ru": "📋 Скопировать выписку",
+    "en": "📋 Copy Dossier Extract"
+  },
+  "modal_passport_btn_close": {
+    "ru": "Закрыть",
+    "en": "Close"
+  },
+  "modal_passport_close_aria": {
+    "ru": "Закрыть паспорт",
+    "en": "Close dossier"
+  },
+  "quest_era_init": {
+    "ru": "XIX век",
+    "en": "19th century"
+  },
+  "map_compass_n": {
+    "ru": "С",
+    "en": "N"
+  },
+  "map_compass_s": {
+    "ru": "Ю",
+    "en": "S"
+  },
+  "map_compass_e": {
+    "ru": "В",
+    "en": "E"
+  },
+  "map_compass_w": {
+    "ru": "З",
+    "en": "W"
+  },
+  "map_geo_baikal": {
+    "ru": "оз. Байкал",
+    "en": "Lake Baikal"
+  },
+  "map_geo_caspian": {
+    "ru": "Каспий",
+    "en": "Caspian Sea"
+  },
+  "map_geo_volga": {
+    "ru": "р. Волга",
+    "en": "Volga River"
+  },
+  "map_geo_ob": {
+    "ru": "р. Обь",
+    "en": "Ob River"
+  },
+  "map_geo_yenisei": {
+    "ru": "р. Енисей",
+    "en": "Yenisei River"
+  },
+  "map_geo_lena": {
+    "ru": "р. Лена",
+    "en": "Lena River"
+  },
+  "map_geo_amur": {
+    "ru": "р. Амур",
+    "en": "Amur River"
+  },
+  "map_geo_ural": {
+    "ru": "УРАЛЬСКИЙ ХРЕБЕТ",
+    "en": "URAL MOUNTAINS"
+  },
+  "map_geo_siberian_route": {
+    "ru": "«ВЕЛИКИЙ СИБИРСКИЙ ТРАКТ»",
+    "en": "«GREAT SIBERIAN ROUTE»"
+  },
+  "map_geo_silk_road": {
+    "ru": "«ШЁЛКОВЫЙ ПУТЬ»",
+    "en": "«SILK ROAD»"
+  },
+  "atlas_pin_pomorye": {
+    "ru": "⛵ Поморье",
+    "en": "⛵ Pomorye"
+  },
+  "atlas_pin_tatarstan": {
+    "ru": "🌷 Татарстан",
+    "en": "🌷 Tatarstan"
+  },
+  "atlas_pin_caucasus": {
+    "ru": "🗡️ Кавказ",
+    "en": "🗡️ Caucasus"
+  },
+  "atlas_pin_altai": {
+    "ru": "🏔️ Горный Алтай",
+    "en": "🏔️ Gorny Altai"
+  },
+  "atlas_pin_yakutia": {
+    "ru": "❄️ Якутия",
+    "en": "❄️ Yakutia"
+  },
+  "atlas_pin_kamchatka": {
+    "ru": "🌋 Камчатка",
+    "en": "🌋 Kamchatka"
+  },
+  "atlas_pin_kazakhstan": {
+    "ru": "🦅 Казахстан",
+    "en": "🦅 Kazakhstan"
+  },
+  "atlas_pin_uzbekistan": {
+    "ru": "🕌 Узбекистан",
+    "en": "🕌 Uzbekistan"
+  },
+  "restorer_log_init1": {
+    "ru": "[SYSTEM] Археометрический модуль инициализирован.",
+    "en": "[SYSTEM] Archaeometric analysis module initialized."
+  },
+  "restorer_log_init2": {
+    "ru": "[STATUS] Загружен эталон музейного канона КП-10492.",
+    "en": "[STATUS] Museum canon benchmark KP-10492 loaded."
+  },
+  "restorer_log_init3": {
+    "ru": "[READY] Нажмите «Запустить ИИ-реконструкцию» для старта лазерного анализа.",
+    "en": "[READY] Click \"Launch AI Reconstruction\" to initiate laser analysis."
+  },
+  "restorer_depth_init_val": {
+    "ru": "0.0 мм · Поверхность",
+    "en": "0.0 mm · Surface"
+  },
+  "restorer_depth_init_desc": {
+    "ru": "0.0 – 0.6 мм: Оксидная патина, микрозагрязнения и следы минерализации веков.",
+    "en": "0.0 – 0.6 mm: Oxide patina, surface micro-contaminants, and mineralization of centuries."
   }
 };
 
@@ -1505,11 +1945,36 @@
     return fallback !== undefined ? fallback : key;
   }
 
+  const MOTIF_NAMES_EN = {
+    "Казанский тюльпан": "Kazan Tulip",
+    "Мезенский конь": "Mezen Horse",
+    "Щепная птица": "Woodchip Bird Sirin",
+    "Солярный ромб": "Solar Rhomb",
+    "Лировидный узор": "Lyre Pattern (Kharyskhal)"
+  };
+
+  function translateMotif(motifRu) {
+    if (currentLang === 'en' && MOTIF_NAMES_EN[motifRu]) {
+      return MOTIF_NAMES_EN[motifRu];
+    }
+    return motifRu;
+  }
+
   function getEthnoData(id, defaultDatabase) {
     const base = defaultDatabase ? defaultDatabase[id] : null;
     if (!base) return null;
     if (currentLang === 'en' && ETHNO_DATABASE_EN[id]) {
-      return Object.assign({}, base, ETHNO_DATABASE_EN[id]);
+      const en = ETHNO_DATABASE_EN[id];
+      const merged = Object.assign({}, base, en);
+      if (en.quizOptions && base.quizOptions) {
+        merged.quizOptions = base.quizOptions.map((opt, i) => {
+          return en.quizOptions[i] ? Object.assign({}, opt, en.quizOptions[i]) : opt;
+        });
+      }
+      if (en.chapters && base.chapters) {
+        merged.chapters = Object.assign({}, base.chapters, en.chapters);
+      }
+      return merged;
     }
     return base;
   }
@@ -1554,7 +2019,11 @@
     if (currentLang === 'en') {
       return defaultList.map(item => {
         const en = FOLKLORE_ANTHOLOGY_EN[item.id];
-        return en ? Object.assign({}, item, en) : item;
+        const res = en ? Object.assign({}, item, en) : Object.assign({}, item);
+        if (res.readTime) {
+          res.readTime = res.readTime.replace(/мин/g, 'min');
+        }
+        return res;
       });
     }
     return defaultList;
@@ -1588,7 +2057,11 @@
       const key = el.getAttribute('data-i18n');
       const val = t(key, null);
       if (val !== null) {
-        el.innerHTML = val;
+        if (el.tagName.toLowerCase() === 'text' || el.namespaceURI === 'http://www.w3.org/2000/svg') {
+          el.textContent = val;
+        } else {
+          el.innerHTML = val;
+        }
       }
     });
 
@@ -1646,6 +2119,7 @@
     getFolkloreList: getFolkloreList,
     getRelicInfo: getRelicInfo,
     getStratigraphyDepth: getStratigraphyDepth,
+    translateMotif: translateMotif,
     UI: UI,
     ETHNO_DATABASE_EN: ETHNO_DATABASE_EN,
     AI_RESTORER_DATABASE_EN: AI_RESTORER_DATABASE_EN,

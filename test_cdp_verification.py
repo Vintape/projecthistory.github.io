@@ -415,7 +415,72 @@ def run_cdp_test():
         time.sleep(0.3)
         amulet_title = exec_js('document.getElementById("aiPostcardTitleHeading").textContent')
         print(f"  -> Workshop amulet title: '{amulet_title}'")
-        assert "Amulet:" in amulet_title, f"Amulet title not in English: {amulet_title}"
+        assert "Amulet:" in amulet_title, f"Amulet title missing prefix: {amulet_title}"
+        assert "Kazan Tulip" in amulet_title or "Tulip" in amulet_title, f"Motif names not translated in amulet title: {amulet_title}"
+
+        # Test EthnoAtlas Territory Cards in English
+        exec_js('routeTo("atlas", false);')
+        first_card_btn = exec_js('document.querySelector("#atlasTerritoryGrid .atlas-territory-card div:last-child span:last-child").textContent')
+        print(f"  -> Atlas territory card action label: '{first_card_btn}'")
+        assert "Select →" in first_card_btn, f"Atlas territory card not in English: {first_card_btn}"
+
+        # Test EthnoAtlas Map Compass & Geographic Features in English
+        compass_n = exec_js('document.querySelector(\'[data-i18n="map_compass_n"]\').textContent')
+        geo_baikal = exec_js('document.querySelector(\'[data-i18n="map_geo_baikal"]\').textContent')
+        geo_ural = exec_js('document.querySelector(\'[data-i18n="map_geo_ural"]\').textContent')
+        print(f"  -> Atlas map compass N: '{compass_n}' | Baikal: '{geo_baikal}' | Ural: '{geo_ural}'")
+        assert compass_n == "N", f"Compass North not translated: {compass_n}"
+        assert geo_baikal == "Lake Baikal", f"Baikal not translated: {geo_baikal}"
+        assert geo_ural == "URAL MOUNTAINS", f"Ural not translated: {geo_ural}"
+
+        # Test Quest Step 4 Era Tag
+        exec_js('routeTo("quest", false);')
+        exec_js('switchQuestStep(4);')
+        era_tag_val = exec_js('document.getElementById("artifactEraTag").textContent')
+        print(f"  -> Quest Step 4 Era Tag: '{era_tag_val}'")
+        assert ("19th" in era_tag_val or "century" in era_tag_val.lower() or "c." in era_tag_val), f"Era tag not localized in English: {era_tag_val}"
+
+        # Test Folklore Read Time in English
+        exec_js('routeTo("folklore", false);')
+        folk_span = exec_js('document.querySelector("#folkloreCardsContainer span").textContent')
+        print(f"  -> Folklore card header: '{folk_span}'")
+        assert "min" in folk_span and "мин" not in folk_span, f"Folklore read time not localized: {folk_span}"
+
+        # Test Zero-Cyrillic Scan Across All 9 Screens in English
+        print("\nVerifying Zero Cyrillic Nodes Across All 9 Screens (English Mode):")
+        screens_to_check = ["hero", "cultures", "quest", "atlas", "restorer", "decipherer", "folklore", "collection", "workshop"]
+        for sc in screens_to_check:
+            exec_js(f'routeTo("{sc}", false);')
+            time.sleep(0.05)
+            cyr_count = exec_js(f'''(() => {{
+                const el = document.getElementById("screen-{sc}");
+                if (!el) return 0;
+                const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+                let count = 0;
+                let node;
+                while (node = walker.nextNode()) {{
+                    const parent = node.parentElement;
+                    if (!parent) continue;
+                    const style = window.getComputedStyle(parent);
+                    if (style.display === "none" || style.visibility === "hidden") continue;
+                    const txt = node.nodeValue.trim();
+                    if (txt && /[\\u0400-\\u04FF]/.test(txt)) count++;
+                }}
+                return count;
+            }})()''')
+            print(f"  -> Screen '{sc}': {cyr_count} Cyrillic text nodes")
+            assert cyr_count == 0, f"Found {cyr_count} Cyrillic text nodes on screen '{sc}' in English mode"
+
+        # Test Field Passport Modal in English
+        exec_js('routeTo("quest", false);')
+        exec_js('const btn = document.getElementById("exportPassportBtn"); if (btn) btn.click();')
+        time.sleep(0.2)
+        passport_title = exec_js('document.getElementById("passportModalTitle").textContent')
+        passport_res = exec_js('document.getElementById("passportResearcherName").textContent')
+        print(f"  -> Field passport modal title: '{passport_title}' | Researcher: '{passport_res}'")
+        assert "Field Ethnographer Dossier" in passport_title or "Dossier" in passport_title, f"Passport title not localized: {passport_title}"
+        assert "Artefact Pathfinder" in passport_res, f"Passport researcher not localized: {passport_res}"
+        exec_js('document.getElementById("closePassportModalBtn").click();')
 
         # 5.12 Switch back to Russian and verify restore
         print("\nTesting Language Switch back to Russian:")

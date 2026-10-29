@@ -89,7 +89,11 @@ final class WebViewState: ObservableObject {
             if let url = webView.url {
                 webView.load(URLRequest(url: url))
             } else {
-                let initialUrl = URL(string: "http://127.0.0.1:8080/") ?? URL(string: "https://vintape.github.io/projecthistory.github.io/")!
+                #if DEBUG
+                let initialUrl = URL(string: "http://127.0.0.1:8080/")!
+                #else
+                let initialUrl = URL(string: "https://vintape.github.io/projecthistory.github.io/")!
+                #endif
                 webView.load(URLRequest(url: initialUrl))
             }
         }
@@ -145,7 +149,11 @@ struct WebViewContainer: UIViewRepresentable {
         state.webView = webView
 
         // Загрузка локального dev-сервера или продакшн GitHub Pages
+        #if DEBUG
         let primaryUrl = URL(string: "http://127.0.0.1:8080/")!
+        #else
+        let primaryUrl = URL(string: "https://vintape.github.io/projecthistory.github.io/")!
+        #endif
         let request = URLRequest(url: primaryUrl, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 4.0)
         webView.load(request)
 
@@ -153,6 +161,11 @@ struct WebViewContainer: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {}
+
+    static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
+        uiView.configuration.userContentController.removeScriptMessageHandler(forName: "haptic")
+        uiView.configuration.userContentController.removeScriptMessageHandler(forName: "nativeLog")
+    }
 
     // MARK: - Coordinator & WKScriptMessageHandler
     class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
@@ -188,7 +201,8 @@ struct WebViewContainer: UIViewRepresentable {
             let nsError = error as NSError
             // Попытка фоллбэка на GitHub Pages при недоступности localhost
             if nsError.domain == NSURLErrorDomain && (nsError.code == NSURLErrorCannotConnectToHost || nsError.code == NSURLErrorTimedOut) {
-                if let currentUrl = webView.url?.absoluteString, currentUrl.contains("127.0.0.1") || currentUrl.contains("localhost") {
+                let failingUrl = (nsError.userInfo[NSURLErrorFailingURLStringErrorKey] as? String) ?? webView.url?.absoluteString ?? ""
+                if failingUrl.contains("127.0.0.1") || failingUrl.contains("localhost") {
                     let fallbackUrl = URL(string: "https://vintape.github.io/projecthistory.github.io/")!
                     webView.load(URLRequest(url: fallbackUrl))
                     return
