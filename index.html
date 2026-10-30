@@ -349,24 +349,25 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 16px;
       background: var(--bg-glass);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border: 1px solid var(--border-gold);
       border-radius: var(--radius-md);
-      padding: 10px 20px;
-      margin-bottom: 22px;
-      box-shadow: var(--shadow-sm);
+      padding: 10px 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 32px rgba(2, 6, 16, 0.45);
       position: sticky;
       top: calc(8px + var(--safe-top));
       z-index: 1100;
+      transition: var(--transition);
     }
 
     .brand-logo {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       background: none;
       border: none;
       cursor: pointer;
@@ -374,96 +375,145 @@
       text-align: left;
       text-decoration: none;
       flex-shrink: 0;
+      min-width: 170px;
+      transition: var(--transition);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .brand-logo:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .brand-logo:hover .brand-logo__svg {
+      filter: drop-shadow(0 0 14px var(--gold));
     }
 
     .brand-logo__svg {
       width: 36px;
       height: 36px;
       flex-shrink: 0;
-      filter: drop-shadow(0 0 10px var(--gold-glow));
+      filter: drop-shadow(0 0 8px var(--gold-glow));
+      transition: filter 0.3s ease;
     }
 
     .brand-logo__title {
       font-family: var(--font-historical);
-      font-size: clamp(18px, 3.2vw, 24px);
-      letter-spacing: 0.1em;
+      font-size: clamp(19px, 2.6vw, 22px);
+      letter-spacing: 0.12em;
       color: var(--text-main);
       display: block;
-      line-height: 1;
+      line-height: 1.05;
+      font-weight: 500;
     }
 
     .brand-logo__tagline {
-      font-size: 9px;
-      letter-spacing: 0.16em;
+      font-size: 9.5px;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--gold);
       display: block;
       margin-top: 3px;
-      font-weight: 700;
+      font-weight: 600;
+      opacity: 0.88;
     }
 
     .desktop-nav {
       display: flex;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
+      gap: 3px;
+      flex: 1;
+      margin: 0 10px;
+      flex-wrap: nowrap;
     }
 
     .nav-btn {
+      position: relative;
       background: transparent;
       border: 1px solid transparent;
-      padding: 7px 14px;
+      padding: 7px 11px;
       border-radius: var(--radius-pill);
       font-size: 13px;
       font-weight: 500;
+      letter-spacing: 0.025em;
       color: var(--text-muted);
       cursor: pointer;
       transition: var(--transition);
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      white-space: nowrap;
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .nav-btn:hover {
-      color: var(--text-main);
-      background: rgba(255, 255, 255, 0.06);
+      color: var(--gold-light);
+      background: rgba(201, 156, 82, 0.08);
+      border-color: rgba(201, 156, 82, 0.20);
+      text-shadow: 0 0 12px var(--gold-glow);
     }
 
     .nav-btn.is-active {
-      background: linear-gradient(135deg, var(--ruby) 0%, var(--ruby-dark) 100%);
-      color: #fff;
+      background: rgba(201, 156, 82, 0.13);
+      border-color: rgba(201, 156, 82, 0.38);
+      color: var(--gold-light);
       font-weight: 600;
-      box-shadow: 0 4px 14px var(--ruby-glow);
+      box-shadow: 0 2px 10px rgba(201, 156, 82, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-btn.is-active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 18%;
+      right: 18%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--ruby), var(--gold), transparent);
+      border-radius: 2px;
+      box-shadow: 0 0 8px var(--gold-glow);
     }
 
     .header-actions {
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-shrink: 0;
     }
 
     .action-chip {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-gold);
+      background: rgba(14, 25, 51, 0.70);
+      border: 1px solid var(--border-gold-subtle);
       color: var(--text-main);
-      padding: 7px 12px;
+      padding: 6px 12px;
       border-radius: var(--radius-pill);
       font-size: 12px;
       font-weight: 600;
+      letter-spacing: 0.02em;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       transition: var(--transition);
       -webkit-tap-highlight-color: transparent;
+      backdrop-filter: blur(8px);
     }
 
-        #langToggleBtn {
+    .action-chip .chip-label {
+      font-weight: 600;
+    }
+
+    #langToggleBtn {
       min-width: 58px;
       justify-content: center;
       gap: 5px;
     }
+
     .action-chip:hover {
       border-color: var(--gold);
+      background: rgba(201, 156, 82, 0.12);
+      color: var(--gold-light);
       box-shadow: 0 0 12px var(--gold-glow);
       transform: translateY(-1px);
     }
@@ -591,6 +641,43 @@
     }
 
     html[data-theme="cream"] .gold-badge {
+      color: var(--gold);
+    }
+
+    html[data-theme="cream"] .top-header {
+      box-shadow: 0 8px 32px rgba(45, 32, 16, 0.08);
+    }
+
+    html[data-theme="cream"] .nav-btn:hover {
+      color: var(--gold-light);
+      background: rgba(122, 75, 18, 0.08);
+      border-color: rgba(122, 75, 18, 0.22);
+      text-shadow: none;
+    }
+
+    html[data-theme="cream"] .nav-btn.is-active {
+      background: rgba(122, 75, 18, 0.10);
+      border-color: rgba(122, 75, 18, 0.35);
+      color: var(--gold);
+      box-shadow: 0 2px 8px rgba(122, 75, 18, 0.12);
+    }
+
+    html[data-theme="cream"] .action-chip {
+      background: rgba(255, 253, 249, 0.85);
+      border-color: var(--border-gold-subtle);
+      color: var(--text-main);
+    }
+
+    html[data-theme="cream"] .action-chip:hover {
+      border-color: var(--gold);
+      background: rgba(122, 75, 18, 0.08);
+      color: var(--gold);
+      box-shadow: 0 2px 10px rgba(122, 75, 18, 0.12);
+    }
+
+    html[data-theme="cream"] .milestone-year {
+      background: rgba(122, 75, 18, 0.12);
+      border-color: rgba(122, 75, 18, 0.3);
       color: var(--gold);
     }
 
@@ -1027,13 +1114,30 @@
     /* ==========================================================================
        7. МАРШРУТ ЭКСПЕДИЦИИ (СТЕППЕР ШАГОВ 01–05)
        ========================================================================== */
+    #screen-quest .content-canvas {
+      padding: clamp(18px, 2.5vw, 30px);
+      margin-bottom: 20px;
+    }
+
+    #screen-quest .gold-badge {
+      margin-bottom: 10px;
+    }
+
+    #screen-quest .heading-section {
+      margin-bottom: 8px;
+    }
+
+    #screen-quest .lead-paragraph {
+      margin-bottom: 12px;
+    }
+
     .stepper-header-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding-bottom: 18px;
-      margin-bottom: 26px;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
       border-bottom: 1px solid var(--border-gold);
       flex-wrap: wrap;
     }
@@ -1078,14 +1182,122 @@
     .split-layout-2col {
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
-      gap: 32px;
+      gap: 28px;
+      align-items: start;
+    }
+
+    /* Летопись эпох / Хронология культурных вех (Шаг 1) */
+    .quest-milestones-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold-subtle);
+      border-radius: var(--radius-md);
+      padding: 15px 16px;
+      margin-bottom: 16px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .quest-milestones-header {
+      display: flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-bottom: 8px;
+      margin-bottom: 11px;
+      border-bottom: 1px dashed var(--border-gold-subtle);
+    }
+
+    .quest-milestones-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .quest-milestones-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .quest-milestones-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .milestone-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .milestone-marker {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 14px;
+      flex-shrink: 0;
+      padding-top: 3px;
+    }
+
+    .milestone-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 6px var(--gold-glow);
+      flex-shrink: 0;
+    }
+
+    .milestone-connector {
+      width: 1px;
+      flex: 1;
+      min-height: 24px;
+      background: linear-gradient(180deg, var(--gold) 0%, rgba(201, 156, 82, 0.2) 100%);
+      margin-top: 3px;
+    }
+
+    .milestone-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .milestone-year-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .milestone-year {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--gold-light);
+      background: rgba(201, 156, 82, 0.12);
+      border: 1px solid rgba(201, 156, 82, 0.25);
+      padding: 1px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.04em;
+    }
+
+    .milestone-title {
+      font-size: 12.5px;
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .milestone-desc {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      margin-top: 2px;
+      line-height: 1.5;
     }
 
     /* ШАГ 1: БЫЛО / СТАЛО */
     .before-after-stage {
       position: relative;
-      height: clamp(280px, 42vh, 440px);
+      height: clamp(260px, 34vh, 370px);
       border-radius: var(--radius-md);
       overflow: hidden;
       border: 2px solid var(--border-gold);
@@ -1185,7 +1397,7 @@
 
     .slider-range-control {
       width: 100%;
-      margin: 18px 0 10px;
+      margin: 12px 0 6px;
       -webkit-appearance: none;
       appearance: none;
       height: 6px;
@@ -1211,15 +1423,15 @@
       background: var(--bg-card);
       border: 1px solid var(--border-gold-subtle);
       border-radius: var(--radius-md);
-      padding: 14px;
+      padding: 10px 12px;
     }
 
     .ba-provenance-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 10px;
-      font-size: 12px;
+      gap: 10px;
+      margin-bottom: 6px;
+      font-size: 11.5px;
     }
 
     @media (max-width: 600px) {
@@ -2687,15 +2899,15 @@
 
       <!-- Десктопное меню -->
       <nav class="desktop-nav" aria-label="Основное меню">
-        <button class="nav-btn is-active" data-route="hero" data-i18n="nav_hero">🏛️ Главная</button>
-        <button class="nav-btn" data-route="cultures" data-i18n="nav_cultures">🗺️ Культуры</button>
-        <button class="nav-btn" data-route="quest" data-i18n="nav_quest">🧭 Маршрут</button>
-        <button class="nav-btn" data-route="atlas" data-i18n="nav_atlas">🌐 Этноатлас</button>
-        <button class="nav-btn" data-route="restorer" data-i18n="nav_restorer">🔬 AI-Лаборатория</button>
-        <button class="nav-btn" data-route="decipherer" data-i18n="nav_decipherer">⚡ AI-Дешифратор</button>
-        <button class="nav-btn" data-route="folklore" data-i18n="nav_folklore">📜 Фольклор</button>
-        <button class="nav-btn" data-route="collection" data-i18n="nav_collection">💎 Награды</button>
-        <button class="nav-btn" data-route="workshop" data-i18n="nav_workshop">✨ Мастерская</button>
+        <button class="nav-btn is-active" data-route="hero" data-i18n="nav_hero">Главная</button>
+        <button class="nav-btn" data-route="cultures" data-i18n="nav_cultures">Культуры</button>
+        <button class="nav-btn" data-route="quest" data-i18n="nav_quest">Маршрут</button>
+        <button class="nav-btn" data-route="atlas" data-i18n="nav_atlas">Этноатлас</button>
+        <button class="nav-btn" data-route="restorer" data-i18n="nav_restorer">AI-Лаборатория</button>
+        <button class="nav-btn" data-route="decipherer" data-i18n="nav_decipherer">AI-Дешифратор</button>
+        <button class="nav-btn" data-route="folklore" data-i18n="nav_folklore">Фольклор</button>
+        <button class="nav-btn" data-route="collection" data-i18n="nav_collection">Награды</button>
+        <button class="nav-btn" data-route="workshop" data-i18n="nav_workshop">Мастерская</button>
       </nav>
 
       <!-- Действия: Звук, Тема, Режим телефона, Меню -->
@@ -2732,15 +2944,15 @@
       <div class="brand-logo" style="margin-bottom: 20px;">
         <span class="brand-logo__title" data-i18n="brand_title">АРТЕФАКТ</span>
       </div>
-      <button class="nav-btn is-active" data-route="hero" data-i18n="nav_hero">🏛️ Главная</button>
-      <button class="nav-btn" data-route="cultures" data-i18n="nav_cultures">🗺️ Культуры народов</button>
-      <button class="nav-btn" data-route="quest" data-i18n="nav_quest">🧭 Маршрут экспедиции</button>
-      <button class="nav-btn" data-route="atlas" data-i18n="nav_atlas">🌐 Интерактивный этноатлас</button>
-      <button class="nav-btn" data-route="restorer" data-i18n="nav_restorer">🔬 AI-Лаборатория реставрации</button>
-      <button class="nav-btn" data-route="decipherer" data-i18n="nav_decipherer">⚡ AI-Дешифратор петроглифов</button>
-      <button class="nav-btn" data-route="folklore" data-i18n="nav_folklore">📜 Антология фольклора</button>
-      <button class="nav-btn" data-route="collection" data-i18n="nav_collection">💎 Витрина реликвий</button>
-      <button class="nav-btn" data-route="workshop" data-i18n="nav_workshop">✨ ИИ-мастерская оберегов</button>
+      <button class="nav-btn is-active" data-route="hero" data-i18n="nav_hero">Главная</button>
+      <button class="nav-btn" data-route="cultures" data-i18n="nav_cultures">Культуры</button>
+      <button class="nav-btn" data-route="quest" data-i18n="nav_quest">Маршрут</button>
+      <button class="nav-btn" data-route="atlas" data-i18n="nav_atlas">Этноатлас</button>
+      <button class="nav-btn" data-route="restorer" data-i18n="nav_restorer">AI-Лаборатория</button>
+      <button class="nav-btn" data-route="decipherer" data-i18n="nav_decipherer">AI-Дешифратор</button>
+      <button class="nav-btn" data-route="folklore" data-i18n="nav_folklore">Фольклор</button>
+      <button class="nav-btn" data-route="collection" data-i18n="nav_collection">Награды</button>
+      <button class="nav-btn" data-route="workshop" data-i18n="nav_workshop">Мастерская</button>
       <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-gold-subtle);">
         <button class="action-chip" id="mobileDrawerLangBtn" style="width: 100%; justify-content: center; gap: 8px;">
           <span>🌐</span>
@@ -2867,19 +3079,30 @@
                 Перекрёсток цивилизаций Востока и Запада, великое наследие Волжской Булгарии, виртуозная кожаная мозаика и поэзия древнего урмана.
               </p>
 
-              <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); padding:16px; border-radius:var(--radius-md); margin-bottom:20px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); padding:13px 15px; border-radius:var(--radius-md); margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                   <strong style="color:var(--gold); font-size:13px;" data-i18n="q1_greeting_lbl">Живое традиционное приветствие:</strong>
-                  <button class="action-chip" id="voiceGreetingSpeakerBtn" style="background:var(--ruby); border-color:var(--ruby); color:#fff;">
+                  <button class="action-chip" id="voiceGreetingSpeakerBtn" style="background:var(--ruby); border-color:var(--ruby); color:#fff; padding:5px 10px;">
                     <span>🗣️</span> <span id="voiceGreetingBtnText" data-i18n="q1_listen_btn">Слушать голос</span>
                   </button>
                 </div>
-                <p id="voiceGreetingQuoteText" style="font-style:italic; font-family:var(--font-editorial); font-size:18px; color:var(--text-main);">
+                <p id="voiceGreetingQuoteText" style="font-style:italic; font-family:var(--font-editorial); font-size:17px; color:var(--text-main); margin:0;">
                   «Исәнмесез! Рәхим итегез!»
                 </p>
               </div>
 
-              <div style="display:flex; gap:12px; flex-wrap:wrap;">
+              <!-- Карточка хронологии культурных вех / экспедиционных эпох -->
+              <div class="quest-milestones-card" id="questMilestonesCard">
+                <div class="quest-milestones-header">
+                  <span class="quest-milestones-badge">✦ <span data-i18n="q1_milestones_badge">Летопись эпох</span></span>
+                  <span class="quest-milestones-sub" data-i18n="q1_milestones_sub">Ключевые вехи наследия</span>
+                </div>
+                <div class="quest-milestones-timeline" id="questMilestonesTimeline">
+                  <!-- Генерируется динамически через setupQuestCulture -->
+                </div>
+              </div>
+
+              <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px;">
                 <button class="btn-action btn-action--ruby" onclick="switchQuestStep(2)">
                   <span data-i18n="q1_next_btn">Смотреть сказание и кино →</span>
                 </button>
@@ -2902,7 +3125,7 @@
                 <span class="ba-badge-pill ba-badge-pill--modern" data-i18n="q1_modern_tag">Наши дни</span>
               </div>
               <input type="range" class="slider-range-control" id="baRangeSliderControl" min="3" max="97" value="50" aria-label="Сравнение было и стало" />
-              <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-dim); margin-bottom:12px;">
+              <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-dim); margin-bottom:8px;">
                 <span data-i18n="q1_slider_left">← Потяните слайдер или коснитесь пальцем</span>
                 <span data-i18n="q1_slider_right">Архив vs Современность →</span>
               </div>
@@ -2921,7 +3144,7 @@
                     <span id="baModernSrcMeta" style="color:var(--text-dim); font-size:11px; display:block; margin-top:1px;"></span>
                   </div>
                 </div>
-                <p id="baHistoricalAnnotationText" style="font-size:12px; line-height:1.55; color:var(--text-dim); margin:0; border-top:1px dashed var(--border-gold-subtle); padding-top:8px;"></p>
+                <p id="baHistoricalAnnotationText" style="font-size:11.5px; line-height:1.45; color:var(--text-dim); margin:0; border-top:1px dashed var(--border-gold-subtle); padding-top:6px;"></p>
               </div>
             </div>
           </div>
@@ -4757,7 +4980,12 @@
             symbols: 'Сердцевина татарского узора — «Тюльпан» (символ весеннего возрождения и плодородия) и трилистник («Өчьяпрак»), означающий связь предков, живых и будущих поколений.',
             words: '«Мөң» — глубинное душевное состояние гармонии с миром; «Ичиги» — узорные сапоги с мозаикой из сафьяна; «Урман» — священный вековой лес.',
             rituals: 'Праздник плуга «Сабантуй»: обряд сбора вышитых полотенец («Сөлге җыю»). Лучшее полотенце с казанским тюльпаном вручалось главному батыру национальной борьбы куреш.'
-          }
+          },
+          milestones: [
+            { year: "1552 г.", title: "Основание белокаменной башни", desc: "Возведение Спасской башни зодчим Постником Яковлевым" },
+            { year: "1894 г.", title: "Часы и летопись М. Дмитриева", desc: "Установка часов с вращающимся циферблатом и фотофиксация Кремля" },
+            { year: "2023 г.", title: "Реставрация ЮНЕСКО и музей", desc: "Научная реставрация с открытием музейного яруса башни" }
+          ]
         },
 
         pomorye: {
@@ -4824,7 +5052,12 @@
             symbols: 'Красные мезенские кони символизируют восходящее солнце, уточки — закат и покой океана, а солярные кресты — маяки веры.',
             words: '«Карбас» — мореходная поморская ладья; «Козули» — обрядовые ржаные пряники; «Баить» — сказывать старинные былины нараспев.',
             rituals: 'Проводы карбасов на промысел: выпекание семейных козуль и установка обетного резного креста на утесе при спасении из ледяного плена.'
-          }
+          },
+          milestones: [
+            { year: "XII–XIV вв.", title: "Освоение Беломорья и карбас", desc: "Зарождение поморского судостроения без единого гвоздя" },
+            { year: "1904 г.", title: "Экспедиция Н. Шабунина", desc: "Фольклорно-этнографическая фиксация поморских промыслов и ладей" },
+            { year: "2020 г.", title: "Возрождение поморской верфи", desc: "Традиционное деревянное судостроение и сохранение карбасов" }
+          ]
         },
 
         yakutia: {
@@ -4891,7 +5124,12 @@
             symbols: 'Лировидный узор «көҕүөр ойуу» — образ ростка, пробивающего мерзлоту; девятивершинная коновязь сэргэ как мировая ось.',
             words: '«Олонхо» — богатырский эпос; «Ысыах» — праздник встречи солнца; «Хомус» — варган, имитирующий звуки природы; «Чорон» — кумысный кубок.',
             rituals: 'Праздник Ысыах в день летнего солнцестояния: хоровод осуохай, объединяющий сотни людей в едином круге жизни, и обряд кропления огня кумысом.'
-          }
+          },
+          milestones: [
+            { year: "XIII–XIV вв.", title: "Заселение долины Туймаада", desc: "Формирование эпической традиции Олонхо и праздника Ысыах" },
+            { year: "1894–1896 гг.", title: "Экспедиция В. Иохельсона", desc: "Сибиряковская экспедиция МАЭ РАН: фиксация балаганов и сэргэ" },
+            { year: "2005 г.", title: "Шедевр ЮНЕСКО и Ус Хатын", desc: "Признание эпоса Олонхо шедевром нематериального наследия человечества" }
+          ]
         },
 
         caucasus: {
@@ -4958,7 +5196,12 @@
             symbols: 'Орнамент «мархарай» (заросль) символизирует неиссякаемую жизнь, а ветвь «тутта» — процветание рода и чистоту горного источника.',
             words: '«Мучал» — свадебный водоносный кувшин; «Зирихгеран» — древнее персидское имя Кубачи («кольчужники»); «Нарты» — герои древнего эпоса.',
             rituals: 'Свадебный обряд: невеста с кувшином мучал отправляется к святому горному источнику, испрашивая изобилия и мира новому дому.'
-          }
+          },
+          milestones: [
+            { year: "VI в.", title: "Цитадель Нарын-Кала", desc: "Возведение сасанидской каменной твердыни на перепутье Шёлкового пути" },
+            { year: "1871 г.", title: "Первые научные обмеры", desc: "Академическая экспедиция и фиксация древних дербентских стен" },
+            { year: "2003 г.", title: "Всемирное наследие ЮНЕСКО", desc: "Включение цитадели и исторической части Дербента в список ЮНЕСКО" }
+          ]
         },
 
         altai: {
@@ -5025,7 +5268,12 @@
             symbols: 'Священные ленты «кыйра / дьалама» на перевалах; солярные петроглифы урочища Калбак-Таш и сакральные образы пазырыкского звериного стиля.',
             words: '«Кай» — горловое пение; «Кайчы» — народный рапсод; «Ээзи» — священный дух места; «Уч-Сумер» — Трехглавая Белуха.',
             rituals: 'Повязывание лент дьялама на перевале при восходящей луне: произнесение алкыша (благопожелания) роду, земле и небу, окуривание юрты можжевельником (арчыном).'
-          }
+          },
+          milestones: [
+            { year: "V–III вв. до н.э.", title: "Пазырыкская культура скифов", desc: "Курганные сокровища, петроглифы и сакрализация Белухи" },
+            { year: "1914 г.", title: "Экспедиция братьев Троновых", desc: "Первое покорение Белухи и научное описание ледника Геблера" },
+            { year: "1998 г.", title: "Золотые горы Алтая в ЮНЕСКО", desc: "Международное признание природного и духовного заповедника Алтая" }
+          ]
         },
 
         kamchatka: {
@@ -5092,7 +5340,12 @@
             symbols: 'Образ Ворона олицетворяет созидание и память стихий; солярные круги из бисера и кожи нерпы символизируют возвращение солнца после полярной пурги.',
             words: '«Кутх» — первопредок и владыка неба; «Кухлянка» — двухслойная оленья парка; «Алхалалалай» — праздник благодарения и очищения.',
             rituals: 'Праздник Алхалалалай: ритуальное очищение через березовые кольца, обряд «кормления вулканов» и непрерывный танец под ритмы бубна яяр.'
-          }
+          },
+          milestones: [
+            { year: "До XVII в.", title: "Традиции ительменов и коряков", desc: "Сакральные обряды почитания духов огнедышащих вулканов" },
+            { year: "1740 г.", title: "Экспедиция Витуса Беринга", desc: "Основание Петропавловской гавани Второй Камчатской экспедицией" },
+            { year: "1996 г.", title: "Вулканы Камчатки в ЮНЕСКО", desc: "Признание мирового значения природного и этнокультурного наследия" }
+          ]
         },
 
         kazakhstan: {
@@ -5159,7 +5412,12 @@
             symbols: 'Спиральный роговой мотив «кошкар-муйиз» — знак благословения скота, достатка и неиссякаемой жизненной энергии степи.',
             words: '«Кюй» — музыкальная повесть на домбре; «Шанырак» — купол юрты, семейная реликвия; «Текемет» — войлочный ковер.',
             rituals: 'Обряд «Шашу» (осыпание сладостями на радостное событие) и весенний праздник Наурыз с приготовлением ритуального наурыз-коже.'
-          }
+          },
+          milestones: [
+            { year: "1389–1405 гг.", title: "Мавзолей Ходжи Ахмеда Ясави", desc: "Возведение шедевра тимуридской архитектуры в Туркестане" },
+            { year: "1902–1905 гг.", title: "Первые обмеры и фотосъемка", desc: "Археологические изыскания и фотохроника изразцовой майолики" },
+            { year: "2003 г.", title: "Первый объект ЮНЕСКО в Казахстане", desc: "Включение мавзолея Ясави в список всемирного культурного наследия" }
+          ]
         },
 
         uzbekistan: {
@@ -5226,7 +5484,12 @@
             symbols: 'Плод граната («анор») символизирует изобилие и благословение потомства, бирюзовый цвет куполов — отражение чистого неба над пустыней Кызылкум.',
             words: '«Икат / Хан-атлас» — ткань с плывущим облачным узором; «Сюзане» — настенное вышитое панно; «Ганч» — резной алебастр.',
             rituals: 'Праздничное приготовление плова в гигантском чугунном казане и обряд дарения вышитого тюбетейки-дуппи дорогому гостю.'
-          }
+          },
+          milestones: [
+            { year: "1417–1420 гг.", title: "Медресе Улугбека на Регистане", desc: "Центр науки и астрономии эпохи Восточного Ренессанса в Самарканде" },
+            { year: "1911 г.", title: "Фотолетопись Прокудина-Горского", desc: "Пионерская цветная съемка архитектурного ансамбля и падающего минарета" },
+            { year: "2001 г.", title: "Самарканд — перекрёсток культур", desc: "Включение ансамбля площади Регистан во всемирное наследие ЮНЕСКО" }
+          ]
         }
       };
 
@@ -5436,6 +5699,26 @@
         if (modSrcMeta) modSrcMeta.textContent = data.modernDate || '';
         const histAnno = document.getElementById('baHistoricalAnnotationText');
         if (histAnno) histAnno.textContent = data.historicalAnnotation || '';
+
+        // Обновление таймлайна исторических вех (Шаг 1)
+        const milestonesBox = document.getElementById('questMilestonesTimeline');
+        if (milestonesBox && data.milestones) {
+          milestonesBox.innerHTML = data.milestones.map((m, idx) => `
+            <div class="milestone-item">
+              <div class="milestone-marker">
+                <span class="milestone-dot"></span>
+                ${idx < data.milestones.length - 1 ? '<span class="milestone-connector"></span>' : ''}
+              </div>
+              <div class="milestone-content">
+                <div class="milestone-year-row">
+                  <span class="milestone-year font-slab">${m.year}</span>
+                  <strong class="milestone-title">${m.title}</strong>
+                </div>
+                <p class="milestone-desc">${m.desc}</p>
+              </div>
+            </div>
+          `).join('');
+        }
 
         // Шаг 2: Видео и Миф
         const posterImg = document.getElementById('videoPlayerPosterImg');

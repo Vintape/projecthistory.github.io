@@ -16,40 +16,40 @@
     "en": "History leaves a trace"
   },
   "nav_hero": {
-    "ru": "🏛️ Главная",
-    "en": "🏛️ Home"
+    "ru": "Главная",
+    "en": "Home"
   },
   "nav_cultures": {
-    "ru": "🗺️ Культуры",
-    "en": "🗺️ Cultures"
+    "ru": "Культуры",
+    "en": "Cultures"
   },
   "nav_quest": {
-    "ru": "🧭 Маршрут",
-    "en": "🧭 Route"
+    "ru": "Маршрут",
+    "en": "Route"
   },
   "nav_atlas": {
-    "ru": "🌐 Этноатлас",
-    "en": "🌐 EthnoAtlas"
+    "ru": "Этноатлас",
+    "en": "EthnoAtlas"
   },
   "nav_restorer": {
-    "ru": "🔬 AI-Лаборатория",
-    "en": "🔬 AI Lab"
+    "ru": "AI-Лаборатория",
+    "en": "AI Lab"
   },
   "nav_decipherer": {
-    "ru": "⚡ AI-Дешифратор",
-    "en": "⚡ AI Decipherer"
+    "ru": "AI-Дешифратор",
+    "en": "AI Decipherer"
   },
   "nav_folklore": {
-    "ru": "📜 Фольклор",
-    "en": "📜 Folklore"
+    "ru": "Фольклор",
+    "en": "Folklore"
   },
   "nav_collection": {
-    "ru": "💎 Награды",
-    "en": "💎 Treasury"
+    "ru": "Награды",
+    "en": "Treasury"
   },
   "nav_workshop": {
-    "ru": "✨ Мастерская",
-    "en": "✨ Workshop"
+    "ru": "Мастерская",
+    "en": "Workshop"
   },
   "sound_ambient": {
     "ru": "Эмбиент",
@@ -278,6 +278,14 @@
   "q1_slider_hint_right": {
     "ru": "Архив vs Современность →",
     "en": "Archive vs Present →"
+  },
+  "q1_milestones_badge": {
+    "ru": "Летопись эпох",
+    "en": "Heritage Epochs"
+  },
+  "q1_milestones_sub": {
+    "ru": "Ключевые вехи наследия",
+    "en": "Key Heritage Milestones"
   },
   "q2_badge": {
     "ru": "Шаг 02 · Сакральное сказание",
@@ -1253,7 +1261,12 @@
       "symbols": "The heart of Tatar ornamentation is the «Tulip» (emblem of spring awakening and fertility) alongside the trefoil («Öçyapraq»), embodying the unbroken continuum of ancestors, the living, and future generations.",
       "words": "«Möñ» — a profound spiritual state of sublime harmony with the cosmos; «Ichigi» — traditional patterned boots crafted with morocco leather mosaic; «Urman» — sacred primeval forest.",
       "rituals": "The plow festival «Sabantuy»: the ceremonial gathering of embroidered towels («Sölge cıyu»). The finest towel adorned with the Kazan tulip was awarded to the supreme champion of national kuresh wrestling."
-    }
+    },
+    "milestones": [
+      { "year": "1552", "title": "White-Stone Tower Founded", "desc": "Construction of Spasskaya Tower by master architect Postnik Yakovlev" },
+      { "year": "1894", "title": "Dial Clock & Dmitriev's Chronicle", "desc": "Installation of rotating dial clock and historical photo documentation of the Kremlin" },
+      { "year": "2023", "title": "UNESCO Restoration & Museum Tier", "desc": "Comprehensive scientific restoration and opening of the Spasskaya Tower museum tier" }
+    ]
   },
   "pomorye": {
     "sub": "✦ 02 / 08 · Russian North & White Sea",
@@ -1302,7 +1315,12 @@
       "symbols": "The radial plumage represents solar rays dispelling frost, while the stylized Mezen red horse signifies ceaseless vitality against Arctic tempests.",
       "words": "«Karbas» — seaworthy open wooden sailboat; «Tonya» — traditional coastal fishing settlement; «Kormshchik» — master navigator steering by northern star compass.",
       "rituals": "Blessing the new karbas before launching into the White Sea: carving protective solar rosettes upon the bowsprit to ensure safe passage across freezing waters."
-    }
+    },
+    "milestones": [
+      { "year": "12th–14th c.", "title": "White Sea Settlement & Karbas", "desc": "Origins of nail-free Pomor wooden shipbuilding and Arctic coastal navigation" },
+      { "year": "1904", "title": "N. Shabunin's Expedition", "desc": "Archival ethnographic documentation of Pomor maritime crafts and White Sea voyages" },
+      { "year": "2020", "title": "Revival of the Pomor Shipyard", "desc": "Revival of traditional wooden boatbuilding and preservation of historic karbas vessels" }
+    ]
   },
   "caucasus": {
     "sub": "✦ 03 / 08 · High Caucasus & Kubachi",
@@ -1351,7 +1369,12 @@
       "symbols": "The «Tuta» ornament symbolizes the sacred Tree of Life connecting deep ancestral roots with flourishing mountain branches reaching toward heaven.",
       "words": "«Muchal» — ceremonial bronze vessel carried by Dagestani brides; «Zerkash» — master engraver of precious metals; «Aul» — ancient stone mountain fortress village.",
       "rituals": "The bridal procession to the mountain spring: young women carry water in ancestral muchals, celebrating the perpetual flow of life and matrimonial purity."
-    }
+    },
+    "milestones": [
+      { "year": "6th c.", "title": "Naryn-Kala Citadel Founded", "desc": "Construction of the monumental Sasanian stone fortress on the Caspian Gates" },
+      { "year": "1871", "title": "First Academic Survey", "desc": "Archaeological measurement and documentation of ancient Derbent city defensive walls" },
+      { "year": "2003", "title": "UNESCO World Heritage Status", "desc": "Official inscription of the Citadel, Ancient City, and Fortress Buildings of Derbent" }
+    ]
   },
   "altai": {
     "sub": "✦ 04 / 08 · Sacred Altai & Pazyryk",
@@ -1400,7 +1423,12 @@
       "symbols": "The flying stag with sweeping spiral antlers signifies solar flight, spiritual transcendence, and guidance into higher celestial planes.",
       "words": "«Komus» — ancestral brass jaw harp; «Kurgan» — monumental stone burial mound; «Arzhan» — sacred healing mountain spring.",
       "rituals": "Tying white ribbons («kyira») upon mountain passes: honoring the spirit masters of the mountain trails and requesting safe passage through steep gorges."
-    }
+    },
+    "milestones": [
+      { "year": "5th–3rd c. BC", "title": "Pazyryk Scythian Culture", "desc": "Nomadic kurgan treasures, sacred petroglyphs, and spiritual veneration of Belukha" },
+      { "year": "1914", "title": "Tronov Brothers' Expedition", "desc": "First documented ascent of Mount Belukha and scientific mapping of Gebler glacier" },
+      { "year": "1998", "title": "Golden Mountains of Altai in UNESCO", "desc": "Inscription of pristine mountain landscapes and cultural biosphere reserves into UNESCO" }
+    ]
   },
   "yakutia": {
     "sub": "✦ 05 / 08 · Sakha (Yakutia) & Olonkho",
@@ -1449,7 +1477,12 @@
       "symbols": "The lyre-shaped «Kharyskhal» symbol represents sacred birch branches and cow horns, promising prosperity, maternal protection, and enduring health.",
       "words": "«Choron» — sacred wooden goblet on three carved horse hooves for kumis; «Serge» — ritual horse tethering post; «Olonkho» — monumental heroic epic.",
       "rituals": "The summer solstice festival Yhyakh: communal circle dance Ohuokhai welcoming the rising sun and pouring kumis libations to the fertility gods."
-    }
+    },
+    "milestones": [
+      { "year": "13th–14th c.", "title": "Settlement of Tuymaada Valley", "desc": "Formation of the Olonkho epic oral tradition and sacred Yhyakh festival" },
+      { "year": "1894–1896", "title": "V. Jochelson's Sibiryakov Mission", "desc": "Ethnographic documentation of traditional balagan dwellings and sacred serge poles" },
+      { "year": "2005", "title": "UNESCO Masterpiece Recognition", "desc": "Proclamation of the Olonkho epic as Masterpiece of Oral and Intangible Heritage" }
+    ]
   },
   "kamchatka": {
     "sub": "✦ 06 / 08 · Kamchatka & Volcanic Realm",
@@ -1498,7 +1531,12 @@
       "symbols": "The triangular chevron embodies the eternal dialogue between smoking volcano peaks and cold ocean breakers.",
       "words": "«Kukhlyanka» — double-layered reindeer fur parka; «Kutkh» — supreme creator raven deity; «Narta» — dog sled adapted for deep volcanic snow.",
       "rituals": "The autumn thanksgiving festival Alkhalalalai: dancing for hours until exhaustion to cleanse evil spirits and celebrating the sea's bounty."
-    }
+    },
+    "milestones": [
+      { "year": "Pre-17th c.", "title": "Itelmen & Koryak Traditions", "desc": "Sacred rituals and ceremonial reverence for volcanic spirits and salmon runs" },
+      { "year": "1740", "title": "Vitus Bering's Second Expedition", "desc": "Founding of Petropavlovsk port and first systematic Pacific cartography" },
+      { "year": "1996", "title": "Volcanoes of Kamchatka in UNESCO", "desc": "Global heritage status protecting magnificent volcanic clusters and wilderness" }
+    ]
   },
   "kazakhstan": {
     "sub": "✦ 07 / 08 · Steppes of Kazakhstan",
@@ -1547,7 +1585,12 @@
       "symbols": "The ram horn («Koshkar muyiz») is the root archetype of all steppe ornamentation, signifying vitality, perseverance, and ancestral abundance.",
       "words": "«Syrmak» — mosaic felt carpet; «Dombra» — two-stringed musical instrument of the steppes; «Tulpar» — mythical winged steed.",
       "rituals": "Nauryz celebration: cooking traditional Nauryz-kozhe from seven ingredients, forgiving past grievances, and blessing yurt elders."
-    }
+    },
+    "milestones": [
+      { "year": "1389–1405", "title": "Mausoleum of Khoja Ahmed Yasawi", "desc": "Erection of the monumental Timurid architectural masterpiece in Turkestan" },
+      { "year": "1902–1905", "title": "Early Archaeological Surveys", "desc": "Scientific documentation and architectural photography of glazed tile revetments" },
+      { "year": "2003", "title": "First UNESCO Site in Kazakhstan", "desc": "Official inscription of the Mausoleum of Khoja Ahmed Yasawi into World Heritage" }
+    ]
   },
   "uzbekistan": {
     "sub": "✦ 08 / 08 · Silk Road Oasis & Samarkand",
@@ -1596,7 +1639,12 @@
       "symbols": "The pomegranate («Anar») is a universal Eastern talisman of flourishing abundance, eternal life, and deep matrimonial joy.",
       "words": "«Suzani» — hand-embroidered textile hanging; «Ikat (Abrbandi)» — cloud-tied resist dyeing silk technique; «Caravanserai» — ancient roadside inn for Silk Road merchants.",
       "rituals": "Bridal dowry presentation: the bride's family presents the embroidered suzani to adorn the wedding chamber, keeping evil eyes away from the new family."
-    }
+    },
+    "milestones": [
+      { "year": "1417–1420", "title": "Ulugh Beg Madrasah at Registan", "desc": "Prominent scientific and astronomical center of the Timurid Renaissance" },
+      { "year": "1911", "title": "Prokudin-Gorsky Color Chronicle", "desc": "Pioneering color photographic documentation of Registan square and mosaic portals" },
+      { "year": "2001", "title": "Samarkand — Crossroads of Cultures", "desc": "Comprehensive UNESCO inscription celebrating centuries of Islamic decorative art" }
+    ]
   }
 };
 
@@ -2021,6 +2069,11 @@
       }
       if (en.chapters && base.chapters) {
         merged.chapters = Object.assign({}, base.chapters, en.chapters);
+      }
+      if (en.milestones && base.milestones) {
+        merged.milestones = base.milestones.map((m, i) => {
+          return en.milestones[i] ? Object.assign({}, m, en.milestones[i]) : m;
+        });
       }
       return merged;
     }
