@@ -129,10 +129,19 @@ def verify():
             const navBtns = Array.from(document.querySelectorAll('.desktop-nav .nav-btn'));
             const activeNav = document.querySelector('.desktop-nav .nav-btn.is-active');
             const chips = Array.from(document.querySelectorAll('.header-actions .action-chip'));
+            const bnavBtns = Array.from(document.querySelectorAll('.mobile-bottom-nav .bottom-nav-item'));
             
-            // Check for emoji in navBtns
+            // Check for emoji in navBtns, chips, and bottom-nav
             const emojiRegex = /[\\u{1F300}-\\u{1F9FF}]|[\\u{2600}-\\u{26FF}]|[\\u{2700}-\\u{27BF}]/u;
             const navEmojis = navBtns.map(b => ({
+                text: b.textContent.trim(),
+                hasEmoji: emojiRegex.test(b.textContent)
+            }));
+            const chipEmojis = chips.map(c => ({
+                text: c.textContent.trim(),
+                hasEmoji: emojiRegex.test(c.textContent)
+            }));
+            const bnavEmojis = bnavBtns.map(b => ({
                 text: b.textContent.trim(),
                 hasEmoji: emojiRegex.test(b.textContent)
             }));
@@ -147,6 +156,8 @@ def verify():
                 brandTagline: brandTagline.textContent.trim(),
                 navBtnsCount: navBtns.length,
                 navEmojis,
+                chipEmojis,
+                bnavEmojis,
                 activeRoute: activeNav ? activeNav.dataset.route : null,
                 activeBg: activeStyle ? activeStyle.backgroundColor : null,
                 activeColor: activeStyle ? activeStyle.color : null,
@@ -162,6 +173,16 @@ def verify():
         for b in header_info['navEmojis']:
             print(f"  - '{b['text']}': hasEmoji={b['hasEmoji']}")
             assert not b['hasEmoji'], f"Emoji found in desktop nav: {b['text']}"
+
+        print("Action chips emoji status:")
+        for c in header_info['chipEmojis']:
+            print(f"  - Chip '{c['text']}': hasEmoji={c['hasEmoji']}")
+            assert not c['hasEmoji'], f"Emoji found in header action chip: {c['text']}"
+
+        print("Mobile bottom nav emoji status:")
+        for b in header_info['bnavEmojis']:
+            print(f"  - BNav '{b['text']}': hasEmoji={b['hasEmoji']}")
+            assert not b['hasEmoji'], f"Emoji found in bottom nav item: {b['text']}"
 
         assert header_info['navBtnsCount'] == 9, "Expected 9 nav buttons"
         assert header_info['chipsCount'] >= 4, "Expected action chips"
@@ -215,14 +236,20 @@ def verify():
         assert quest_metrics['heightDiff'] < 120, f"Columns not balanced! diff={quest_metrics['heightDiff']}px"
         assert quest_metrics['milestonesCount'] == 3, f"Expected 3 milestones, got {quest_metrics['milestonesCount']}"
 
-        print("\n--- 3. VERIFYING MILESTONES ACROSS ALL 8 CULTURES IN RU & EN ---")
+        print("\n--- 3. VERIFYING MILESTONES & COLUMN BALANCE ACROSS ALL 8 CULTURES IN RU & EN ---")
         cultures = ['tatarstan', 'pomorye', 'caucasus', 'altai', 'yakutia', 'kamchatka', 'kazakhstan', 'uzbekistan']
         for cult in cultures:
             exec_js(f'setupQuestCulture("{cult}", false);')
             ru_count = exec_js('document.querySelectorAll("#questMilestonesTimeline .milestone-item").length')
             assert ru_count == 3, f"Culture {cult} missing RU milestones"
+            ru_diff = exec_js('''(() => {
+                const cols = document.querySelector("#questStepSub1 .split-layout-2col").children;
+                return Math.abs(cols[0].getBoundingClientRect().height - cols[1].getBoundingClientRect().height);
+            })()''')
+            print(f"  -> RU {cult}: 3 milestones, height diff = {round(ru_diff, 1)}px")
+            assert ru_diff < 80, f"Column height diff too large for {cult}: {ru_diff}px"
             
-        # Switch to EN and verify zero Cyrillic in milestones
+        # Switch to EN and verify zero Cyrillic in milestones and column balance
         exec_js('window.I18N.setLanguage("en");')
         cyrillic_regex = '/[а-яА-ЯёЁ]/'
         for cult in cultures:
@@ -231,8 +258,13 @@ def verify():
                 const items = Array.from(document.querySelectorAll("#questMilestonesTimeline .milestone-item"));
                 return items.map(it => it.textContent);
             })()''')
-            print(f"  -> EN {cult}: {len(en_milestones)} milestones loaded")
+            en_diff = exec_js('''(() => {
+                const cols = document.querySelector("#questStepSub1 .split-layout-2col").children;
+                return Math.abs(cols[0].getBoundingClientRect().height - cols[1].getBoundingClientRect().height);
+            })()''')
+            print(f"  -> EN {cult}: {len(en_milestones)} milestones loaded, height diff = {round(en_diff, 1)}px")
             assert len(en_milestones) == 3, f"Culture {cult} missing EN milestones"
+            assert en_diff < 80, f"EN Column height diff too large for {cult}: {en_diff}px"
             for txt in en_milestones:
                 has_cyrillic = exec_js(f'{cyrillic_regex}.test({json.dumps(txt)})')
                 assert not has_cyrillic, f"Cyrillic found in EN milestone for {cult}: {txt}"

@@ -422,9 +422,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 3px;
+      gap: clamp(4px, 0.75vw, 10px);
       flex: 1;
-      margin: 0 10px;
+      margin: 0 12px;
       flex-wrap: nowrap;
     }
 
@@ -432,11 +432,11 @@
       position: relative;
       background: transparent;
       border: 1px solid transparent;
-      padding: 7px 11px;
+      padding: 7px clamp(8px, 0.7vw, 12px);
       border-radius: var(--radius-pill);
       font-size: 13px;
       font-weight: 500;
-      letter-spacing: 0.025em;
+      letter-spacing: 0.03em;
       color: var(--text-muted);
       cursor: pointer;
       transition: var(--transition);
@@ -502,6 +502,21 @@
 
     .action-chip .chip-label {
       font-weight: 600;
+    }
+
+    .chip-svg-icon {
+      flex-shrink: 0;
+      stroke: currentColor;
+      display: inline-block;
+      vertical-align: middle;
+      transition: stroke 0.2s ease, transform 0.2s ease;
+    }
+
+    #soundIconSymbol, #themeIconSymbol {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
     #langToggleBtn {
@@ -1191,7 +1206,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-gold-subtle);
       border-radius: var(--radius-md);
-      padding: 15px 16px;
+      padding: 16px 18px;
       margin-bottom: 16px;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
@@ -1288,16 +1303,16 @@
     }
 
     .milestone-desc {
-      font-size: 11.5px;
+      font-size: 12px;
       color: var(--text-dim);
-      margin-top: 2px;
-      line-height: 1.5;
+      margin-top: 3px;
+      line-height: 1.48;
     }
 
     /* ШАГ 1: БЫЛО / СТАЛО */
     .before-after-stage {
       position: relative;
-      height: clamp(260px, 34vh, 370px);
+      height: clamp(250px, 31vh, 335px);
       border-radius: var(--radius-md);
       overflow: hidden;
       border: 2px solid var(--border-gold);
@@ -1612,7 +1627,7 @@
     /* ШАГ 3: ЛУПА И АРХЕОЛОГИЧЕСКИЙ КВИЗ (60 FPS С GPU TRANSLATE3D) */
     .loupe-inspect-stage {
       position: relative;
-      height: clamp(260px, 38vh, 400px);
+      height: clamp(280px, 44vh, 480px);
       border-radius: var(--radius-md);
       overflow: hidden;
       border: 1px solid var(--border-gold);
@@ -2785,7 +2800,17 @@
     .bottom-nav-item .bnav-icon {
       font-size: 19px;
       line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .bnav-svg-icon {
+      width: 19px;
+      height: 19px;
+      stroke: var(--text-dim);
+      transition: stroke 0.2s ease, transform 0.2s ease;
     }
 
     .bottom-nav-item .bnav-label {
@@ -2805,6 +2830,14 @@
     .bottom-nav-item.is-active .bnav-icon {
       transform: translateY(-2px) scale(1.15);
       filter: drop-shadow(0 0 6px var(--gold-glow));
+    }
+
+    .bottom-nav-item.is-active .bnav-svg-icon {
+      stroke: var(--gold-light);
+    }
+
+    html[data-theme="cream"] .bottom-nav-item.is-active .bnav-svg-icon {
+      stroke: var(--gold);
     }
 
     /* ==========================================================================
@@ -2912,23 +2945,27 @@
 
       <!-- Действия: Звук, Тема, Режим телефона, Меню -->
       <div class="header-actions">
-        <button class="action-chip" id="ambientToggleBtn" title="Включить атмосферный звук">
-          <span id="soundIconSymbol">🔊</span>
+        <button class="action-chip" id="ambientToggleBtn" title="Включить атмосферный звук" aria-label="Включить атмосферный звук">
+          <span id="soundIconSymbol">
+            <svg class="chip-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+          </span>
           <span class="chip-label" id="soundLabelText">Эмбиент</span>
         </button>
 
-        <button class="action-chip" id="themeToggleBtn" title="Переключить тему оформления">
-          <span id="themeIconSymbol">☀️</span>
+        <button class="action-chip" id="themeToggleBtn" title="Переключить тему оформления" aria-label="Переключить тему оформления">
+          <span id="themeIconSymbol">
+            <svg class="chip-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="12" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          </span>
           <span class="chip-label" id="themeLabelText" data-i18n="theme_light">Светлая</span>
         </button>
 
         <button class="action-chip" id="langToggleBtn" title="Сменить язык / Switch language (RU / EN)" aria-label="Сменить язык">
-          <span>🌐</span>
+          <svg class="chip-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
           <span class="chip-label" id="langLabelText" data-i18n="lang_btn_lbl">EN</span>
         </button>
 
-        <button class="action-chip" id="mobilePreviewToggleBtn" title="Эмуляция экрана мобильного">
-          <span>📱</span>
+        <button class="action-chip" id="mobilePreviewToggleBtn" title="Эмуляция экрана мобильного" aria-label="Эмуляция экрана мобильного">
+          <svg class="chip-svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
           <span class="chip-label" id="viewModeLabelText" data-i18n="view_mode">Вид</span>
         </button>
 
@@ -2955,7 +2992,7 @@
       <button class="nav-btn" data-route="workshop" data-i18n="nav_workshop">Мастерская</button>
       <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-gold-subtle);">
         <button class="action-chip" id="mobileDrawerLangBtn" style="width: 100%; justify-content: center; gap: 8px;">
-          <span>🌐</span>
+          <svg class="chip-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
           <span id="mobileDrawerLangLabel" data-i18n="lang_drawer_lbl">Language: English (EN)</span>
         </button>
       </div>
@@ -3083,7 +3120,7 @@
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                   <strong style="color:var(--gold); font-size:13px;" data-i18n="q1_greeting_lbl">Живое традиционное приветствие:</strong>
                   <button class="action-chip" id="voiceGreetingSpeakerBtn" style="background:var(--ruby); border-color:var(--ruby); color:#fff; padding:5px 10px;">
-                    <span>🗣️</span> <span id="voiceGreetingBtnText" data-i18n="q1_listen_btn">Слушать голос</span>
+                    <svg class="chip-svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> <span id="voiceGreetingBtnText" data-i18n="q1_listen_btn">Слушать голос</span>
                   </button>
                 </div>
                 <p id="voiceGreetingQuoteText" style="font-style:italic; font-family:var(--font-editorial); font-size:17px; color:var(--text-main); margin:0;">
@@ -4342,23 +4379,33 @@
   <nav class="mobile-bottom-nav" id="mobileBottomBarNav" aria-label="Мобильная навигация">
     <div class="bottom-nav-grid">
       <button class="bottom-nav-item is-active" data-route="hero">
-        <span class="bnav-icon">🏛️</span>
+        <span class="bnav-icon">
+          <svg class="bnav-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 3l9 7H3l9-7z"/></svg>
+        </span>
         <span class="bnav-label" data-i18n="bnav_hero">Главная</span>
       </button>
       <button class="bottom-nav-item" data-route="cultures">
-        <span class="bnav-icon">🗺️</span>
+        <span class="bnav-icon">
+          <svg class="bnav-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+        </span>
         <span class="bnav-label" data-i18n="bnav_cultures">Культуры</span>
       </button>
       <button class="bottom-nav-item" data-route="quest">
-        <span class="bnav-icon">🧭</span>
+        <span class="bnav-icon">
+          <svg class="bnav-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+        </span>
         <span class="bnav-label" data-i18n="bnav_quest">Маршрут</span>
       </button>
       <button class="bottom-nav-item" data-route="folklore">
-        <span class="bnav-icon">📜</span>
+        <span class="bnav-icon">
+          <svg class="bnav-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17V5a2 2 0 0 0-2-2H4"></path><path d="M8 21h12a2 2 0 0 0 2-2v-2H10a2 2 0 0 0-2 2v2z"></path><path d="M4 19a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h15"></path></svg>
+        </span>
         <span class="bnav-label" data-i18n="bnav_folklore">Фольклор</span>
       </button>
       <button class="bottom-nav-item" data-route="collection">
-        <span class="bnav-icon">💎</span>
+        <span class="bnav-icon">
+          <svg class="bnav-svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 18 3 22 9 12 22 2 9 6 3"></polygon><line x1="2" y1="9" x2="22" y2="9"></line><line x1="12" y1="22" x2="7" y2="9"></line><line x1="12" y1="22" x2="17" y2="9"></line></svg>
+        </span>
         <span class="bnav-label" data-i18n="bnav_collection">Награды</span>
       </button>
     </div>
@@ -8071,12 +8118,28 @@
       // ========================================================================
       // 13. УПРАВЛЕНИЕ ТЕМОЙ, ЭМБИЕНТОМ И МОБИЛЬНЫМ МЕНЮ
       // ========================================================================
+      function updateSoundIcon(isActive) {
+        const symbol = document.getElementById('soundIconSymbol');
+        if (!symbol) return;
+        symbol.innerHTML = isActive
+          ? `<svg class="chip-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>`
+          : `<svg class="chip-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
+      }
+
+      function updateThemeIcon(theme) {
+        const symbol = document.getElementById('themeIconSymbol');
+        if (!symbol) return;
+        symbol.innerHTML = (theme === 'dark')
+          ? `<svg class="chip-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`
+          : `<svg class="chip-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+      }
+
       const ambientBtn = document.getElementById('ambientToggleBtn');
       if (ambientBtn) {
         ambientBtn.addEventListener('click', () => {
           AudioEngine.toggleAmbient((isActive) => {
             const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
-            document.getElementById('soundIconSymbol').textContent = isActive ? '🔊' : '🔈';
+            updateSoundIcon(isActive);
             document.getElementById('soundLabelText').textContent = isActive ? (isEn ? 'Playing' : 'Играет') : (isEn ? 'Ambient' : 'Эмбиент');
             triggerToast(isEn
               ? (isActive ? 'Ambient sound enabled' : 'Ambient sound muted')
@@ -8092,7 +8155,7 @@
           const currentTheme = html.getAttribute('data-theme') || 'dark';
           const newTheme = (currentTheme === 'dark') ? 'cream' : 'dark';
           html.setAttribute('data-theme', newTheme);
-          document.getElementById('themeIconSymbol').textContent = (newTheme === 'dark') ? '☀️' : '🌙';
+          updateThemeIcon(newTheme);
           const isEn = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en');
           document.getElementById('themeLabelText').textContent = (newTheme === 'dark') ? (isEn ? 'Light' : 'Светлая') : (isEn ? 'Dark' : 'Тёмная');
           triggerHaptic('light');
@@ -8163,18 +8226,20 @@
           pAudio.textContent = isPetroAudioActive ? (lang === 'en' ? '🔔 Active' : '🔔 Включен') : (lang === 'en' ? '🔕 Muted' : '🔕 Выключен');
         }
 
-        // Update sound label
+        // Update sound label & icon
         const sndLbl = document.getElementById('soundLabelText');
         if (sndLbl) {
           const isPlaying = AudioEngine && AudioEngine.isAmbientPlaying && AudioEngine.isAmbientPlaying();
           sndLbl.textContent = isPlaying ? (lang === 'en' ? 'Playing' : 'Играет') : (lang === 'en' ? 'Ambient' : 'Эмбиент');
+          updateSoundIcon(isPlaying);
         }
 
-        // Update theme label
+        // Update theme label & icon
         const thmLbl = document.getElementById('themeLabelText');
         if (thmLbl) {
           const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
           thmLbl.textContent = (currentTheme === 'dark') ? (lang === 'en' ? 'Light' : 'Светлая') : (lang === 'en' ? 'Dark' : 'Тёмная');
+          updateThemeIcon(currentTheme);
         }
 
         // Update view label
