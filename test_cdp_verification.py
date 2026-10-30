@@ -186,6 +186,50 @@ def run_cdp_test():
         assert tilt_info['tiltCount'] >= 4, "Expected at least 4 tilt cards (hero stats, cultures, relics)"
         assert tilt_info['hasTiltFn'] and tilt_info['hasDustClass'], "Visual engine functions not exposed"
 
+        # 3.6. Test Quest Before/After Comparison Slider & Provenance across all 8 cultures
+        print("\nTesting Quest Before/After Comparison Slider & Provenance across all 8 cultures:")
+        regions_to_test = [
+            ("tatarstan", "Спасская башня"),
+            ("pomorye", "карбас"),
+            ("caucasus", "Нарын-Кала"),
+            ("altai", "Белуха"),
+            ("yakutia", "балаган"),
+            ("kamchatka", "Авачинская"),
+            ("kazakhstan", "Ясави"),
+            ("uzbekistan", "Регистан")
+        ]
+        for r_id, kw in regions_to_test:
+            exec_js(f'window.routeTo("quest?cult={r_id}&step=1&ba=50", false);')
+            time.sleep(0.15)
+            ba_info = exec_js('''(() => {
+                const arcImg = document.getElementById("baArchiveImg");
+                const modImg = document.getElementById("baModernImg");
+                const slider = document.getElementById("baRangeSliderControl");
+                const stage = document.getElementById("beforeAfterStage");
+                const arcLbl = document.getElementById("baArchiveSrcLabel")?.textContent || "";
+                const arcMeta = document.getElementById("baArchiveSrcMeta")?.textContent || "";
+                const modLbl = document.getElementById("baModernSrcLabel")?.textContent || "";
+                const modMeta = document.getElementById("baModernSrcMeta")?.textContent || "";
+                const anno = document.getElementById("baHistoricalAnnotationText")?.textContent || "";
+                return {
+                    arcComplete: arcImg?.complete && arcImg?.naturalWidth > 0,
+                    modComplete: modImg?.complete && modImg?.naturalWidth > 0,
+                    arcW: arcImg?.naturalWidth,
+                    arcH: arcImg?.naturalHeight,
+                    modW: modImg?.naturalWidth,
+                    modH: modImg?.naturalHeight,
+                    sliderVal: parseFloat(slider?.value),
+                    stagePos: stage?.style.getPropertyValue("--slider-pos"),
+                    arcLbl, arcMeta, modLbl, modMeta, anno
+                };
+            })()''')
+            print(f"  -> Region '{r_id}': Archive={ba_info['arcComplete']} ({ba_info['arcW']}x{ba_info['arcH']}), Modern={ba_info['modComplete']} ({ba_info['modW']}x{ba_info['modH']}) | Citation: '{ba_info['arcLbl']}'")
+            assert ba_info['arcComplete'] and ba_info['modComplete'], f"Images failed to load for {r_id}"
+            assert ba_info['arcW'] == 1376 and ba_info['arcH'] == 768, f"Unexpected archive resolution for {r_id}: {ba_info['arcW']}x{ba_info['arcH']}"
+            assert ba_info['modW'] == 1376 and ba_info['modH'] == 768, f"Unexpected modern resolution for {r_id}: {ba_info['modW']}x{ba_info['modH']}"
+            assert ba_info['sliderVal'] == 50 and ba_info['stagePos'] == '50%', f"Slider mismatch for {r_id}"
+            assert ba_info['arcLbl'] and ba_info['anno'], f"Missing metadata for {r_id}"
+
         # 4. Test EthnoAtlas Map (Screen 9) & Map pins hover / click stability
         print("\nTesting EthnoAtlas map pins and hover stability (Screen 9):")
         exec_js('window.routeTo("atlas", false);')

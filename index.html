@@ -1207,6 +1207,28 @@
       cursor: ew-resize;
     }
 
+    .ba-provenance-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+
+    .ba-provenance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .ba-provenance-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+    }
+
     /* ШАГ 2: ВИДЕО-БЛОК, KEN BURNS, ВОЛНОВАЯ ДОРОЖКА И ТАЙМКОДЫ */
     .video-mockup-frame {
       position: relative;
@@ -2868,7 +2890,6 @@
             </div>
 
             <!-- Интерактивный слайдер «Было / Стало» с тач-свайпом -->
-            <!-- Интерактивный слайдер «Было / Стало» с тач-свайпом -->
             <div>
               <div class="before-after-stage" id="beforeAfterStage">
                 <img class="before-after-stage__bg-img" id="baModernImg" src="./images/tatarstan_modern.jpg" alt="Современный вид" />
@@ -2880,15 +2901,15 @@
                 <span class="ba-badge-pill ba-badge-pill--archive" data-i18n="q1_archive_tag">Архив XIX в.</span>
                 <span class="ba-badge-pill ba-badge-pill--modern" data-i18n="q1_modern_tag">Наши дни</span>
               </div>
-              <input type="range" class="slider-range-control" id="baRangeSliderControl" min="5" max="95" value="50" aria-label="Сравнение было и стало" />
+              <input type="range" class="slider-range-control" id="baRangeSliderControl" min="3" max="97" value="50" aria-label="Сравнение было и стало" />
               <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-dim); margin-bottom:12px;">
                 <span data-i18n="q1_slider_left">← Потяните слайдер или коснитесь пальцем</span>
                 <span data-i18n="q1_slider_right">Архив vs Современность →</span>
               </div>
 
               <!-- Историческая аннотация и атрибуция архивной съемки -->
-              <div class="ba-provenance-card" id="baProvenanceCard" style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-md); padding:14px;">
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:10px; font-size:12px;">
+              <div class="ba-provenance-card" id="baProvenanceCard">
+                <div class="ba-provenance-grid">
                   <div style="border-left:3px solid var(--gold); padding-left:8px;">
                     <span style="display:block; color:var(--gold); font-weight:700; font-size:10px; text-transform:uppercase; letter-spacing:0.05em;" data-i18n="q1_archive_src_title">Архивное свидетельство:</span>
                     <strong id="baArchiveSrcLabel" style="color:var(--text-main); font-size:12px; display:block; margin-top:2px;"></strong>
@@ -5228,11 +5249,18 @@
         const [screenPart, queryPart] = clean.split('?');
         const screenId = screenPart || 'hero';
         const params = new URLSearchParams(queryPart || '');
+        const cult = params.get('cult') || params.get('culture');
+        const baRaw = params.get('ba');
+        let baVal = null;
+        if (baRaw !== null) {
+          const num = parseFloat(baRaw);
+          baVal = Number.isFinite(num) ? Math.max(3, Math.min(97, num)) : 50;
+        }
         return {
           screenId,
-          cultureId: params.get('cult'),
+          cultureId: cult,
           step: parseInt(params.get('step'), 10) || null,
-          ba: params.get('ba') !== null ? parseInt(params.get('ba'), 10) : null
+          ba: baVal
         };
       }
 
