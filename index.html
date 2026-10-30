@@ -5231,7 +5231,8 @@
         return {
           screenId,
           cultureId: params.get('cult'),
-          step: parseInt(params.get('step'), 10) || null
+          step: parseInt(params.get('step'), 10) || null,
+          ba: params.get('ba') !== null ? parseInt(params.get('ba'), 10) : null
         };
       }
 
@@ -5248,6 +5249,9 @@
           }
           if (parsed.step && parsed.step >= 1 && parsed.step <= 5) {
             switchQuestStep(parsed.step, false);
+          }
+          if (parsed.ba !== null && typeof setBaPercentage === 'function') {
+            setBaPercentage(parsed.ba);
           }
         }
 
@@ -5502,7 +5506,9 @@
 
         // Обновляем хэш без перезагрузки страницы
         if (window.location.hash.includes('quest')) {
-          history.replaceState({ screen: 'quest', cult: activeCultureId, step: activeQuestStep }, '', `#quest?cult=${activeCultureId}&step=${activeQuestStep}`);
+          const baMatch = window.location.hash.match(/[?&]ba=(\d+)/);
+          const baPart = baMatch ? `&ba=${baMatch[1]}` : '';
+          history.replaceState({ screen: 'quest', cult: activeCultureId, step: activeQuestStep }, '', `#quest?cult=${activeCultureId}&step=${activeQuestStep}${baPart}`);
         }
 
         if (shouldAudioClick) {
@@ -5581,20 +5587,21 @@
 
       // ========================================================================
       // 6. ИНТЕРАКТИВ ШАГА 1: СЛАЙДЕР «БЫЛО / СТАЛО» И ГОЛОС
-      // ========================================================================
+      function setBaPercentage(val) {
+        const clamped = Math.max(3, Math.min(97, parseFloat(val) || 50));
+        const stage = document.getElementById('beforeAfterStage');
+        const slider = document.getElementById('baRangeSliderControl');
+        if (stage) {
+          stage.style.setProperty('--slider-pos', clamped + '%');
+        }
+        if (slider) {
+          slider.value = clamped;
+        }
+      }
+
       const baStage = document.getElementById('beforeAfterStage');
       const baSlider = document.getElementById('baRangeSliderControl');
       const baLayer = document.getElementById('baArchiveLayerBox');
-
-      function setBaPercentage(val) {
-        const clamped = Math.max(3, Math.min(97, parseFloat(val) || 50));
-        if (baStage) {
-          baStage.style.setProperty('--slider-pos', clamped + '%');
-        }
-        if (baSlider) {
-          baSlider.value = clamped;
-        }
-      }
 
       if (baSlider) {
         baSlider.addEventListener('input', () => setBaPercentage(baSlider.value));
@@ -8608,6 +8615,9 @@ ${d.svgCode}`;
       }
       setupQuestCulture(initialCulture, false);
       switchQuestStep(initialStep, false);
+      if (initialRoute.ba !== null && typeof setBaPercentage === 'function') {
+        setBaPercentage(initialRoute.ba);
+      }
       renderCulturesCatalog();
       renderFolkloreAnthology();
       renderRelicsShelf(false);
