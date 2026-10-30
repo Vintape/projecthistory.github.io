@@ -164,6 +164,24 @@
       transform: translateZ(0);
     }
 
+    /* Интерактивная 60 FPS золотая музейная пыль на 2D Canvas */
+    .ambient-gold-dust-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.75;
+      transform: translateZ(0);
+      will-change: transform;
+    }
+
+    html[data-theme="cream"] .ambient-gold-dust-canvas {
+      opacity: 0.40;
+    }
+
     html[data-theme="cream"] .app-grain-overlay {
       opacity: 0.045;
       mix-blend-mode: multiply;
@@ -224,6 +242,8 @@
       margin: 0 auto;
       padding: calc(10px + var(--safe-top)) calc(14px + var(--safe-right)) calc(40px + var(--safe-bottom)) calc(14px + var(--safe-left));
       transition: max-width 0.3s ease;
+      position: relative;
+      z-index: 2;
     }
 
     /* Режим эмуляции смартфона (демонстрация мобильного вида на мониторах ПК) */
@@ -548,6 +568,26 @@
       padding: 5px 12px;
       border-radius: var(--radius-pill);
       margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 16px rgba(201, 156, 82, 0.12);
+    }
+
+    .gold-badge::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+      animation: badgeShine 4.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes badgeShine {
+      0%, 75% { left: -120%; }
+      100% { left: 220%; }
     }
 
     html[data-theme="cream"] .gold-badge {
@@ -719,6 +759,27 @@
       inset: 0;
       background: linear-gradient(90deg, #040812 0%, rgba(4, 8, 18, 0.6) 30%, transparent 100%),
                   linear-gradient(180deg, transparent 65%, rgba(4, 8, 18, 0.95) 100%);
+      z-index: 3;
+    }
+
+    .hero-ambient-halo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 440px;
+      height: 440px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(201, 156, 82, 0.28) 0%, rgba(200, 52, 40, 0.12) 42%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(44px);
+      animation: heroGlowPulse 6s ease-in-out infinite alternate;
+      z-index: 1;
+    }
+
+    @keyframes heroGlowPulse {
+      0% { opacity: 0.50; transform: translate(-50%, -50%) scale(0.92); }
+      100% { opacity: 0.85; transform: translate(-50%, -50%) scale(1.08); }
     }
 
     .hero-stats-grid {
@@ -728,6 +789,24 @@
       margin-top: 28px;
       padding-top: 20px;
       border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .stat-box {
+      padding: 10px 12px;
+      background: rgba(14, 25, 51, 0.55);
+      border: 1px solid var(--border-gold-subtle);
+      border-radius: var(--radius-sm);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .stat-box:hover {
+      border-color: var(--border-gold);
+      background: rgba(14, 25, 51, 0.75);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
     }
 
     .stat-box strong {
@@ -815,17 +894,45 @@
       border-radius: var(--radius-md);
       overflow: hidden;
       cursor: pointer;
-      transition: var(--transition);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease, box-shadow 0.28s ease;
       display: flex;
       flex-direction: column;
       box-shadow: var(--shadow-sm);
       -webkit-tap-highlight-color: transparent;
+      position: relative;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .card-specular-sheen {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: inherit;
+      background: radial-gradient(
+        circle 320px at var(--shine-x, 50%) var(--shine-y, 50%),
+        rgba(243, 208, 138, 0.24) 0%,
+        rgba(201, 156, 82, 0.08) 35%,
+        transparent 70%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      mix-blend-mode: screen;
+      z-index: 10;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .culture-item-card:hover .card-specular-sheen,
+      .stat-box:hover .card-specular-sheen,
+      .relic-item-box:hover .card-specular-sheen,
+      .petro-card-btn:hover .card-specular-sheen {
+        opacity: 1;
+      }
     }
 
     .culture-item-card:hover, .culture-item-card:active, .culture-item-card:focus-visible {
-      transform: translateY(-4px);
       border-color: var(--gold);
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4), 0 0 20px var(--gold-glow);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 24px var(--gold-glow);
       outline: 2px solid var(--gold);
       outline-offset: 2px;
     }
@@ -1830,8 +1937,11 @@
       border-radius: var(--radius-md);
       padding: 16px;
       text-align: center;
-      transition: var(--transition);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease, box-shadow 0.28s ease;
       position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      will-change: transform;
     }
 
     .relic-item-box.is-unlocked {
@@ -2530,6 +2640,7 @@
 
 <body>
   <!-- Музейные атмосферные оверлеи (Zero JS overhead, GPU-композитинг) -->
+  <canvas id="ambientGoldDustCanvas" class="ambient-gold-dust-canvas" aria-hidden="true"></canvas>
   <div class="app-grain-overlay" aria-hidden="true"></div>
   <div class="app-vignette-overlay" aria-hidden="true"></div>
 
@@ -2644,19 +2755,23 @@
           </div>
 
           <div class="hero-stats-grid">
-            <div class="stat-box">
+            <div class="stat-box" data-tilt>
+              <div class="card-specular-sheen" aria-hidden="true"></div>
               <strong data-i18n="hero_stat_1_val">01 · Эпохи</strong>
               <span data-i18n="hero_stat_1_lbl">Сравнение «Было/Стало»</span>
             </div>
-            <div class="stat-box">
+            <div class="stat-box" data-tilt>
+              <div class="card-specular-sheen" aria-hidden="true"></div>
               <strong data-i18n="hero_stat_2_val">02 · Сказания</strong>
               <span data-i18n="hero_stat_2_lbl">Аудио-мифы и кино</span>
             </div>
-            <div class="stat-box">
+            <div class="stat-box" data-tilt>
+              <div class="card-specular-sheen" aria-hidden="true"></div>
               <strong data-i18n="hero_stat_3_val">03 · Разгадка</strong>
               <span data-i18n="hero_stat_3_lbl">Сенсорная лупа-сканер</span>
             </div>
-            <div class="stat-box">
+            <div class="stat-box" data-tilt>
+              <div class="card-specular-sheen" aria-hidden="true"></div>
               <strong data-i18n="hero_stat_4_val">04–05 · Музеи</strong>
               <span data-i18n="hero_stat_4_lbl">3D-карты и билеты с QR</span>
             </div>
@@ -2664,6 +2779,7 @@
         </div>
 
         <div class="hero-visual-side">
+          <div class="hero-ambient-halo" aria-hidden="true"></div>
           <img src="./images/hero_banner.jpg" alt="АРТЕФАКТ — Экспозиция культурного наследия" />
           <div class="hero-visual-side__overlay"></div>
         </div>
@@ -2752,11 +2868,12 @@
             </div>
 
             <!-- Интерактивный слайдер «Было / Стало» с тач-свайпом -->
+            <!-- Интерактивный слайдер «Было / Стало» с тач-свайпом -->
             <div>
               <div class="before-after-stage" id="beforeAfterStage">
-                <img class="before-after-stage__bg-img" id="baModernImg" src="./images/mechet-kul-sharif.jpg" alt="Современный вид" />
+                <img class="before-after-stage__bg-img" id="baModernImg" src="./images/tatarstan_modern.jpg" alt="Современный вид" />
                 <div class="before-after-stage__layer" id="baArchiveLayerBox">
-                  <img class="before-after-stage__layer-img" id="baArchiveImg" src="./images/kazan_archive_19th.jpg" alt="Архивное фото XIX в." />
+                  <img class="before-after-stage__layer-img" id="baArchiveImg" src="./images/tatarstan_archive.jpg" alt="Архивное фото XIX в." />
                 </div>
                 <div class="before-after-stage__divider" id="baDividerLine"></div>
                 <div class="before-after-stage__handle" id="baDividerHandle">‹ ›</div>
@@ -2764,9 +2881,26 @@
                 <span class="ba-badge-pill ba-badge-pill--modern" data-i18n="q1_modern_tag">Наши дни</span>
               </div>
               <input type="range" class="slider-range-control" id="baRangeSliderControl" min="5" max="95" value="50" aria-label="Сравнение было и стало" />
-              <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-dim);">
+              <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-dim); margin-bottom:12px;">
                 <span data-i18n="q1_slider_left">← Потяните слайдер или коснитесь пальцем</span>
                 <span data-i18n="q1_slider_right">Архив vs Современность →</span>
+              </div>
+
+              <!-- Историческая аннотация и атрибуция архивной съемки -->
+              <div class="ba-provenance-card" id="baProvenanceCard" style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); border-radius:var(--radius-md); padding:14px;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:10px; font-size:12px;">
+                  <div style="border-left:3px solid var(--gold); padding-left:8px;">
+                    <span style="display:block; color:var(--gold); font-weight:700; font-size:10px; text-transform:uppercase; letter-spacing:0.05em;" data-i18n="q1_archive_src_title">Архивное свидетельство:</span>
+                    <strong id="baArchiveSrcLabel" style="color:var(--text-main); font-size:12px; display:block; margin-top:2px;"></strong>
+                    <span id="baArchiveSrcMeta" style="color:var(--text-dim); font-size:11px; display:block; margin-top:1px;"></span>
+                  </div>
+                  <div style="border-left:3px solid var(--ruby); padding-left:8px;">
+                    <span style="display:block; color:var(--ruby); font-weight:700; font-size:10px; text-transform:uppercase; letter-spacing:0.05em;" data-i18n="q1_modern_src_title">Современный облик:</span>
+                    <strong id="baModernSrcLabel" style="color:var(--text-main); font-size:12px; display:block; margin-top:2px;"></strong>
+                    <span id="baModernSrcMeta" style="color:var(--text-dim); font-size:11px; display:block; margin-top:1px;"></span>
+                  </div>
+                </div>
+                <p id="baHistoricalAnnotationText" style="font-size:12px; line-height:1.55; color:var(--text-dim); margin:0; border-top:1px dashed var(--border-gold-subtle); padding-top:8px;"></p>
               </div>
             </div>
           </div>
@@ -3301,7 +3435,7 @@
           <!-- Интерактивный Полевой Паспорт Экспедиции (HUD Panel) -->
           <div class="atlas-dossier-card" id="atlasDossierCard">
             <div class="atlas-dossier-card__cover">
-              <img id="atlasDossierImg" src="./images/mechet-kul-sharif.jpg" alt="Фото региона" />
+              <img id="atlasDossierImg" src="./images/tatarstan_modern.jpg" alt="Фото региона" />
               <span class="gold-badge" style="position:absolute; top:8px; left:8px; margin:0;" id="atlasDossierBadge">✦ 01 / 08 · Поволжье</span>
             </div>
 
@@ -4546,8 +4680,13 @@
           lead: 'Перекрёсток цивилизаций Востока и Запада, великое наследие Волжской Булгарии, виртуозная кожаная мозаика и поэзия древнего урмана.',
           greeting: '«Исәнмесез! Рәхим итегез!»',
           speechText: 'Исэнмесез! Рэхим итегез! Казанские мастера веками хранили секреты золотого шитья и мозаичной кожи. Добро пожаловать в сокровищницу Татарстана.',
-          imgModern: './images/mechet-kul-sharif.jpg',
-          imgArchive: './images/kazan_archive_19th.jpg',
+          imgModern: './images/tatarstan_modern.jpg',
+          imgArchive: './images/tatarstan_archive.jpg',
+          archiveLabel: "Спасская башня и Казанский Кремль",
+          archiveDate: "М. П. Дмитриев 1894 г. / А. И. Бренинг 1910–1914 · НМ РТ / ЦГАКФФД",
+          modernLabel: "Спасская башня после научной реставрации",
+          modernDate: "Реставрация 2023 г. · Музейное пространство и подсветка",
+          historicalAnnotation: "Белокаменная Спасская башня XVI–XIX вв. — главный въезд в Казанский Кремль. На архивном снимке М. П. Дмитриева 1894 г. запечатлен исторический облик кремлёвской площади до революции, на современном — результат масштабной научной реставрации 2023 года с открытием музейной экспозиции и вечерней архитектурной подсветки.",
           mythTitle: 'Легенда о Шурале',
           mythCover: './images/tatar_shurale.jpg',
           artTitle: 'Казанское нагрудное хасите и филигрань',
@@ -4610,6 +4749,11 @@
           speechText: 'Поклон да здравие гостям дорогим! Северный край встречает вас мезенской росписью, резным деревом и мудростью древних поморов.',
           imgModern: './images/pomorye_modern.jpg',
           imgArchive: './images/pomorye_archive.jpg',
+          archiveLabel: "Поморский карбас на Мезени",
+          archiveDate: "Н. А. Шабунин 1904–1906 (МАЭ РАН № 893/974) / Кемь (Прокудин-Горский 1916, LOC)",
+          modernLabel: "Традиционные поморские карбасы",
+          modernDate: "Верфь Товарищества поморского судостроения · Кенозерье",
+          historicalAnnotation: "Мореходный карбас — архаичная поморская ладья для промысла в Студёном море, строившаяся без единого железного гвоздя по старинной технологии «шить веткой». Экспедиционные снимки Н. Шабунина и Прокудина-Горского зафиксировали живую традицию, возрождаемую современными поморскими верфями.",
           mythTitle: 'Птица Сирин и сказы Белого моря',
           mythCover: './images/pomorye_myth.jpg',
           artTitle: 'Мезенский обережный ковш и берестяной туес',
@@ -4672,6 +4816,11 @@
           speechText: 'Дорообо! Нөрүөн нөргүй! Вечная мерзлота хранит тайны сотворения мира, серебряные обереги и благословение светлых духов Айыы.',
           imgModern: './images/yakutia_modern.jpg',
           imgArchive: './images/yakutia_archive.jpg',
+          archiveLabel: "Якутские балаганы и резные сэргэ",
+          archiveDate: "В. И. Иохельсон, Сибиряковская экспедиция 1894–1896 гг. · МАЭ РАН № 570",
+          modernLabel: "Сакральная местность «Ус Хатын» и Старый город",
+          modernDate: "Национальный праздник Ысыах · Исторический квартал Якутска",
+          historicalAnnotation: "Сибиряковская экспедиция этнографа Владимира Иохельсона запечатлела традиционную усадьбу Баягантайского улуса с балаганом и ритуальными сэргэ. Сегодня эти архитектурные формы бережно воспроизведены в священной долине Ус Хатын для проведения главного праздника солнца Ысыах.",
           mythTitle: 'Эпос Олонхо и Древо Аал Луук Мас',
           mythCover: './images/yakutia_myth.jpg',
           artTitle: 'Сакральный кумысный кубок Чороон',
@@ -4734,6 +4883,11 @@
           speechText: 'Салам алейкум! Мархаба! Кавказские горы встречают вас серебряной чеканкой мастеров Кубачи, древними башнями и мудростью нартов.',
           imgModern: './images/caucasus_modern.jpg',
           imgArchive: './images/caucasus_archive.jpg',
+          archiveLabel: "Цитадель Нарын-Кала в Дербенте",
+          archiveDate: "Д. И. Ермаков 1896 г. (каталог № 5595+) / Гуниб (Прокудин-Горский 1904/1912, LOC)",
+          modernLabel: "Цитадель Нарын-Кала (ЮНЕСКО)",
+          modernDate: "Раннехристианские крестово-купольные залы IV–V вв. и вечерняя подсветка",
+          historicalAnnotation: "Древнейшая каменная твердыня России, запиравшая Каспийские ворота Великого шёлкового пути. Снимок Дмитрия Ермакова 1896 года запечатлел мощь сасанидских стен VI века, сохранившихся до наших дней в статусе памятника всемирного наследия ЮНЕСКО.",
           mythTitle: 'Сказание о богатырях Нартах и кузнеце Тлепше',
           mythCover: './images/caucasus_myth.jpg',
           artTitle: 'Кубачинский чеканный серебряный кувшин мучал',
@@ -4796,6 +4950,11 @@
           speechText: 'Јакшылар! Амыр-менди! Священные вершины Белухи и древние курганы кочевников открывают вам вечную гармонию человека и природы.',
           imgModern: './images/altai_modern.jpg',
           imgArchive: './images/altai_archive.jpg',
+          archiveLabel: "Двуглавая Белуха и ледник Геблера",
+          archiveDate: "Профессор В. В. Сапожников, июль 1897 г. · РА РГО / ТГУ",
+          modernLabel: "Истоки Катуни и ледник Геблера",
+          modernDate: "Проект Катунского биосферного заповедника «По следам Сапожникова»",
+          historicalAnnotation: "В июле 1897 года профессор Томского университета В. В. Сапожников впервые провел инструментальную фотосъемку ледника Геблера у священной горы Белуха (Уч-Сумер). Повторная съемка заповедника наглядно фиксирует вековую эволюцию реликтовых ледников Алтая.",
           mythTitle: 'Алтайские духи и сказания Пазырыка',
           mythCover: './images/altai_myth.jpg',
           artTitle: 'Пазырыкский войлочный ковер со сфинксами',
@@ -4858,6 +5017,11 @@
           speechText: 'Алегут! Мэчи! Земля огнедышащих сопок и танцующих духов встречает вас шепотом океана и древней песней шаманского бубна.',
           imgModern: './images/kamchatka_modern.jpg',
           imgArchive: './images/kamchatka_archive.jpg',
+          archiveLabel: "Авачинская губа и Корякская сопка",
+          archiveDate: "В. И. Иохельсон, экспедиция Ф. П. Рябушинского 1908–1910 гг. · МАЭ РАН № 1446",
+          modernLabel: "Набережная Авачинской губы",
+          modernDate: "Панорама Авачинской бухты и действующего вулкана Корякский",
+          historicalAnnotation: "В ходе Камчатской экспедиции Рябушинского 1908–1910 гг. Владимир Иохельсон задокументировал быт ительменов и виды Авачинской губы. Сравнение с современным видом набережной Петропавловска-Камчатского демонстрирует преемственность жизни у подножия исполинских вулканов Тихоокеанского кольца.",
           mythTitle: 'Ворон Кутх — Творец Земли',
           mythCover: './images/kamchatka_myth.jpg',
           artTitle: 'Амулет из моржового клыка и корякская кухлянка',
@@ -4920,6 +5084,11 @@
           speechText: 'Ассалаумағалейкум! Қош келдіңіз! Золотой человек Иссыка и звонкие струны домбры рассказывают сагу о великой степи.',
           imgModern: './images/kazakhstan_modern.jpg',
           imgArchive: './images/kazakhstan_archive.jpg',
+          archiveLabel: "Мавзолей Ходжи Ахмеда Ясави",
+          archiveDate: "«Туркестанский альбом» 1871–1872 гг. (LOC) / Прокудин-Горский 1911 г. (LOC)",
+          modernLabel: "Отреставрированный комплекс «Азрет-Султан»",
+          modernDate: "Возвращенный ритуальный Тайказан · Заповедник ЮНЕСКО",
+          historicalAnnotation: "Грандиозный мавзолей конца XIV века, воздвигнутый по приказу Тамерлана. Снимки «Туркестанского альбома» и Прокудина-Горского зафиксировали пештак до масштабной реставрации куполов, возвращения священного казана Тайказан и включения памятника в список ЮНЕСКО.",
           mythTitle: 'Легенда о Коркыт-ата и домбре',
           mythCover: './images/kazakhstan_myth.jpg',
           artTitle: 'Войлочный ковер сырмак и мотив Кошкар-муйиз',
@@ -4980,8 +5149,13 @@
           lead: 'Бирюзовые купола Самарканда и Бухары, резной ганч, сияющий шелк икат и шелковое вышитое сюзане.',
           greeting: '«Ассалому алайкум! Хуш келибсиз!»',
           speechText: 'Ассалому алайкум! Хуш келибсиз! Лазурная мозаика медресе и солнечные узоры чеканщиков приветствуют благородных странников.',
-          imgModern: './images/Hiva.jpg',
-          imgArchive: './images/uzbekistan_samarkand_archive.jpg',
+          imgModern: './images/uzbekistan_modern.jpg',
+          imgArchive: './images/uzbekistan_archive.jpg',
+          archiveLabel: "Площадь Регистан с падающим минаретом",
+          archiveDate: "С. М. Прокудин-Горский 1911 г. · Библиотека Конгресса (LOC 2018680124)",
+          modernLabel: "Отреставрированный ансамбль Регистан",
+          modernDate: "Спрямленный минарет Улугбека · Золотая роспись кундаль Тилля-Кари",
+          historicalAnnotation: "В 1911 году Сергей Прокудин-Горский запечатлел накренившийся на 1,8 метра северо-восточный минарет медресе Улугбека и утраты майолики купола Тилля-Кари. В XX веке инженеры осуществили уникальное спрямление минарета тросами и домкратами, а реставраторы полностью воссоздали лазурный купол и сияющую золотом роспись кундаль.",
           mythTitle: 'Легенда о птице Хумо и мастерах Хивы',
           mythCover: './images/uzbekistan_myth.jpg',
           artTitle: 'Бухарское вышитое сюзане и Риштанская керамика',
@@ -5219,6 +5393,18 @@
         if (archiveImg) archiveImg.src = data.imgArchive;
         if (typeof setBaPercentage === 'function') setBaPercentage(50);
 
+        // Историческая атрибуция и аннотация Было / Стало
+        const arcSrcLbl = document.getElementById('baArchiveSrcLabel');
+        if (arcSrcLbl) arcSrcLbl.textContent = data.archiveLabel || '';
+        const arcSrcMeta = document.getElementById('baArchiveSrcMeta');
+        if (arcSrcMeta) arcSrcMeta.textContent = data.archiveDate || '';
+        const modSrcLbl = document.getElementById('baModernSrcLabel');
+        if (modSrcLbl) modSrcLbl.textContent = data.modernLabel || '';
+        const modSrcMeta = document.getElementById('baModernSrcMeta');
+        if (modSrcMeta) modSrcMeta.textContent = data.modernDate || '';
+        const histAnno = document.getElementById('baHistoricalAnnotationText');
+        if (histAnno) histAnno.textContent = data.historicalAnnotation || '';
+
         // Шаг 2: Видео и Миф
         const posterImg = document.getElementById('videoPlayerPosterImg');
         if (posterImg) {
@@ -5357,7 +5543,8 @@
         const ariaPrefix = isEn ? 'Explore culture: ' : 'Исследовать культуру: ';
 
         container.innerHTML = items.map(c => `
-          <div class="culture-item-card" role="button" tabindex="0" aria-label="${ariaPrefix}${c.title}" onclick="setupQuestCulture('${c.id}'); routeTo('quest'); triggerHaptic('light');" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); setupQuestCulture('${c.id}'); routeTo('quest'); triggerHaptic('light');}">
+          <div class="culture-item-card" data-tilt role="button" tabindex="0" aria-label="${ariaPrefix}${c.title}" onclick="setupQuestCulture('${c.id}'); routeTo('quest'); triggerHaptic('light');" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); setupQuestCulture('${c.id}'); routeTo('quest'); triggerHaptic('light');}">
+            <div class="card-specular-sheen" aria-hidden="true"></div>
             <div class="culture-item-card__img-wrap">
               <img src="${c.imgModern}" alt="${c.title}" loading="lazy" />
               <span class="culture-item-card__tag">${c.category === 'russia' ? tagRussia : tagSilk}</span>
@@ -5372,6 +5559,10 @@
             </div>
           </div>
         `).join('');
+
+        if (typeof bindCards3DTilt === 'function') {
+          bindCards3DTilt(container);
+        }
       }
 
       document.querySelectorAll('#cultureFilterPillsGroup .pill-filter-btn').forEach(btn => {
@@ -6956,7 +7147,8 @@
         shelf.innerHTML = list.map(r => {
           const isUnlocked = unlockAll || unlockedRelicIds.has(r.id);
           return `
-            <div class="relic-item-box ${isUnlocked ? 'is-unlocked' : 'is-locked'}" data-relic-id="${r.id}">
+            <div class="relic-item-box ${isUnlocked ? 'is-unlocked' : 'is-locked'}" data-tilt data-relic-id="${r.id}">
+              <div class="card-specular-sheen" aria-hidden="true"></div>
               <img src="${r.icon}" alt="${r.name}" loading="lazy" />
               <strong style="font-size:12.5px; color:var(--text-main); display:block;">${r.name}</strong>
               <span style="font-size:11px; color:var(--gold);">${r.reg}</span>
@@ -6966,6 +7158,10 @@
             </div>
           `;
         }).join('');
+
+        if (typeof bindCards3DTilt === 'function') {
+          bindCards3DTilt(shelf);
+        }
       }
 
       const unlockAllBtn = document.getElementById('unlockAllDemoArtifactsBtn');
@@ -8180,6 +8376,215 @@ ${d.svgCode}`;
       }
 
       // ========================================================================
+      // 13.5. АТМОСФЕРНАЯ ЗОЛОТАЯ АРХЕОЛОГИЧЕСКАЯ ПЫЛЬ (60 FPS 2D CANVAS)
+      // ========================================================================
+      class AmbientGoldDust {
+        constructor(canvasId) {
+          this.canvas = document.getElementById(canvasId);
+          if (!this.canvas) return;
+          this.ctx = this.canvas.getContext('2d', { alpha: true });
+          if (!this.ctx) return;
+
+          this.particles = [];
+          this.mouse = { x: -9999, y: -9999, active: false };
+          this.animId = null;
+          this.isTabVisible = !document.hidden;
+
+          // Проверка на предпочтение пользователя: меньше анимации
+          this.reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (this.reducedMotion) return;
+
+          this.init();
+        }
+
+        init() {
+          this.resize();
+          this.createParticles();
+          this.bindEvents();
+          this.start();
+        }
+
+        resize() {
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          this.width = window.innerWidth;
+          this.height = window.innerHeight;
+          this.canvas.width = Math.floor(this.width * dpr);
+          this.canvas.height = Math.floor(this.height * dpr);
+          this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+          this.ctx.scale(dpr, dpr);
+        }
+
+        createParticles() {
+          const isMobile = this.width < 768;
+          const count = isMobile ? 18 : 38;
+          this.particles = [];
+
+          const colors = [
+            '201, 156, 82',   // #c99c52
+            '243, 208, 138',  // #f3d08a
+            '212, 175, 55',   // #d4af37
+            '230, 184, 112'   // amber gold
+          ];
+
+          for (let i = 0; i < count; i++) {
+            this.particles.push({
+              x: Math.random() * this.width,
+              y: Math.random() * this.height,
+              size: 0.8 + Math.random() * 1.6,
+              vx: (Math.random() - 0.5) * 0.22,
+              vy: -0.12 - Math.random() * 0.28,
+              alpha: 0.10 + Math.random() * 0.32,
+              baseAlpha: 0.10 + Math.random() * 0.32,
+              pulseSpeed: 0.012 + Math.random() * 0.02,
+              pulsePhase: Math.random() * Math.PI * 2,
+              color: colors[Math.floor(Math.random() * colors.length)]
+            });
+          }
+        }
+
+        bindEvents() {
+          let resizeTimer = null;
+          window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+              this.resize();
+              this.createParticles();
+            }, 200);
+          }, { passive: true });
+
+          window.addEventListener('mousemove', (e) => {
+            this.mouse.x = e.clientX;
+            this.mouse.y = e.clientY;
+            this.mouse.active = true;
+          }, { passive: true });
+
+          document.addEventListener('mouseleave', () => {
+            this.mouse.active = false;
+          });
+
+          document.addEventListener('visibilitychange', () => {
+            this.isTabVisible = !document.hidden;
+            if (this.isTabVisible && !this.animId) {
+              this.start();
+            } else if (!this.isTabVisible && this.animId) {
+              cancelAnimationFrame(this.animId);
+              this.animId = null;
+            }
+          });
+        }
+
+        start() {
+          const loop = () => {
+            if (!this.isTabVisible) {
+              this.animId = null;
+              return;
+            }
+            this.update();
+            this.render();
+            this.animId = requestAnimationFrame(loop);
+          };
+          this.animId = requestAnimationFrame(loop);
+        }
+
+        update() {
+          const mouseRadius = 85;
+          for (let i = 0; i < this.particles.length; i++) {
+            const p = this.particles[i];
+
+            p.x += p.vx;
+            p.y += p.vy;
+
+            p.pulsePhase += p.pulseSpeed;
+            p.alpha = p.baseAlpha + Math.sin(p.pulsePhase) * 0.12;
+            if (p.alpha < 0.04) p.alpha = 0.04;
+
+            if (this.mouse.active) {
+              const dx = p.x - this.mouse.x;
+              const dy = p.y - this.mouse.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < mouseRadius && dist > 0) {
+                const force = (mouseRadius - dist) / mouseRadius;
+                p.x += (dx / dist) * force * 1.1;
+                p.y += (dy / dist) * force * 1.1;
+              }
+            }
+
+            if (p.x < -10) p.x = this.width + 10;
+            if (p.x > this.width + 10) p.x = -10;
+            if (p.y < -10) {
+              p.y = this.height + 10;
+              p.x = Math.random() * this.width;
+            }
+          }
+        }
+
+        render() {
+          this.ctx.clearRect(0, 0, this.width, this.height);
+          for (let i = 0; i < this.particles.length; i++) {
+            const p = this.particles[i];
+            this.ctx.beginPath();
+            this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            this.ctx.fillStyle = `rgba(${p.color}, ${p.alpha.toFixed(3)})`;
+            this.ctx.shadowBlur = p.size * 2.2;
+            this.ctx.shadowColor = `rgba(${p.color}, 0.35)`;
+            this.ctx.fill();
+          }
+          this.ctx.shadowBlur = 0;
+        }
+      }
+
+      // ========================================================================
+      // 13.6. 3D TILT КАРТОЧЕК С ДИНАМИЧЕСКИМ БЛИКОМ ЗОЛОТОГО ТИСНЕНИЯ (DESKTOP)
+      // ========================================================================
+      function bindCards3DTilt(root = document) {
+        if (!window.matchMedia || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+        const cards = root.querySelectorAll('[data-tilt]');
+        const maxTilt = 6.5;
+
+        cards.forEach(card => {
+          if (card._hasTiltBound) return;
+          card._hasTiltBound = true;
+
+          let rAF = null;
+
+          card.addEventListener('pointermove', (e) => {
+            if (rAF) cancelAnimationFrame(rAF);
+            rAF = requestAnimationFrame(() => {
+              const rect = card.getBoundingClientRect();
+              if (rect.width === 0 || rect.height === 0) return;
+
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
+
+              const normX = (x / rect.width) - 0.5;
+              const normY = (y / rect.height) - 0.5;
+
+              const tiltX = (-normY * maxTilt).toFixed(2);
+              const tiltY = (normX * maxTilt).toFixed(2);
+
+              const shineX = ((x / rect.width) * 100).toFixed(1);
+              const shineY = ((y / rect.height) * 100).toFixed(1);
+
+              card.style.transform = `perspective(900px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.018, 1.018, 1.018)`;
+              card.style.setProperty('--shine-x', `${shineX}%`);
+              card.style.setProperty('--shine-y', `${shineY}%`);
+            });
+          });
+
+          card.addEventListener('pointerleave', () => {
+            if (rAF) cancelAnimationFrame(rAF);
+            card.style.transform = '';
+            card.style.removeProperty('--shine-x');
+            card.style.removeProperty('--shine-y');
+          });
+        });
+      }
+
+      window.AmbientGoldDust = AmbientGoldDust;
+      window.bindCards3DTilt = bindCards3DTilt;
+
+      // ========================================================================
       // 14. СТАРТОВАЯ ИНИЦИАЛИЗАЦИЯ И ЗАЩИТА ЖИЗНЕННОГО ЦИКЛА
       // ========================================================================
       // Защита от утечек диктора: гарантированная остановка речи при сворачивании, смене вкладки или истории
@@ -8209,6 +8614,14 @@ ${d.svgCode}`;
       generateWorkshopOrnament();
       initAtlasMap();
       initRestorerLab();
+
+      // Запуск интерактивной музейной атмосферы и 3D Tilt
+      try {
+        new AmbientGoldDust('ambientGoldDustCanvas');
+        bindCards3DTilt(document);
+      } catch (e) {
+        console.warn('Atmosphere initialization skipped:', e);
+      }
 
       const startHash = window.location.hash.replace('#', '') || 'hero';
       routeTo(startHash, false); // Тихий запуск без звука при открытии страницы

@@ -29,9 +29,16 @@ def run_cdp_test():
     exceptions = []
 
     try:
-        time.sleep(2.0)
-        res = urllib.request.urlopen(f'http://127.0.0.1:{port}/json').read()
-        targets = json.loads(res)
+        targets = []
+        for _ in range(25):
+            time.sleep(0.2)
+            try:
+                res = urllib.request.urlopen(f'http://127.0.0.1:{port}/json', timeout=1).read()
+                targets = json.loads(res)
+                if targets:
+                    break
+            except Exception:
+                pass
         page_targets = [t for t in targets if t.get('type') == 'page']
         if not page_targets:
             raise RuntimeError("No page target found in CDP")
@@ -126,7 +133,12 @@ def run_cdp_test():
         send_cmd('Console.enable')
         send_cmd('Runtime.enable')
 
-        # 2. Check title and readyState
+        # 2. Wait for page load and window.routeTo to be initialized
+        for _ in range(40):
+            time.sleep(0.1)
+            if exec_js('typeof window.routeTo') == 'function':
+                break
+
         title = exec_js('document.title')
         print(f"Document title: {title}")
         assert "АРТЕФАКТ" in title, f"Unexpected title: {title}"
@@ -143,6 +155,34 @@ def run_cdp_test():
             }})()''')
             print(f"  -> window.routeTo('{sc}'): {active_id}")
             assert active_id == "OK", f"Screen {sc} failed to become visible"
+
+        # 3.5. Test Ambient Visual Mechanics (Gold Dust Canvas & 3D Tilt)
+        print("\nTesting Ambient Visual Engines (Gold Dust Canvas & 3D Tilt):")
+        canvas_info = exec_js('''(() => {
+            const c = document.getElementById("ambientGoldDustCanvas");
+            return {
+                exists: !!c,
+                tag: c ? c.tagName : null,
+                classes: c ? c.className : null
+            };
+        })()''')
+        print(f"  -> Ambient Gold Dust Canvas: exists={canvas_info['exists']}, tag={canvas_info['tag']}")
+        assert canvas_info['exists'], "Missing #ambientGoldDustCanvas"
+
+        tilt_info = exec_js('''(() => {
+            const tiltCount = document.querySelectorAll("[data-tilt]").length;
+            const sheenCount = document.querySelectorAll(".card-specular-sheen").length;
+            return {
+                tiltCount,
+                sheenCount,
+                hasTiltFn: typeof window.bindCards3DTilt === 'function',
+                hasDustClass: typeof window.AmbientGoldDust === 'function'
+            };
+        })()''')
+        print(f"  -> 3D Tilt Elements: {tilt_info['tiltCount']} | Specular Sheen Overlays: {tilt_info['sheenCount']}")
+        print(f"  -> bindCards3DTilt: {tilt_info['hasTiltFn']} | AmbientGoldDust: {tilt_info['hasDustClass']}")
+        assert tilt_info['tiltCount'] >= 4, "Expected at least 4 tilt cards (hero stats, cultures, relics)"
+        assert tilt_info['hasTiltFn'] and tilt_info['hasDustClass'], "Visual engine functions not exposed"
 
         # 4. Test EthnoAtlas Map (Screen 9) & Map pins hover / click stability
         print("\nTesting EthnoAtlas map pins and hover stability (Screen 9):")

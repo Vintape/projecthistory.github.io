@@ -263,6 +263,14 @@
     "ru": "Наши дни",
     "en": "Present Day"
   },
+  "q1_archive_src_title": {
+    "ru": "Архивное свидетельство:",
+    "en": "Archival Record:"
+  },
+  "q1_modern_src_title": {
+    "ru": "Современный облик:",
+    "en": "Contemporary State:"
+  },
   "q1_slider_hint_left": {
     "ru": "← Потяните слайдер или коснитесь пальцем",
     "en": "← Drag slider or touch swipe"
@@ -1200,6 +1208,11 @@
   const ETHNO_DATABASE_EN = {
   "tatarstan": {
     "sub": "✦ 01 / 08 · Volga & Urals",
+    "archiveLabel": "Spasskaya Tower & Kazan Kremlin",
+    "archiveDate": "M. P. Dmitriev 1894 / A. I. Brening 1910–1914 · National Museum of Tatarstan",
+    "modernLabel": "Spasskaya Tower after Scientific Restoration",
+    "modernDate": "2023 Restoration · Museum Gallery & Architectural Illumination",
+    "historicalAnnotation": "The white limestone Spasskaya Tower (16th–19th c.) serves as the historic gateway to the Kazan Kremlin. Maxim Dmitriev's 1894 archival photograph captures pre-revolutionary daily life on Kremlin Square, juxtaposed with the 2023 scientific restoration that opened new museum exhibitions.",
     "title": "Tatarstan",
     "lead": "Crossroads of Eastern and Western civilizations, the grand legacy of Volga Bulgaria, virtuoso leather mosaic craft, and poetry of the ancient sacred forest (urman).",
     "greeting": "«Isänmesez! Räxim itegez!»",
@@ -1244,6 +1257,11 @@
   },
   "pomorye": {
     "sub": "✦ 02 / 08 · Russian North & White Sea",
+    "archiveLabel": "Pomor Karbas Boat on Mezen River",
+    "archiveDate": "N. A. Shabunin 1904–1906 (MAE RAS No. 893) / S. M. Prokudin-Gorsky 1916 (LOC)",
+    "modernLabel": "Traditional Maritime Pomor Karbas Boats",
+    "modernDate": "Pomor Shipbuilding Brotherhood · Kenozerye National Park",
+    "historicalAnnotation": "The seaworthy karbas boat was essential for navigating Arctic waters. Historically constructed without iron nails by stitching planks with spruce roots, this venerable maritime tradition is actively revived today by master shipwrights on the White Sea.",
     "title": "Pomorye",
     "lead": "Epic harsh realm of intrepid seafarers, wood chip Birds of Happiness, Mezen red-and-black horse petroglyphic paintings, and ancient naval karbas boats.",
     "greeting": "«Zdorovo zhivete, zemlyaki!»",
@@ -1288,6 +1306,11 @@
   },
   "caucasus": {
     "sub": "✦ 03 / 08 · High Caucasus & Kubachi",
+    "archiveLabel": "Naryn-Kala Citadel in Derbent",
+    "archiveDate": "D. I. Ermakov 1896 (Cat. No. 5595+) / S. M. Prokudin-Gorsky 1904/1912 (LOC)",
+    "modernLabel": "UNESCO World Heritage Naryn-Kala Citadel",
+    "modernDate": "4th–5th c. Early Christian Cruciform Halls & Night Illumination",
+    "historicalAnnotation": "The oldest stone citadel in Russia, safeguarding the Caspian Gates of the Silk Road. Dmitry Ermakov's 1896 photograph captures the monumental 6th-century Sasanian walls, preserved today as an esteemed UNESCO World Heritage monument.",
     "title": "Caucasus (Dagestan)",
     "lead": "Mountain fortress of master artisans, legendary Kubachi chased silverware, Nart epic heroes, and sacred forge fires of craftsman Tlepsh.",
     "greeting": "«Assalamu alaykum! Salam to guests!»",
@@ -1332,6 +1355,11 @@
   },
   "altai": {
     "sub": "✦ 04 / 08 · Sacred Altai & Pazyryk",
+    "archiveLabel": "Two-Headed Belukha & Gebler Glacier",
+    "archiveDate": "Prof. V. V. Sapozhnikov, July 1897 · Russian Geographical Society / TSU",
+    "modernLabel": "Katun River Headwaters & Gebler Glacier",
+    "modernDate": "Katun Biosphere Reserve Project «In Sapozhnikov's Footsteps»",
+    "historicalAnnotation": "In July 1897, Tomsk University Professor V. V. Sapozhnikov conducted the first scientific photographic survey of the Gebler Glacier beneath sacred Mount Belukha (Uch-Sumer). Contemporary repeat surveys document over a century of glacier dynamics in the Altai wilderness.",
     "title": "Gorny Altai",
     "lead": "Sacred cradle of ancient nomads, Kalbak-Tash petroglyphs, Pazyryk ice mummies, master felt syrmaks, and resonant shamanic vargans (komus).",
     "greeting": "«Ezenler! Tolu buyan bolzyn!»",
@@ -1376,6 +1404,11 @@
   },
   "yakutia": {
     "sub": "✦ 05 / 08 · Sakha (Yakutia) & Olonkho",
+    "archiveLabel": "Yakut Balagan Dwellings & Carved Serge Posts",
+    "archiveDate": "V. I. Iokhelson, Sibiryakov Expedition 1894–1896 · MAE RAS No. 570",
+    "modernLabel": "Sacred Grounds of Us Khatyn & Old Town",
+    "modernDate": "National Yhyakh Solstice Festival · Yakutsk Historic Quarter",
+    "historicalAnnotation": "The Sibiryakov Expedition led by ethnographer Vladimir Iokhelson documented traditional timber homesteads and sacred serge horse-tethering poles of Bayagantay Ulus. Today, these revered architectural forms are preserved at Us Khatyn for the annual Yhyakh festival.",
     "title": "Yakutia (Sakha)",
     "lead": "Diamond heart of northern Siberia, epic Olonkho chants recognized by UNESCO, silver pectoral ornaments (ilin kebisêr), and solar Yhyakh rituals.",
     "greeting": "«Egorordo! Urduk ayyyttan algys!»",
@@ -1420,6 +1453,11 @@
   },
   "kamchatka": {
     "sub": "✦ 06 / 08 · Kamchatka & Volcanic Realm",
+    "archiveLabel": "Avacha Bay & Koryaksky Volcano",
+    "archiveDate": "V. I. Iokhelson, F. P. Ryabushinsky Expedition 1908–1910 · MAE RAS No. 1446",
+    "modernLabel": "Petropavlovsk-Kamchatsky Embankment",
+    "modernDate": "Panorama of Avacha Bay & Active Koryaksky Volcano",
+    "historicalAnnotation": "During the 1908–1910 Ryabushinsky Expedition, Vladimir Iokhelson documented native coastal settlements against the majestic volcanic vistas of the Pacific Ring of Fire, mirroring the enduring relationship between people and active volcanoes.",
     "title": "Kamchatka",
     "lead": "Land of erupting volcanoes and Pacific tides, Raven Kutkh creation mythology, Itelmen sea grass weaving, and master fur mosaic kukhlyankas.",
     "greeting": "«Torova! Kutkh welcomes all travelers!»",
@@ -1464,6 +1502,11 @@
   },
   "kazakhstan": {
     "sub": "✦ 07 / 08 · Steppes of Kazakhstan",
+    "archiveLabel": "Mausoleum of Khoja Ahmed Yasawi",
+    "archiveDate": "«Turkestan Album» 1871–1872 (LOC) / S. M. Prokudin-Gorsky 1911 (LOC)",
+    "modernLabel": "Restored Azret-Sultan National Reserve",
+    "modernDate": "Returned Sacred Bronze Tayqazan · UNESCO World Heritage",
+    "historicalAnnotation": "A monumental late 14th-century masterpiece commissioned by Tamerlane. 1871 and 1911 archival prints capture the portal prior to modern tilework restoration, the return of the monumental Tayqazan cauldron, and its UNESCO listing.",
     "title": "Kazakhstan",
     "lead": "Boundless Great Steppe, Golden Warrior of Issyk, felt syrmak master rugs, silver besbilezik bracelets, and poetic dombra melodies.",
     "greeting": "«Salemetsiz be! Kosh keldinizder!»",
@@ -1508,6 +1551,11 @@
   },
   "uzbekistan": {
     "sub": "✦ 08 / 08 · Silk Road Oasis & Samarkand",
+    "archiveLabel": "Registan Square with Leaning Minaret",
+    "archiveDate": "S. M. Prokudin-Gorsky 1911 · Library of Congress (LOC 2018680124)",
+    "modernLabel": "Restored Registan Architectural Ensemble",
+    "modernDate": "Straightened Ulugh Beg Minaret · Golden Kundal Relieflike Painting in Tilya-Kori",
+    "historicalAnnotation": "In 1911, color photography pioneer Sergei Prokudin-Gorsky recorded the precarious 1.8-meter tilt of Ulugh Beg's northeast minaret and the weathered dome of Tilya-Kori. 20th-century engineers performed an unprecedented mechanical straightening of the minaret, while master restorers revived the turquoise majolica and golden kundal interior.",
     "title": "Uzbekistan",
     "lead": "Sparkling turquoise domes of Samarkand and Khiva, UNESCO heritage of Registan, master silk ikat suzani, and thousand-year ceramic glaze secrets.",
     "greeting": "«Assalomu alaykum! Xush kelibsiz!»",
