@@ -18,6 +18,7 @@ def run_cdp_test():
         '/usr/bin/chromium',
         '--headless=new',
         f'--remote-debugging-port={port}',
+        '--remote-allow-origins=*',
         '--no-sandbox',
         '--disable-gpu',
         '--disable-dev-shm-usage',
@@ -132,12 +133,13 @@ def run_cdp_test():
         # 1. Enable domains
         send_cmd('Console.enable')
         send_cmd('Runtime.enable')
+        time.sleep(1.2)
 
-        # 2. Wait for page load and window.routeTo to be initialized
-        for _ in range(40):
-            time.sleep(0.1)
+        # 2. Wait for page load and window.routeTo to be ready
+        for _ in range(30):
             if exec_js('typeof window.routeTo') == 'function':
                 break
+            time.sleep(0.1)
 
         title = exec_js('document.title')
         print(f"Document title: {title}")
