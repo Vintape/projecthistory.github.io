@@ -2903,6 +2903,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="./visual-refresh.css" />
 </head>
 
 <body>
@@ -3116,7 +3117,7 @@
                 Перекрёсток цивилизаций Востока и Запада, великое наследие Волжской Булгарии, виртуозная кожаная мозаика и поэзия древнего урмана.
               </p>
 
-              <div style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); padding:13px 15px; border-radius:var(--radius-md); margin-bottom:14px;">
+              <div class="greeting-panel" style="background:var(--bg-card); border:1px solid var(--border-gold-subtle); padding:13px 15px; border-radius:var(--radius-md); margin-bottom:14px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                   <strong style="color:var(--gold); font-size:13px;" data-i18n="q1_greeting_lbl">Живое традиционное приветствие:</strong>
                   <button class="action-chip" id="voiceGreetingSpeakerBtn" style="background:var(--ruby); border-color:var(--ruby); color:#fff; padding:5px 10px;">
@@ -3258,14 +3259,30 @@
 
         <!-- ПОДЭКРАН ШАГ 3: АРХЕОЛОГИЧЕСКАЯ ЛУПА И КВИЗ -->
         <div class="quest-step-subview" id="questStepSub3" style="display:none;">
-          <div class="split-layout-2col">
-            <div>
+          <div class="split-layout-2col quiz-workspace">
+            <div class="quiz-questions">
               <span class="gold-badge" data-i18n="q3_badge">Шаг 03 · Испытание этнографа</span>
               <h3 class="heading-section" style="font-size:var(--font-size-h2);" data-i18n="q3_heading">Найди след мастера</h3>
               <p class="lead-paragraph" id="quizInstructionText">
                 Перед вами подлинный памятник традиционного мастерства. Используйте сенсорную лупу, чтобы изучить фрагменты ткани и идентифицировать канонический элемент узора.
               </p>
 
+            <!-- Интерактивная зона с сенсорной лупой -->
+            <div class="quiz-inspection">
+              <div class="loupe-inspect-stage" id="loupeStageContainer" role="region" aria-label="Интерактивный холст сенсорной лупы. Водите курсором или пальцем для исследования артефакта" tabindex="0">
+                <img id="loupeCanvasImage" src="./images/v666_45.png" alt="Старинный артефакт в высоком разрешении" />
+                <div class="lens-pointer" id="loupeLensPointer">
+                  <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
+                    <path d="M40 6L74 40L40 74L6 40L40 6Z" stroke="#fff" stroke-width="3"/>
+                    <path d="M40 16L64 40L40 64L16 40L40 16Z" fill="var(--ruby)"/>
+                    <circle cx="40" cy="40" r="6" fill="#fff"/>
+                  </svg>
+                </div>
+              </div>
+              <p style="font-size:11.5px; color:var(--text-dim); margin-top:8px; text-align:center;" data-i18n="q3_loupe_hint">
+                ✦ Водите пальцем или курсором по холсту для фиксации сакрального фрагмента (удерживайте 1 сек)
+              </p>
+            </div>
               <!-- Индикатор фиксации сакрального следа -->
               <div id="loupeDiscoveryStatusBanner" style="display:none; background:rgba(201,156,82,0.14); border:1px solid var(--gold); padding:9px 14px; border-radius:var(--radius-sm); margin-bottom:12px; font-size:12px; color:var(--gold-light);">
                 ✦ <strong>Сакральный след зафиксирован:</strong> Изучите бугорчатую филигрань и каплевидные пальметты.
@@ -3282,22 +3299,7 @@
               </button>
             </div>
 
-            <!-- Интерактивная зона с сенсорной лупой -->
-            <div>
-              <div class="loupe-inspect-stage" id="loupeStageContainer" role="region" aria-label="Интерактивный холст сенсорной лупы. Водите курсором или пальцем для исследования артефакта" tabindex="0">
-                <img id="loupeCanvasImage" src="./images/v666_45.png" alt="Старинный артефакт в высоком разрешении" />
-                <div class="lens-pointer" id="loupeLensPointer">
-                  <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
-                    <path d="M40 6L74 40L40 74L6 40L40 6Z" stroke="#fff" stroke-width="3"/>
-                    <path d="M40 16L64 40L40 64L16 40L40 16Z" fill="var(--ruby)"/>
-                    <circle cx="40" cy="40" r="6" fill="#fff"/>
-                  </svg>
-                </div>
-              </div>
-              <p style="font-size:11.5px; color:var(--text-dim); margin-top:8px; text-align:center;" data-i18n="q3_loupe_hint">
-                ✦ Водите пальцем или курсором по холсту для фиксации сакрального фрагмента (удерживайте 1 сек)
-              </p>
-            </div>
+
           </div>
         </div>
 
@@ -5634,21 +5636,10 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // Поддержка View Transitions API
-        if (document.startViewTransition) {
-          try {
-            const vt = document.startViewTransition(updateDOM);
-            if (vt) {
-              if (vt.ready) vt.ready.catch(() => {});
-              if (vt.finished) vt.finished.catch(() => {});
-              if (vt.updateCallbackDone) vt.updateCallbackDone.catch(() => {});
-            }
-          } catch (e) {
-            updateDOM();
-          }
-        } else {
-          updateDOM();
-        }
+        // Commit navigation synchronously: a delayed view-transition callback
+        // could close a newly opened drawer during rapid mobile navigation.
+        // The existing screen CSS supplies the short visual transition.
+        updateDOM();
 
         // Обновление URL хэша и истории браузера (поддержка кнопки «Назад» и свайпов)
         if (isUserNavigation) {
@@ -5849,6 +5840,7 @@
       window.setupQuestCulture = setupQuestCulture;
 
       function switchQuestStep(stepNum, shouldAudioClick = true) {
+        if (!Number.isInteger(stepNum) || stepNum < 1 || stepNum > 5) return;
         // При смене шага экспедиции диктор умолкает
         AudioEngine.stopSpeech();
         triggerHaptic('light');
@@ -5860,13 +5852,25 @@
 
         document.querySelectorAll('#questStepperPillsGroup .step-pill-btn').forEach(btn => {
           btn.classList.toggle('is-active', parseInt(btn.dataset.step, 10) === stepNum);
+          if (parseInt(btn.dataset.step, 10) === stepNum) {
+            btn.setAttribute('aria-current', 'step');
+            const strip = btn.parentElement;
+            requestAnimationFrame(() => {
+              strip.scrollTo({ left: Math.max(0, btn.offsetLeft - strip.offsetLeft - 12), behavior: 'auto' });
+            });
+          } else {
+            btn.removeAttribute('aria-current');
+          }
         });
 
         // Обновляем хэш без перезагрузки страницы
-        if (window.location.hash.includes('quest')) {
+        if (shouldAudioClick && window.location.hash.startsWith('#quest')) {
           const baMatch = window.location.hash.match(/[?&]ba=(\d+)/);
           const baPart = baMatch ? `&ba=${baMatch[1]}` : '';
-          history.replaceState({ screen: 'quest', cult: activeCultureId, step: activeQuestStep }, '', `#quest?cult=${activeCultureId}&step=${activeQuestStep}${baPart}`);
+          const nextHash = `#quest?cult=${activeCultureId}&step=${activeQuestStep}${baPart}`;
+          if (window.location.hash !== nextHash) {
+            history.pushState({ screen: 'quest', cult: activeCultureId, step: activeQuestStep }, '', nextHash);
+          }
         }
 
         if (shouldAudioClick) {
@@ -8269,6 +8273,7 @@
         openDrawerBtn.addEventListener('click', () => {
           const isOpen = drawerMenu.classList.toggle('is-open');
           openDrawerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+          if (isOpen && closeDrawerBtn) closeDrawerBtn.focus();
           triggerHaptic('light');
           AudioEngine.playUiClick();
         });
@@ -8278,6 +8283,7 @@
         closeDrawerBtn.addEventListener('click', () => {
           drawerMenu.classList.remove('is-open');
           if (openDrawerBtn) openDrawerBtn.setAttribute('aria-expanded', 'false');
+          if (openDrawerBtn) openDrawerBtn.focus();
           triggerHaptic('light');
           AudioEngine.playUiClick();
         });
@@ -8287,6 +8293,13 @@
         if (e.key === 'Escape' && drawerMenu && drawerMenu.classList.contains('is-open')) {
           drawerMenu.classList.remove('is-open');
           if (openDrawerBtn) openDrawerBtn.setAttribute('aria-expanded', 'false');
+          if (openDrawerBtn) openDrawerBtn.focus();
+        }
+        if (e.key === 'Tab' && drawerMenu && drawerMenu.classList.contains('is-open')) {
+          const focusable = Array.from(drawerMenu.querySelectorAll('button, a[href], input, [tabindex="0"]')).filter(el => el.getClientRects().length);
+          const first = focusable[0], last = focusable[focusable.length - 1];
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
         }
       });
 
@@ -8979,7 +8992,7 @@ ${d.svgCode}`;
       window.addEventListener('hashchange', () => {
         AudioEngine.stopSpeech();
         const hash = window.location.hash.replace('#', '');
-        if (hash) routeTo(hash, true);
+        if (hash) routeTo(hash, false);
       });
 
       const initialRoute = parseRouteHash(window.location.hash);
