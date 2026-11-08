@@ -2903,6 +2903,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="./component-polish.css" />
 </head>
 
 <body>
@@ -3498,219 +3499,92 @@
         <div class="atlas-layout-split">
           <!-- Интерактивная векторная карта регионов -->
           <div class="russia-svg-map-box">
-            <svg viewBox="0 0 1100 520" fill="none" xmlns="http://www.w3.org/2000/svg" id="atlasRussiaSvgMap">
-              <defs>
-                <radialGradient id="gradLand" cx="50%" cy="45%" r="65%">
-                  <stop offset="0%" stop-color="#14264d" stop-opacity="0.95"/>
-                  <stop offset="100%" stop-color="#081125" stop-opacity="0.98"/>
-                </radialGradient>
-                <linearGradient id="gradPinGold" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#f3d08a"/>
-                  <stop offset="100%" stop-color="#c99c52"/>
-                </linearGradient>
-                <filter id="glowAtlas" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="3" result="blur"/>
-                  <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-                </filter>
-              </defs>
-
-              <rect width="1100" height="520" fill="#050a16"/>
-
-              <!-- Координатная картографическая сетка (параллели и меридианы) -->
-              <path d="M50,110 L1050,110 M50,210 L1050,210 M50,330 L1050,330 M50,440 L1050,440" stroke="rgba(201,156,82,0.08)" stroke-width="1" stroke-dasharray="3 5"/>
-              <path d="M140,40 L140,490 M290,40 L290,490 M460,40 L460,490 M640,40 L640,490 M820,40 L820,490 M990,40 L990,490" stroke="rgba(201,156,82,0.08)" stroke-width="1" stroke-dasharray="3 5"/>
-
-              <!-- Градусная сетка подписи -->
-              <text x="55" y="105" fill="rgba(201,156,82,0.3)" font-size="9" font-family="monospace">70° N</text>
-              <text x="55" y="205" fill="rgba(201,156,82,0.3)" font-size="9" font-family="monospace">60° N</text>
-              <text x="55" y="325" fill="rgba(201,156,82,0.3)" font-size="9" font-family="monospace">50° N</text>
-              <text x="55" y="435" fill="rgba(201,156,82,0.3)" font-size="9" font-family="monospace">40° N</text>
-
-              <!-- Роза ветров (Компас) -->
-              <g transform="translate(80, 75)" opacity="0.65">
-                <circle cx="0" cy="0" r="26" stroke="rgba(201,156,82,0.35)" stroke-width="1" fill="none"/>
-                <path d="M0,-24 L4,-6 L24,0 L4,4 L0,24 L-4,4 L-24,0 L-4,-6 Z" fill="rgba(201,156,82,0.22)" stroke="var(--gold)" stroke-width="1.2"/>
-                <text x="0" y="-27" text-anchor="middle" fill="#f3d08a" font-size="9" font-weight="700" data-i18n="map_compass_n">С</text>
-                <text x="0" y="35" text-anchor="middle" fill="#c99c52" font-size="8" data-i18n="map_compass_s">Ю</text>
-                <text x="32" y="3" text-anchor="start" fill="#c99c52" font-size="8" data-i18n="map_compass_e">В</text>
-                <text x="-32" y="3" text-anchor="end" fill="#c99c52" font-size="8" data-i18n="map_compass_w">З</text>
-              </g>
-
-              <!-- Базовый контур Евразии (Россия, Сибирь, Дальний Восток, Центральная Азия) -->
-              <path d="M140,110 C160,105 185,95 210,95 C235,95 240,115 220,135 C195,145 175,135 190,165 C205,175 225,165 245,140 C255,120 255,85 265,95 C275,110 300,95 330,90 C345,85 355,105 375,115 C390,75 405,55 415,60 C410,105 425,125 435,85 C445,65 470,65 475,105 C485,95 505,80 550,40 C605,25 625,55 600,105 C625,95 650,90 690,105 C715,100 745,85 760,110 C785,115 820,120 880,115 C940,125 965,120 1010,115 C1065,125 1080,155 1050,185 C1030,200 990,215 980,245 C980,245 1005,275 1025,320 C1030,355 1020,380 1010,380 C995,335 975,275 965,255 C945,230 920,260 900,250 C850,285 855,330 885,350 C880,370 875,420 865,450 C830,420 790,395 755,390 C720,385 680,390 650,400 C575,415 540,420 490,410 C410,430 330,440 260,450 C270,460 310,485 350,480 C320,505 270,490 220,450 C210,390 195,430 160,415 C125,405 110,405 85,385 C95,375 85,365 115,360 C105,350 125,290 115,240 C125,200 135,160 140,110 Z"
-                    fill="url(#gradLand)" stroke="rgba(201,156,82,0.45)" stroke-width="1.6" filter="drop-shadow(0 12px 28px rgba(0,0,0,0.75))"/>
-
-              <!-- Остров Сахалин -->
-              <path d="M910,320 C922,340 925,375 920,415 C915,420 908,415 908,375 C906,340 908,325 910,320 Z" fill="url(#gradLand)" stroke="rgba(201,156,82,0.4)" stroke-width="1.2"/>
-
-              <!-- Курильская гряда -->
-              <path d="M1015,395 L1012,400 M1002,412 L998,418 M985,430 L980,436 M965,450 L958,456" stroke="rgba(201,156,82,0.5)" stroke-width="2" stroke-linecap="round"/>
-
-              <!-- Новая Земля -->
-              <path d="M340,35 C370,15 385,45 355,75 C345,60 340,45 340,35 Z" fill="url(#gradLand)" stroke="rgba(201,156,82,0.35)" stroke-width="1.2"/>
-
-              <!-- Озеро Байкал (священный серп) -->
-              <path d="M700,365 C715,350 725,335 722,320 C717,315 712,325 708,340 C702,355 698,362 700,365 Z" fill="#040814" stroke="rgba(72,202,228,0.7)" stroke-width="1.6"/>
-              <text x="730" y="340" fill="rgba(72,202,228,0.6)" font-size="8" font-style="italic" data-i18n="map_geo_baikal">оз. Байкал</text>
-
-              <!-- Ладожское и Онежское озера -->
-              <ellipse cx="155" cy="185" rx="9" ry="13" fill="#040814" stroke="rgba(72,202,228,0.5)" stroke-width="1"/>
-              <ellipse cx="180" cy="175" rx="7" ry="11" fill="#040814" stroke="rgba(72,202,228,0.5)" stroke-width="1"/>
-
-              <!-- Каспийское море -->
-              <path d="M190,395 C205,390 220,415 215,450 C205,475 190,470 180,450 C175,430 180,405 190,395 Z" fill="#040814" stroke="rgba(72,202,228,0.6)" stroke-width="1.3"/>
-              <text x="185" y="475" fill="rgba(72,202,228,0.5)" font-size="8" font-style="italic" data-i18n="map_geo_caspian">Каспий</text>
-
-              <!-- Аральское море -->
-              <path d="M265,420 C280,415 290,430 285,445 C275,455 265,445 265,420 Z" fill="#040814" stroke="rgba(72,202,228,0.45)" stroke-width="1"/>
-
-              <!-- Реки: Волга, Обь, Енисей, Лена, Амур -->
-              <path d="M155,200 Q200,240 230,290 T200,400" stroke="rgba(72,202,228,0.4)" stroke-width="1.4" fill="none" stroke-dasharray="2 3"/>
-              <text x="210" y="335" fill="rgba(72,202,228,0.5)" font-size="8" font-style="italic" data-i18n="map_geo_volga">р. Волга</text>
-
-              <path d="M410,130 Q420,220 400,310 T390,390" stroke="rgba(72,202,228,0.3)" stroke-width="1.2" fill="none"/>
-              <text x="415" y="240" fill="rgba(72,202,228,0.4)" font-size="8" font-style="italic" data-i18n="map_geo_ob">р. Обь</text>
-
-              <path d="M510,110 Q500,210 490,300 T480,380" stroke="rgba(72,202,228,0.3)" stroke-width="1.2" fill="none"/>
-              <text x="510" y="220" fill="rgba(72,202,228,0.4)" font-size="8" font-style="italic" data-i18n="map_geo_yenisei">р. Енисей</text>
-
-              <path d="M745,110 Q760,200 790,260 T730,340" stroke="rgba(72,202,228,0.4)" stroke-width="1.4" fill="none" stroke-dasharray="2 3"/>
-              <text x="780" y="200" fill="rgba(72,202,228,0.5)" font-size="8" font-style="italic" data-i18n="map_geo_lena">р. Лена</text>
-
-              <path d="M780,395 Q850,380 885,360" stroke="rgba(72,202,228,0.35)" stroke-width="1.2" fill="none"/>
-              <text x="840" y="375" fill="rgba(72,202,228,0.45)" font-size="8" font-style="italic" data-i18n="map_geo_amur">р. Амур</text>
-
-              <!-- Уральский хребет (граница Европы и Азии) -->
-              <path d="M330,120 Q345,230 340,320 T350,390" stroke="rgba(201,156,82,0.45)" stroke-width="2" stroke-dasharray="3 4" fill="none"/>
-              <text x="345" y="220" fill="rgba(201,156,82,0.55)" font-size="9" font-weight="700" transform="rotate(85 345 220)" data-i18n="map_geo_ural">УРАЛЬСКИЙ ХРЕБЕТ</text>
-
-              <!-- Исторические экспедиционные тракты -->
-              <path d="M170,250 Q230,290 340,340 T510,400 T700,360 T780,260 T980,270" stroke="rgba(243,208,138,0.25)" stroke-width="1.2" stroke-dasharray="4 6" fill="none"/>
-              <text x="540" y="375" fill="rgba(243,208,138,0.4)" font-size="8" font-family="monospace" data-i18n="map_geo_siberian_route">«ВЕЛИКИЙ СИБИРСКИЙ ТРАКТ»</text>
-
-              <path d="M310,480 Q270,460 215,440 T220,320" stroke="rgba(200,52,40,0.35)" stroke-width="1.2" stroke-dasharray="3 5" fill="none"/>
-              <text x="260" y="465" fill="rgba(200,52,40,0.55)" font-size="8" font-family="monospace" data-i18n="map_geo_silk_road">«ШЁЛКОВЫЙ ПУТЬ»</text>
-
-              <!-- ========================================================
-                   ИНТЕРАКТИВНЫЕ ОБЛАСТИ РЕГИОНОВ (КЛИКАБЕЛЬНЫЕ ПОЛИГОНЫ)
-                   ======================================================== -->
-
-              <!-- 1. Поморье -->
-              <path class="map-region-poly" id="poly-pomorye" data-region-id="pomorye"
-                    d="M185,130 C205,120 240,125 255,145 C255,175 225,185 200,180 C185,170 175,150 185,130 Z"
-                    fill="rgba(72,202,228,0.12)" stroke="rgba(72,202,228,0.45)" stroke-width="1.2"/>
-
-              <!-- 2. Татарстан -->
-              <path class="map-region-poly is-active" id="poly-tatarstan" data-region-id="tatarstan"
-                    d="M215,265 C250,255 275,265 285,290 C290,320 265,340 235,340 C210,340 200,315 205,290 Z"
-                    fill="rgba(201,156,82,0.22)" stroke="var(--gold)" stroke-width="1.8"/>
-
-              <!-- 3. Кавказ (Дагестан) -->
-              <path class="map-region-poly" id="poly-caucasus" data-region-id="caucasus"
-                    d="M135,395 C170,390 195,405 195,435 C185,455 155,450 135,435 C120,420 125,405 135,395 Z"
-                    fill="rgba(200,52,40,0.14)" stroke="rgba(200,52,40,0.45)" stroke-width="1.2"/>
-
-              <!-- 4. Горный Алтай -->
-              <path class="map-region-poly" id="poly-altai" data-region-id="altai"
-                    d="M480,375 C520,365 555,380 560,410 C555,435 520,445 485,440 C465,425 465,395 480,375 Z"
-                    fill="rgba(201,156,82,0.14)" stroke="rgba(201,156,82,0.45)" stroke-width="1.2"/>
-
-              <!-- 5. Якутия (Саха) -->
-              <path class="map-region-poly" id="poly-yakutia" data-region-id="yakutia"
-                    d="M710,170 C780,150 840,170 865,220 C880,270 840,320 770,325 C720,320 675,265 690,210 Z"
-                    fill="rgba(72,202,228,0.14)" stroke="rgba(72,202,228,0.45)" stroke-width="1.2"/>
-
-              <!-- 6. Камчатка -->
-              <path class="map-region-poly" id="poly-kamchatka" data-region-id="kamchatka"
-                    d="M975,245 C1000,265 1025,305 1025,350 C1025,380 1005,385 985,345 C970,310 965,275 975,245 Z"
-                    fill="rgba(200,52,40,0.15)" stroke="rgba(200,52,40,0.45)" stroke-width="1.2"/>
-
-              <!-- 7. Казахстан (Великая Степь) -->
-              <path class="map-region-poly" id="poly-kazakhstan" data-region-id="kazakhstan"
-                    d="M310,375 C370,360 435,375 455,410 C455,445 395,465 335,460 C285,450 285,410 310,375 Z"
-                    fill="rgba(201,156,82,0.12)" stroke="rgba(201,156,82,0.4)" stroke-width="1.2"/>
-
-              <!-- 8. Узбекистан (Шелковый путь) -->
-              <path class="map-region-poly" id="poly-uzbekistan" data-region-id="uzbekistan"
-                    d="M260,455 C300,445 340,455 350,480 C345,505 305,515 265,510 C240,495 240,470 260,455 Z"
-                    fill="rgba(72,202,228,0.12)" stroke="rgba(72,202,228,0.4)" stroke-width="1.2"/>
-
-              <!-- ========================================================
-                   ПУЛЬСИРУЮЩИЕ РАДАРНЫЕ ПИНЫ РЕГИОНОВ
-                   ======================================================== -->
-
-              <!-- ПИН 1: Поморье -->
-              <g class="map-region-node" id="node-pomorye" data-region-id="pomorye" role="button" tabindex="0" aria-label="Регион: Поморье">
-                <rect class="map-node-hitbox" x="160" y="115" width="110" height="55" rx="11"/>
-                <circle class="sonar-ring" cx="215" cy="155" r="8" fill="none" stroke="var(--ruby)" stroke-width="1.5"/>
-                <circle cx="215" cy="155" r="7" fill="var(--ruby)" stroke="#fff" stroke-width="2"/>
-                <rect x="165" y="120" width="100" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(200,52,40,0.5)" stroke-width="1"/>
-                <text x="215" y="135" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Montserrat" data-i18n="atlas_pin_pomorye">⛵ Поморье</text>
-              </g>
-
-              <!-- ПИН 2: Татарстан -->
-              <g class="map-region-node" id="node-tatarstan" data-region-id="tatarstan" role="button" tabindex="0" aria-label="Регион: Татарстан">
-                <rect class="map-node-hitbox" x="185" y="248" width="120" height="58" rx="12"/>
-                <circle class="sonar-ring" cx="245" cy="290" r="8" fill="none" stroke="var(--gold)" stroke-width="2"/>
-                <circle cx="245" cy="290" r="8" fill="url(#gradPinGold)" stroke="#060c1d" stroke-width="2" filter="url(#glowAtlas)"/>
-                <rect x="190" y="253" width="110" height="24" rx="12" fill="rgba(14,25,51,0.95)" stroke="var(--gold)" stroke-width="1.5"/>
-                <text x="245" y="269" text-anchor="middle" fill="var(--gold-light)" font-size="11.5" font-weight="800" font-family="Montserrat" data-i18n="atlas_pin_tatarstan">🌷 Татарстан</text>
-              </g>
-
-              <!-- ПИН 3: Кавказ -->
-              <g class="map-region-node" id="node-caucasus" data-region-id="caucasus" role="button" tabindex="0" aria-label="Регион: Кавказ">
-                <rect class="map-node-hitbox" x="110" y="377" width="110" height="55" rx="11"/>
-                <circle class="sonar-ring" cx="165" cy="415" r="8" fill="none" stroke="var(--ruby)" stroke-width="1.5"/>
-                <circle cx="165" cy="415" r="7" fill="var(--ruby)" stroke="#fff" stroke-width="2"/>
-                <rect x="115" y="382" width="100" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(200,52,40,0.5)" stroke-width="1"/>
-                <text x="165" y="397" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Montserrat" data-i18n="atlas_pin_caucasus">🗡️ Кавказ</text>
-              </g>
-
-              <!-- ПИН 4: Горный Алтай -->
-              <g class="map-region-node" id="node-altai" data-region-id="altai" role="button" tabindex="0" aria-label="Регион: Горный Алтай">
-                <rect class="map-node-hitbox" x="450" y="362" width="130" height="55" rx="11"/>
-                <circle class="sonar-ring" cx="515" cy="400" r="8" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
-                <circle cx="515" cy="400" r="7" fill="var(--gold)" stroke="#060c1d" stroke-width="2"/>
-                <rect x="455" y="367" width="120" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(201,156,82,0.5)" stroke-width="1"/>
-                <text x="515" y="382" text-anchor="middle" fill="var(--gold-light)" font-size="11" font-weight="700" font-family="Montserrat" data-i18n="atlas_pin_altai">🏔️ Горный Алтай</text>
-              </g>
-
-              <!-- ПИН 5: Якутия -->
-              <g class="map-region-node" id="node-yakutia" data-region-id="yakutia" role="button" tabindex="0" aria-label="Регион: Якутия">
-                <rect class="map-node-hitbox" x="720" y="197" width="110" height="55" rx="11"/>
-                <circle class="sonar-ring" cx="775" cy="235" r="8" fill="none" stroke="var(--cyan)" stroke-width="1.5"/>
-                <circle cx="775" cy="235" r="7" fill="var(--cyan)" stroke="#fff" stroke-width="2"/>
-                <rect x="725" y="202" width="100" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(72,202,228,0.5)" stroke-width="1"/>
-                <text x="775" y="217" text-anchor="middle" fill="#48cae4" font-size="11" font-weight="700" font-family="Montserrat" data-i18n="atlas_pin_yakutia">❄️ Якутия</text>
-              </g>
-
-              <!-- ПИН 6: Камчатка -->
-              <g class="map-region-node" id="node-kamchatka" data-region-id="kamchatka" role="button" tabindex="0" aria-label="Регион: Камчатка">
-                <rect class="map-node-hitbox" x="945" y="257" width="120" height="55" rx="11"/>
-                <circle class="sonar-ring" cx="1005" cy="295" r="8" fill="none" stroke="var(--ruby)" stroke-width="1.5"/>
-                <circle cx="1005" cy="295" r="7" fill="var(--ruby)" stroke="#060c1d" stroke-width="2"/>
-                <rect x="950" y="262" width="110" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(200,52,40,0.5)" stroke-width="1"/>
-                <text x="1005" y="277" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="Montserrat" data-i18n="atlas_pin_kamchatka">🌋 Камчатка</text>
-              </g>
-
-              <!-- ПИН 7: Казахстан -->
-              <g class="map-region-node" id="node-kazakhstan" data-region-id="kazakhstan" role="button" tabindex="0" aria-label="Регион: Казахстан">
-                <rect class="map-node-hitbox" x="305" y="378" width="120" height="52" rx="11"/>
-                <circle class="sonar-ring" cx="365" cy="415" r="7" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
-                <circle cx="365" cy="415" r="6" fill="var(--gold)" stroke="#060c1d" stroke-width="2"/>
-                <rect x="310" y="383" width="110" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(201,156,82,0.4)" stroke-width="1"/>
-                <text x="365" y="398" text-anchor="middle" fill="var(--gold-light)" font-size="10.5" font-weight="700" font-family="Montserrat" data-i18n="atlas_pin_kazakhstan">🦅 Казахстан</text>
-              </g>
-
-              <!-- ПИН 8: Узбекистан -->
-              <g class="map-region-node" id="node-uzbekistan" data-region-id="uzbekistan" role="button" tabindex="0" aria-label="Регион: Узбекистан">
-                <rect class="map-node-hitbox" x="230" y="438" width="130" height="52" rx="11"/>
-                <circle class="sonar-ring" cx="295" cy="475" r="7" fill="none" stroke="var(--cyan)" stroke-width="1.5"/>
-                <circle cx="295" cy="475" r="6" fill="var(--cyan)" stroke="#fff" stroke-width="2"/>
-                <rect x="235" y="443" width="120" height="22" rx="11" fill="rgba(14,25,51,0.92)" stroke="rgba(72,202,228,0.4)" stroke-width="1"/>
-                <text x="295" y="458" text-anchor="middle" fill="#48cae4" font-size="10.5" font-weight="700" font-family="Montserrat" data-i18n="atlas_pin_uzbekistan">🕌 Узбекистан</text>
-              </g>
-            </svg>
+            <svg viewBox="0 0 1100 620" fill="none" xmlns="http://www.w3.org/2000/svg" id="atlasRussiaSvgMap">
+<title>Natural Earth · Eurasia</title>
+<image href="./images/atlas/natural-earth-eurasia.webp" width="1100" height="620" preserveAspectRatio="none"/>
+<defs><linearGradient id="atlasShade" x2="0" y2="1"><stop stop-color="#081b29" stop-opacity=".12"/><stop offset="1" stop-color="#081b29" stop-opacity=".27"/></linearGradient></defs>
+<rect width="1100" height="620" fill="url(#atlasShade)" pointer-events="none"/>
+<g class="atlas-graticule" stroke="#173544" stroke-opacity=".18" stroke-width=".7">
+<path d="M65.5,6.0 L65.2,21.5 L65.4,37.0 L66.3,52.4 L67.7,67.7 L69.7,82.8 L72.3,97.8 L75.4,112.6 L79.0,127.3 L83.1,141.7 L87.8,156.0 L92.9,170.0 L98.5,183.8 L104.7,197.4 L111.2,210.7 L118.2,223.8 L125.7,236.6 L133.6,249.1 L141.9,261.3 L150.6,273.2 L159.7,284.8 L169.1,296.1 L179.0,307.1 L189.1,317.8 L199.6,328.1 L210.5,338.1 L221.6,347.7 L233.1,357.0 L244.8,365.9 L256.8,374.4 L269.1,382.6 L281.6,390.4 L294.3,397.9 L307.3,404.9 L320.5,411.6 L333.9,417.9 L347.5,423.8 L361.2,429.3 L375.1,434.4 L389.2,439.1 L403.4,443.4 L417.7,447.3 L432.1,450.8 L446.6,453.9 L461.2,456.5 L475.9,458.8 L490.7,460.7 L505.4,462.1 L520.3,463.1 L535.1,463.8 L550.0,464.0 L564.9,463.8 L579.7,463.1 L594.6,462.1 L609.3,460.7 L624.1,458.8 L638.8,456.5 L653.4,453.9 L667.9,450.8 L682.3,447.3 L696.6,443.4 L710.8,439.1 L724.9,434.4 L738.8,429.3 L752.5,423.8 L766.1,417.9 L779.5,411.6 L792.7,404.9 L805.7,397.9 L818.4,390.4 L830.9,382.6 L843.2,374.4 L855.2,365.9 L866.9,357.0 L878.4,347.7 L889.5,338.1 L900.4,328.1 L910.9,317.8 L921.0,307.1 L930.9,296.1 L940.3,284.8 L949.4,273.2 L958.1,261.3 L966.4,249.1 L974.3,236.6 L981.8,223.8 L988.8,210.7 L995.3,197.4 L1001.5,183.8 L1007.1,170.0 L1012.2,156.0 L1016.9,141.7 L1021.0,127.3 L1024.6,112.6 L1027.7,97.8 L1030.3,82.8 L1032.3,67.7 L1033.7,52.4"/>
+<path d="M158.5,-13.4 L157.8,-0.8 L157.6,11.8 L157.9,24.3 L158.7,36.8 L159.9,49.2 L161.6,61.4 L163.7,73.6 L166.3,85.7 L169.3,97.6 L172.7,109.4 L176.6,121.0 L180.9,132.4 L185.5,143.7 L190.6,154.8 L196.1,165.7 L201.9,176.3 L208.1,186.8 L214.7,197.0 L221.6,207.0 L228.8,216.8 L236.4,226.3 L244.3,235.5 L252.5,244.5 L261.0,253.2 L269.7,261.6 L278.8,269.8 L288.1,277.6 L297.7,285.2 L307.5,292.4 L317.5,299.4 L327.8,306.0 L338.2,312.3 L348.9,318.3 L359.7,324.0 L370.8,329.4 L382.0,334.4 L393.3,339.1 L404.8,343.5 L416.5,347.5 L428.2,351.2 L440.1,354.5 L452.0,357.5 L464.1,360.1 L476.2,362.4 L488.4,364.3 L500.7,365.9 L513.0,367.2 L525.3,368.1 L537.6,368.6 L550.0,368.8 L562.4,368.6 L574.7,368.1 L587.0,367.2 L599.3,365.9 L611.6,364.3 L623.8,362.4 L635.9,360.1 L648.0,357.5 L659.9,354.5 L671.8,351.2 L683.5,347.5 L695.2,343.5 L706.7,339.1 L718.0,334.4 L729.2,329.4 L740.3,324.0 L751.1,318.3 L761.8,312.3 L772.2,306.0 L782.5,299.4 L792.5,292.4 L802.3,285.2 L811.9,277.6 L821.2,269.8 L830.3,261.6 L839.0,253.2 L847.5,244.5 L855.7,235.5 L863.6,226.3 L871.2,216.8 L878.4,207.0 L885.3,197.0 L891.9,186.8 L898.1,176.3 L903.9,165.7 L909.4,154.8 L914.5,143.7 L919.1,132.4 L923.4,121.0 L927.3,109.4 L930.7,97.6 L933.7,85.7 L936.3,73.6 L938.4,61.4 L940.1,49.2 L941.3,36.8 L942.1,24.3"/>
+<path d="M254.4,-24.3 L253.6,-14.7 L253.2,-5.2 L253.1,4.3 L253.4,13.8 L254.0,23.2 L255.0,32.6 L256.3,41.9 L258.0,51.2 L260.0,60.3 L262.4,69.4 L265.1,78.3 L268.1,87.2 L271.5,95.9 L275.1,104.5 L279.1,112.9 L283.3,121.2 L287.9,129.4 L292.7,137.4 L297.8,145.2 L303.2,152.8 L308.9,160.2 L314.8,167.5 L320.9,174.5 L327.3,181.4 L333.9,188.0 L340.8,194.4 L347.9,200.6 L355.1,206.6 L362.6,212.3 L370.3,217.8 L378.1,223.1 L386.2,228.1 L394.3,232.9 L402.7,237.4 L411.2,241.7 L419.8,245.7 L428.6,249.4 L437.4,252.9 L446.4,256.1 L455.5,259.0 L464.7,261.6 L474.0,264.0 L483.3,266.1 L492.7,268.0 L502.2,269.5 L511.7,270.8 L521.2,271.8 L530.8,272.5 L540.4,272.9 L550.0,273.0 L559.6,272.9 L569.2,272.5 L578.8,271.8 L588.3,270.8 L597.8,269.5 L607.3,268.0 L616.7,266.1 L626.0,264.0 L635.3,261.6 L644.5,259.0 L653.6,256.1 L662.6,252.9 L671.4,249.4 L680.2,245.7 L688.8,241.7 L697.3,237.4 L705.7,232.9 L713.8,228.1 L721.9,223.1 L729.7,217.8 L737.4,212.3 L744.9,206.6 L752.1,200.6 L759.2,194.4 L766.1,188.0 L772.7,181.4 L779.1,174.5 L785.2,167.5 L791.1,160.2 L796.8,152.8 L802.2,145.2 L807.3,137.4 L812.1,129.4 L816.7,121.2 L820.9,112.9 L824.9,104.5 L828.5,95.9 L831.9,87.2 L834.9,78.3 L837.6,69.4 L840.0,60.3 L842.0,51.2 L843.7,41.9 L845.0,32.6 L846.0,23.2 L846.6,13.8 L846.9,4.3"/>
+<path d="M352.3,-27.1 L351.5,-20.7 L351.1,-14.3 L350.8,-7.9 L350.8,-1.6 L351.1,4.8 L351.5,11.1 L352.3,17.4 L353.2,23.7 L354.4,29.9 L355.8,36.1 L357.5,42.2 L359.4,48.2 L361.4,54.2 L363.8,60.1 L366.3,65.9 L369.0,71.6 L372.0,77.2 L375.1,82.7 L378.5,88.1 L382.0,93.4 L385.8,98.5 L389.7,103.6 L393.8,108.5 L398.0,113.2 L402.5,117.8 L407.1,122.3 L411.8,126.6 L416.7,130.8 L421.8,134.8 L426.9,138.7 L432.3,142.4 L437.7,145.9 L443.3,149.2 L448.9,152.4 L454.7,155.4 L460.6,158.2 L466.6,160.8 L472.7,163.3 L478.8,165.5 L485.1,167.6 L491.4,169.5 L497.7,171.2 L504.1,172.7 L510.6,174.0 L517.1,175.0 L523.6,175.9 L530.2,176.6 L536.8,177.1 L543.4,177.4 L550.0,177.5 L556.6,177.4 L563.2,177.1 L569.8,176.6 L576.4,175.9 L582.9,175.0 L589.4,174.0 L595.9,172.7 L602.3,171.2 L608.6,169.5 L614.9,167.6 L621.2,165.5 L627.3,163.3 L633.4,160.8 L639.4,158.2 L645.3,155.4 L651.1,152.4 L656.7,149.2 L662.3,145.9 L667.7,142.4 L673.1,138.7 L678.2,134.8 L683.3,130.8 L688.2,126.6 L692.9,122.3 L697.5,117.8 L702.0,113.2 L706.2,108.5 L710.3,103.6 L714.2,98.5 L718.0,93.4 L721.5,88.1 L724.9,82.7 L728.0,77.2 L731.0,71.6 L733.7,65.9 L736.2,60.1 L738.6,54.2 L740.6,48.2 L742.5,42.2 L744.2,36.1 L745.6,29.9 L746.8,23.7 L747.7,17.4 L748.5,11.1 L748.9,4.8 L749.2,-1.6 L749.2,-7.9"/>
+<path d="M451.1,-22.2 L450.7,-19.0 L450.3,-15.8 L450.1,-12.6 L450.0,-9.4 L450.0,-6.2 L450.2,-3.0 L450.5,0.2 L450.9,3.3 L451.4,6.5 L452.0,9.6 L452.8,12.7 L453.6,15.8 L454.6,18.8 L455.7,21.8 L456.9,24.8 L458.2,27.7 L459.6,30.6 L461.2,33.5 L462.8,36.2 L464.5,39.0 L466.4,41.6 L468.3,44.2 L470.3,46.8 L472.5,49.3 L474.7,51.7 L477.0,54.0 L479.4,56.2 L481.8,58.4 L484.4,60.5 L487.0,62.5 L489.7,64.5 L492.4,66.3 L495.3,68.1 L498.2,69.7 L501.1,71.3 L504.1,72.8 L507.2,74.2 L510.3,75.5 L513.4,76.7 L516.6,77.7 L519.8,78.7 L523.1,79.6 L526.4,80.4 L529.7,81.1 L533.1,81.7 L536.4,82.1 L539.8,82.5 L543.2,82.8 L546.6,82.9 L550.0,83.0 L553.4,82.9 L556.8,82.8 L560.2,82.5 L563.6,82.1 L566.9,81.7 L570.3,81.1 L573.6,80.4 L576.9,79.6 L580.2,78.7 L583.4,77.7 L586.6,76.7 L589.7,75.5 L592.8,74.2 L595.9,72.8 L598.9,71.3 L601.8,69.7 L604.7,68.1 L607.6,66.3 L610.3,64.5 L613.0,62.5 L615.6,60.5 L618.2,58.4 L620.6,56.2 L623.0,54.0 L625.3,51.7 L627.5,49.3 L629.7,46.8 L631.7,44.2 L633.6,41.6 L635.5,39.0 L637.2,36.2 L638.8,33.5 L640.4,30.6 L641.8,27.7 L643.1,24.8 L644.3,21.8 L645.4,18.8 L646.4,15.8 L647.2,12.7 L648.0,9.6 L648.6,6.5 L649.1,3.3 L649.5,0.2 L649.8,-3.0 L650.0,-6.2 L650.0,-9.4 L649.9,-12.6"/>
+<path d="M11.6,261.4 L25.9,249.1 L40.5,236.9 L55.4,225.0 L70.5,213.3 L85.9,201.9 L101.5,190.6 L117.4,179.7 L133.5,168.9 L149.9,158.4 L166.4,148.1 L183.2,138.1 L200.1,128.3 L217.3,118.8 L234.6,109.4 L252.1,100.4 L269.8,91.6 L287.6,83.0 L305.6,74.7 L323.7,66.6 L342.0,58.8 L360.4,51.2 L378.9,43.9 L397.5,36.9 L416.3,30.1 L435.1,23.6 L454.1,17.3 L473.1,11.3 L492.2,5.6"/>
+<path d="M114.6,403.3 L125.5,387.9 L136.7,372.6 L148.2,357.4 L159.9,342.3 L171.8,327.3 L184.0,312.5 L196.4,297.7 L209.1,283.1 L221.9,268.6 L235.0,254.3 L248.3,240.0 L261.8,225.9 L275.6,212.0 L289.5,198.2 L303.5,184.5 L317.8,171.0 L332.3,157.7 L346.9,144.5 L361.7,131.5 L376.6,118.7 L391.7,106.0 L406.9,93.5 L422.3,81.2 L437.9,69.1 L453.5,57.2 L469.3,45.5 L485.2,34.0 L501.3,22.7"/>
+<path d="M255.4,505.4 L262.5,488.1 L269.8,470.7 L277.2,453.4 L284.9,436.1 L292.8,418.8 L300.8,401.5 L309.0,384.2 L317.4,366.9 L325.9,349.7 L334.7,332.5 L343.5,315.4 L352.6,298.3 L361.8,281.3 L371.1,264.3 L380.6,247.4 L390.2,230.5 L400.0,213.8 L409.9,197.1 L420.0,180.5 L430.2,164.0 L440.5,147.6 L450.9,131.3 L461.5,115.1 L472.1,99.0 L482.9,83.0 L493.8,67.2 L504.9,51.5 L516.0,35.9"/>
+<path d="M419.6,563.4 L422.7,545.0 L425.8,526.6 L429.1,508.1 L432.4,489.6 L435.8,471.0 L439.3,452.4 L442.9,433.7 L446.6,415.0 L450.3,396.3 L454.2,377.6 L458.1,358.8 L462.0,340.1 L466.1,321.3 L470.2,302.6 L474.4,283.8 L478.6,265.1 L483.0,246.4 L487.4,227.7 L491.8,209.1 L496.3,190.5 L500.9,171.9 L505.6,153.4 L510.3,135.0 L515.0,116.6 L519.9,98.3 L524.8,80.0 L529.7,61.9 L534.7,43.8"/>
+<path d="M593.7,575.1 L592.7,556.5 L591.7,537.9 L590.6,519.2 L589.5,500.4 L588.3,481.6 L587.1,462.7 L585.9,443.7 L584.7,424.8 L583.5,405.8 L582.2,386.7 L580.9,367.7 L579.5,348.6 L578.2,329.5 L576.8,310.4 L575.4,291.3 L574.0,272.2 L572.5,253.1 L571.1,234.0 L569.6,214.9 L568.0,195.9 L566.5,176.9 L564.9,158.0 L563.4,139.1 L561.8,120.2 L560.1,101.4 L558.5,82.7 L556.8,64.0 L555.2,45.4"/>
+<path d="M764.6,540.1 L759.5,522.1 L754.2,504.1 L748.9,486.1 L743.3,468.1 L737.7,450.0 L731.9,431.9 L725.9,413.8 L719.9,395.7 L713.7,377.5 L707.4,359.4 L700.9,341.3 L694.4,323.2 L687.7,305.2 L680.9,287.1 L674.0,269.1 L667.0,251.2 L659.9,233.2 L652.7,215.4 L645.3,197.5 L637.9,179.8 L630.4,162.1 L622.7,144.5 L615.0,126.9 L607.2,109.5 L599.3,92.1 L591.3,74.8 L583.2,57.7 L575.0,40.6"/>
+<path d="M918.8,459.7 L909.8,443.2 L900.5,426.7 L891.0,410.3 L881.2,394.0 L871.3,377.7 L861.1,361.5 L850.7,345.3 L840.1,329.2 L829.3,313.2 L818.3,297.3 L807.2,281.4 L795.8,265.7 L784.2,250.0 L772.5,234.5 L760.6,219.0 L748.5,203.7 L736.3,188.4 L723.9,173.3 L711.3,158.3 L698.6,143.5 L685.8,128.7 L672.8,114.2 L659.6,99.7 L646.4,85.4 L633.0,71.3 L619.4,57.3 L605.8,43.5 L592.0,29.9"/>
+<path d="M1042.5,336.9 L1029.8,322.9 L1016.9,309.0 L1003.6,295.3 L990.1,281.8 L976.3,268.4 L962.3,255.2 L948.0,242.2 L933.5,229.4 L918.8,216.7 L903.8,204.2 L888.6,191.9 L873.3,179.8 L857.7,167.9 L841.9,156.2 L825.9,144.7 L809.7,133.4 L793.4,122.3 L776.9,111.4 L760.2,100.7 L743.4,90.2 L726.5,80.0 L709.4,69.9 L692.1,60.1 L674.7,50.5 L657.2,41.2 L639.6,32.1 L621.9,23.2 L604.1,14.5"/>
+<path d="M1121.0,178.0 L1105.3,167.6 L1089.3,157.5 L1073.1,147.6 L1056.6,138.1 L1039.9,128.9 L1022.9,120.0 L1005.7,111.3 L988.4,103.0 L970.8,94.9 L953.0,87.1 L935.1,79.7 L917.0,72.5 L898.7,65.6 L880.2,58.9 L861.6,52.6 L842.9,46.5 L824.0,40.8 L805.0,35.3 L785.9,30.1 L766.6,25.2 L747.3,20.6 L727.9,16.2 L708.3,12.2 L688.8,8.4 L669.1,4.9 L649.4,1.7 L629.6,-1.2 L609.7,-3.8"/>
+</g>
+<text x="623.8" y="328.3" fill="#1b3c4c" font-size="10" font-family="Montserrat" font-style="italic" paint-order="stroke" stroke="#e6e8d3" stroke-opacity=".65" stroke-width="2" data-i18n="map_geo_baikal">оз. Байкал</text>
+<text x="255.0" y="349.6" fill="#1b3c4c" font-size="10" font-family="Montserrat" font-style="italic" paint-order="stroke" stroke="#e6e8d3" stroke-opacity=".65" stroke-width="2" data-i18n="map_geo_caspian">Каспий</text>
+<text x="394.0" y="198.6" fill="#1b3c4c" font-size="10" font-family="Montserrat" font-style="italic" paint-order="stroke" stroke="#e6e8d3" stroke-opacity=".65" stroke-width="2" data-i18n="map_geo_ural">УРАЛЬСКИЙ ХРЕБЕТ</text>
+<text x="280.3" y="258.2" fill="#1b3c4c" font-size="10" font-family="Montserrat" font-style="italic" paint-order="stroke" stroke="#e6e8d3" stroke-opacity=".65" stroke-width="2" data-i18n="map_geo_volga">р. Волга</text>
+<text x="451.2" y="216.9" fill="#1b3c4c" font-size="10" font-family="Montserrat" font-style="italic" paint-order="stroke" stroke="#e6e8d3" stroke-opacity=".65" stroke-width="2" data-i18n="map_geo_ob">р. Обь</text>
+<text x="514.9" y="213.3" fill="#1b3c4c" font-size="10" font-family="Montserrat" font-style="italic" paint-order="stroke" stroke="#e6e8d3" stroke-opacity=".65" stroke-width="2" data-i18n="map_geo_yenisei">р. Енисей</text>
+<text x="662.0" y="179.4" fill="#1b3c4c" font-size="10" font-family="Montserrat" font-style="italic" paint-order="stroke" stroke="#e6e8d3" stroke-opacity=".65" stroke-width="2" data-i18n="map_geo_lena">р. Лена</text>
+<text x="781.8" y="322.8" fill="#1b3c4c" font-size="10" font-family="Montserrat" font-style="italic" paint-order="stroke" stroke="#e6e8d3" stroke-opacity=".65" stroke-width="2" data-i18n="map_geo_amur">р. Амур</text>
+<g class="map-region-node" id="node-pomorye" data-region-id="pomorye" role="button" tabindex="0" aria-label="Регион: Поморье">
+<circle cx="352.3" cy="142.6" r="10" fill="#142a34" fill-opacity=".35" stroke="#fff4de" stroke-opacity=".5"/>
+<circle cx="352.3" cy="142.6" r="5" fill="#c79b54" stroke="#fff4de" stroke-width="1.8"/>
+<rect class="atlas-label" x="304.3" y="106.6" width="104" height="28" rx="4"/>
+<text x="356.3" y="124.6" text-anchor="middle" data-i18n="atlas_pin_pomorye">Поморье</text>
+<rect class="map-node-hitbox" x="299.3" y="101.6" width="114.0" height="53.0" fill="transparent"/>
+</g>
+<g class="map-region-node" id="node-tatarstan" data-region-id="tatarstan" role="button" tabindex="0" aria-label="Регион: Татарстан">
+<circle cx="322.6" cy="233.1" r="10" fill="#142a34" fill-opacity=".35" stroke="#fff4de" stroke-opacity=".5"/>
+<circle cx="322.6" cy="233.1" r="5" fill="#c79b54" stroke="#fff4de" stroke-width="1.8"/>
+<rect class="atlas-label" x="274.6" y="196.1" width="120" height="28" rx="4"/>
+<text x="334.6" y="214.1" text-anchor="middle" data-i18n="atlas_pin_tatarstan">Татарстан</text>
+<rect class="map-node-hitbox" x="269.6" y="191.1" width="130.0" height="54.0" fill="transparent"/>
+</g>
+<g class="map-region-node" id="node-caucasus" data-region-id="caucasus" role="button" tabindex="0" aria-label="Регион: Кавказ">
+<circle cx="240.0" cy="337.3" r="10" fill="#142a34" fill-opacity=".35" stroke="#fff4de" stroke-opacity=".5"/>
+<circle cx="240.0" cy="337.3" r="5" fill="#c79b54" stroke="#fff4de" stroke-width="1.8"/>
+<rect class="atlas-label" x="138.0" y="309.3" width="102" height="28" rx="4"/>
+<text x="189.0" y="327.3" text-anchor="middle" data-i18n="atlas_pin_caucasus">Кавказ</text>
+<rect class="map-node-hitbox" x="133.0" y="304.3" width="119.0" height="45.0" fill="transparent"/>
+</g>
+<g class="map-region-node" id="node-altai" data-region-id="altai" role="button" tabindex="0" aria-label="Регион: Горный Алтай">
+<circle cx="496.9" cy="360.7" r="10" fill="#142a34" fill-opacity=".35" stroke="#fff4de" stroke-opacity=".5"/>
+<circle cx="496.9" cy="360.7" r="5" fill="#c79b54" stroke="#fff4de" stroke-width="1.8"/>
+<rect class="atlas-label" x="512.9" y="348.7" width="140" height="28" rx="4"/>
+<text x="582.9" y="366.7" text-anchor="middle" data-i18n="atlas_pin_altai">Горный Алтай</text>
+<rect class="map-node-hitbox" x="484.9" y="343.7" width="173.0" height="38.0" fill="transparent"/>
+</g>
+<g class="map-region-node" id="node-yakutia" data-region-id="yakutia" role="button" tabindex="0" aria-label="Регион: Якутия">
+<circle cx="698.8" cy="214.4" r="10" fill="#142a34" fill-opacity=".35" stroke="#fff4de" stroke-opacity=".5"/>
+<circle cx="698.8" cy="214.4" r="5" fill="#c79b54" stroke="#fff4de" stroke-width="1.8"/>
+<rect class="atlas-label" x="663.8" y="176.4" width="108" height="28" rx="4"/>
+<text x="717.8" y="194.4" text-anchor="middle" data-i18n="atlas_pin_yakutia">Якутия</text>
+<rect class="map-node-hitbox" x="658.8" y="171.4" width="118.0" height="55.0" fill="transparent"/>
+</g>
+<g class="map-region-node" id="node-kamchatka" data-region-id="kamchatka" role="button" tabindex="0" aria-label="Регион: Камчатка">
+<circle cx="861.3" cy="180.3" r="10" fill="#142a34" fill-opacity=".35" stroke="#fff4de" stroke-opacity=".5"/>
+<circle cx="861.3" cy="180.3" r="5" fill="#c79b54" stroke="#fff4de" stroke-width="1.8"/>
+<rect class="atlas-label" x="876.3" y="170.3" width="115" height="28" rx="4"/>
+<text x="933.8" y="188.3" text-anchor="middle" data-i18n="atlas_pin_kamchatka">Камчатка</text>
+<rect class="map-node-hitbox" x="849.3" y="165.3" width="147.0" height="38.0" fill="transparent"/>
+</g>
+<g class="map-region-node" id="node-kazakhstan" data-region-id="kazakhstan" role="button" tabindex="0" aria-label="Регион: Казахстан">
+<circle cx="366.7" cy="397.6" r="10" fill="#142a34" fill-opacity=".35" stroke="#fff4de" stroke-opacity=".5"/>
+<circle cx="366.7" cy="397.6" r="5" fill="#c79b54" stroke="#fff4de" stroke-width="1.8"/>
+<rect class="atlas-label" x="381.7" y="381.6" width="120" height="28" rx="4"/>
+<text x="441.7" y="399.6" text-anchor="middle" data-i18n="atlas_pin_kazakhstan">Казахстан</text>
+<rect class="map-node-hitbox" x="354.7" y="376.6" width="152.0" height="38.0" fill="transparent"/>
+</g>
+<g class="map-region-node" id="node-uzbekistan" data-region-id="uzbekistan" role="button" tabindex="0" aria-label="Регион: Узбекистан">
+<circle cx="346.1" cy="426.8" r="10" fill="#142a34" fill-opacity=".35" stroke="#fff4de" stroke-opacity=".5"/>
+<circle cx="346.1" cy="426.8" r="5" fill="#c79b54" stroke="#fff4de" stroke-width="1.8"/>
+<rect class="atlas-label" x="254.1" y="444.8" width="128" height="28" rx="4"/>
+<text x="318.1" y="462.8" text-anchor="middle" data-i18n="atlas_pin_uzbekistan">Узбекистан</text>
+<rect class="map-node-hitbox" x="249.1" y="414.8" width="138.0" height="63.0" fill="transparent"/>
+</g>
+<text x="18" y="602" fill="#173544" font-size="10" font-family="Montserrat">Natural Earth</text></svg>
           </div>
 
           <!-- Интерактивный Полевой Паспорт Экспедиции (HUD Panel) -->
@@ -4414,6 +4288,7 @@
   <!-- ========================================================================
        JAVASCRIPT: DUAL AUDIO ENGINE, SPA ROUTING, TOUCH GESTURES, DATA
        ======================================================================== -->
+  <script src="./ornament-renderer.js"></script>
   <script src="./translations.js"></script>
   <script>
     (function() {
@@ -7967,7 +7842,7 @@
         AudioEngine.playVarganTwang(105, 1.4);
         setTimeout(() => AudioEngine.playEthnicBell(880, 1.8), 120);
 
-        SacredOrnamentEngine.drawOrnament(canvas, motifsToUse, selectedSymmetry, selectedPalette, () => {
+        (window.ArtefactOrnaments || SacredOrnamentEngine).drawOrnament(canvas, motifsToUse, selectedSymmetry, selectedPalette, () => {
           if (card) {
             card.style.opacity = '1';
             card.style.transform = 'scale(1)';

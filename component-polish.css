@@ -1,0 +1,104 @@
+/* Scoped changes: header alignment, ornament workbench and atlas only. */
+.top-header { gap: 12px; }
+.top-header > .brand-logo { min-width: 0; }
+.top-header > .desktop-nav {
+  flex: 1 1 0;
+  min-width: 0;
+  justify-content: flex-start;
+  margin: 0;
+  gap: 3px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-gold) transparent;
+}
+.desktop-nav .nav-btn { flex-shrink: 0; font-size: 11.5px; padding: 8px 7px; }
+.top-header .header-actions { flex: 0 0 auto; align-items: center; gap: 6px; }
+.top-header .header-actions > .action-chip {
+  height: 36px;
+  min-height: 36px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  line-height: 1;
+  padding: 8px 9px;
+  justify-content: center;
+}
+.top-header .header-actions > #langToggleBtn { min-width: 58px; }
+.top-header .header-actions .action-chip:hover { transform: none; }
+.top-header .header-actions .chip-svg-icon { width: 14px; height: 14px; }
+.top-header :is(#ambientToggleBtn,#mobilePreviewToggleBtn) .chip-label { display: none; }
+.top-header .header-actions > :is(#ambientToggleBtn,#mobilePreviewToggleBtn) { width: 36px; min-width: 36px; padding: 8px; }
+.top-header #langLabelText { display: inline !important; }
+.top-header .mobile-burger-btn { height: 36px; min-height: 36px; }
+
+/* Keep the existing choices and content; the visual object gets more room. */
+#screen-workshop .split-layout-2col { grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 36px; align-items: start; }
+#screen-workshop .split-layout-2col > * { min-width: 0; }
+#aiPostcardResultCard {
+  background: linear-gradient(145deg,#142a30,#09151e 64%,#0b1528) !important;
+  padding: clamp(20px,2.5vw,34px) !important;
+  box-shadow: none !important;
+  border-color: rgba(201,156,82,.35) !important;
+}
+#aiOrnamentCanvasContainer {
+  max-width: 440px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+#aiPostcardTitleHeading { font-size: 27px !important; line-height: 1.2; color: #efd6a0 !important; }
+#aiPostcardMeaningText { color: #c4d0d8 !important; font-size: 13px !important; line-height: 1.7 !important; }
+#aiPostcardMetadata { color: #c9aa76 !important; line-height: 1.6; }
+#aiPostcardResultCard .action-chip { background: rgba(255,255,255,.05); color: #f5eee2; }
+#aiMotifsSelectionGroup .pill-filter-btn, #aiSymmetrySelectionGroup .pill-filter-btn, #aiPaletteSelectionGroup .pill-filter-btn { min-height: 40px; }
+
+.russia-svg-map-box { height: auto; aspect-ratio: 1100/620; background: #17343f; box-shadow: none; }
+#atlasRussiaSvgMap { width: 100%; height: 100%; touch-action: pan-x pan-y; }
+#atlasRussiaSvgMap image { filter: saturate(1.22) contrast(1.06); }
+#atlasRussiaSvgMap .map-region-node { outline: none; }
+#atlasRussiaSvgMap .map-region-node :not(.map-node-hitbox) { pointer-events: none !important; }
+#atlasRussiaSvgMap .map-node-hitbox { pointer-events: all !important; }
+#atlasRussiaSvgMap .map-region-node circle:not(.sonar-ring) { transition: fill .2s, stroke .2s; r: 5px !important; }
+#atlasRussiaSvgMap .map-region-node:hover circle:not(.sonar-ring),
+#atlasRussiaSvgMap .map-region-node.is-active circle:not(.sonar-ring),
+#atlasRussiaSvgMap .map-region-node:focus-visible circle:not(.sonar-ring) { r: 5px !important; fill: #d25d40; stroke: #fff4de; }
+#atlasRussiaSvgMap .map-region-node .atlas-label { fill: rgba(8,23,31,.9); stroke: rgba(239,216,170,.45); }
+#atlasRussiaSvgMap .map-region-node.is-active .atlas-label,
+#atlasRussiaSvgMap .map-region-node:hover .atlas-label,
+#atlasRussiaSvgMap .map-region-node:focus-visible .atlas-label { fill: #793a2e; stroke: #efc581; stroke-width: 1.6px; }
+#atlasRussiaSvgMap .map-region-node text { fill: #fff6e4 !important; font-family: var(--font-ui); font-size: 12px; font-weight: 600; }
+#atlasRussiaSvgMap .atlas-graticule { pointer-events: none; }
+#screen-atlas .atlas-layout-split { grid-template-columns: minmax(0,1.8fr) minmax(270px,1fr); align-items: start; }
+#screen-atlas .resp-grid-3 { grid-template-columns: repeat(4,minmax(0,1fr)) !important; }
+#screen-atlas .resp-grid-3 > div { min-width: 0; }
+
+@media (max-width: 1240px) {
+  .top-header .header-actions .chip-label { display: none; }
+  .top-header .header-actions > .action-chip { width: 36px; min-width: 36px; padding: 8px; }
+  .top-header .header-actions > #langToggleBtn { width: 58px; }
+}
+@media (max-width: 1080px) {
+  #screen-workshop .split-layout-2col { grid-template-columns: minmax(0,1fr); }
+  #screen-atlas .atlas-layout-split { grid-template-columns: minmax(0,1fr); }
+}
+@media (max-width: 520px) {
+  .top-header { gap: 6px; padding-left: 10px; padding-right: 10px; }
+  .top-header > .brand-logo { flex: 1 1 0; min-width: 0; gap: 6px; }
+  .top-header .brand-logo__svg { width: 24px; height: 24px; }
+  .top-header .brand-logo__title { font-size: 17px; letter-spacing: .07em; }
+  .top-header .header-actions { gap: 3px; }
+  .top-header .header-actions > .action-chip { width: 32px; min-width: 32px; padding: 6px; }
+  .top-header .header-actions > #langToggleBtn { width: 49px; min-width: 49px; gap: 4px; font-size: 11px; }
+  .top-header .mobile-burger-btn { width: 32px; }
+  #screen-atlas .resp-grid-3 { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+  #screen-atlas .russia-svg-map-box { aspect-ratio: auto; height: auto; overflow-x: auto; justify-content: flex-start; }
+  #atlasRussiaSvgMap { width: 720px; min-width: 720px; height: auto; flex-shrink: 0; }
+  #aiPostcardResultCard { padding: 18px !important; }
+}
+@media (max-width: 360px) {
+  .top-header .brand-logo__svg { display: none; }
+  .top-header .brand-logo__title { font-size: 16px; }
+}
+body.is-mobile-preview .header-actions > #mobilePreviewToggleBtn { display: none; }
+body.is-mobile-preview .top-header .brand-logo { min-width: 0; }
+body.is-mobile-preview .top-header .header-actions > .action-chip { height: 36px; }
