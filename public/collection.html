@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Народы России через истории музейных предметов и задания по этнографическому каталогу.">
+  <title>Первоисточник — народы России</title>
+  <link rel="icon" href="/assets/compass.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/cultures.css">
+  <script src="/cultures.js" defer></script>
+</head>
+<body>
+  <div class="shell culture-shell">
+    <header class="site-header">
+      <a class="wordmark" href="/" aria-label="Первоисточник, главная">
+        <img src="/assets/compass.svg" alt="" width="48" height="48"><span>Первоисточник</span>
+      </a>
+      <nav aria-label="Основная навигация"><a class="button button-outline" href="/family.html">Мои корни</a></nav>
+    </header>
+    <main>
+      <section class="culture-hero" aria-labelledby="main-title">
+        <div>
+          <h1 id="main-title">Народы России<br><em>через предметы</em></h1>
+          <p>Выберите музейный предмет, узнайте его историю и проверьте себя по карточке из коллекции.</p>
+        </div>
+        <form id="interest-form">
+          <label for="interest">Что вам интересно?</label>
+          <div class="interest-controls">
+            <input id="interest" name="interest" maxlength="180" placeholder="Например, вышивка или керамика" required>
+            <button type="submit" class="button button-primary">Подобрать предмет</button>
+          </div>
+          <p id="interest-status" role="status"></p>
+        </form>
+      </section>
+      <section aria-labelledby="catalog-title" class="catalog">
+        <h2 id="catalog-title">Музейная коллекция</h2>
+        <p id="catalog-status" role="status">Загружаем предметы…</p>
+        <ul id="exhibits" class="exhibits"></ul>
+      </section>
+      <article id="exhibit" class="exhibit" aria-labelledby="exhibit-title" hidden>
+        <div>
+          <p id="exhibit-meta" class="exhibit-meta"></p>
+          <h2 id="exhibit-title" tabindex="-1"></h2>
+          <p id="exhibit-story"></p>
+          <a id="exhibit-source" class="source-link" target="_blank" rel="noopener noreferrer">Открыть карточку в музее</a>
+        </div>
+        <section class="quest" aria-labelledby="quest-title">
+          <h3 id="quest-title">Задание по предмету</h3>
+          <p id="quest-question"></p>
+          <div id="quest-options" class="quest-options" role="group" aria-labelledby="quest-question"></div>
+          <p id="quest-feedback" role="status"></p>
+        </section>
+      </article>
+      <section class="museum" aria-labelledby="museum-title">
+        <div>
+          <h2 id="museum-title">Продолжить в музее</h2>
+          <p>Все три предмета из собрания Российского этнографического музея. Перед поездкой в Санкт-Петербург уточните, какие предметы сейчас выставлены.</p>
+        </div>
+        <a class="button button-outline" href="https://ethnomuseum.ru/visit/adress/" target="_blank" rel="noopener noreferrer">Спланировать визит</a>
+      </section>
+    </main>
+    <footer><span>Первоисточник</span><span>Команда «Династия»</span></footer>
+  </div>
+</body>
+</html>

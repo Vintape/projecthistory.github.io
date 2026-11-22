@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="960" height="640">
+  <title>Схема расположения памятников Старой Ладоги</title>
+  <defs>
+    <pattern id="grid" width="54" height="54" patternUnits="userSpaceOnUse">
+      <path d="M0 54V0H54" fill="none" stroke="#dcd0f0" opacity=".58"/>
+    </pattern>
+  </defs>
+  <rect width="960" height="640" fill="#f3edf9"/>
+  <rect width="960" height="640" fill="url(#grid)"/>
+  <path d="M501-60Q562 64 550 140T495 326Q501 388 584 431T580 700" fill="none" stroke="#c3d3f0" stroke-width="85"/>
+  <path d="M0 372Q126 373 245 353T489 355" fill="none" stroke="#c3d3f0" stroke-width="13"/>
+  <path d="M293 0Q340 109 334 185T308 335Q336 407 382 490T384 640" fill="none" stroke="#ded0ea" stroke-width="16"/>
+  <text x="703" y="350" fill="#5b72a0" font-size="28" font-family="Georgia,serif">река Волхов</text>
+  <text x="81" y="390" fill="#5b72a0" font-size="19" font-family="Georgia,serif">Ладожка</text>
+  <text x="52" y="106" fill="#49336d" font-size="37" font-family="Georgia,serif">Старая Ладога</text>
+  <text x="55" y="141" fill="#74628b" font-size="20" font-family="system-ui,sans-serif">Схема памятников</text>
+  <path d="M864 133l13-39 13 39-13-9z" fill="#7b64a1"/>
+  <text x="868" y="85" fill="#5e4d79" font-size="21" font-family="Georgia,serif">С</text>
+</svg>

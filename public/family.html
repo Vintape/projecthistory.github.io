@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Семейная история, архивные источники и культурные маршруты по Татарстану.">
+  <title>Первоисточник — карта семейного исследования</title>
+  <link rel="icon" href="/assets/compass.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="site-header">
+      <a class="wordmark" href="/" aria-label="Первоисточник, главная">
+        <img src="/assets/compass.svg" alt="" width="48" height="48">
+        <span>Первоисточник</span>
+      </a>
+      <nav aria-label="Основная навигация">
+        <a class="how-link" href="#how">Как это работает</a>
+        <button class="button button-outline" type="button" id="example">Посмотреть пример</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <h1 id="hero-title">У каждой семьи<br>есть своя<br><em>география.</em></h1>
+          <p>Начните с семейной истории. Найдите источники, откройте культуру региона и соберите маршрут к своим корням.</p>
+          <a class="button button-primary hero-cta" href="#research">Начать исследование</a>
+        </div>
+        <figure class="hero-image">
+          <img src="/assets/kazan.jpg" alt="Иллюстрация Казанского кремля с мечетью Кул-Шариф на берегу реки" width="1448" height="1086" fetchpriority="high">
+          <figcaption>Казань, Республика Татарстан <span>· Иллюстрация</span></figcaption>
+        </figure>
+      </section>
+
+      <section class="workspace" id="research" aria-labelledby="form-title">
+        <h2 id="form-title">Начните с того, что знаете</h2>
+        <form id="research-form" class="form-layout">
+          <fieldset class="mode-picker">
+            <legend class="visually-hidden">Сценарий исследования</legend>
+            <label class="mode-option">
+              <input type="radio" name="mode" value="roots" checked>
+              <img src="/assets/tree.svg" alt="" width="36" height="36">
+              <span>Мои корни</span>
+            </label>
+            <label class="mode-option">
+              <input type="radio" name="mode" value="culture">
+              <img src="/assets/landmark.svg" alt="" width="36" height="36">
+              <span>Культуры России</span>
+            </label>
+          </fieldset>
+          <div class="form-fields">
+            <div id="family-fields" class="field-grid">
+              <label>Фамилия <input name="surname" maxlength="80" placeholder="Например, Ахметовы" autocomplete="off"></label>
+              <label>Населённый пункт <input name="place" maxlength="100" placeholder="Например, Казань" autocomplete="off"></label>
+              <label class="wide">Семейная подсказка <textarea name="clue" rows="2" maxlength="600" placeholder="Например, прадед переехал из деревни в Казань"></textarea></label>
+            </div>
+            <p id="culture-info" class="culture-info" hidden>Начните с Татарстана. Выберите, что вам интересно и сколько времени вы хотите выделить.</p>
+            <div class="field-grid">
+              <label>Что вам интересно
+                <select name="interest">
+                  <option value="history">История и быт</option>
+                  <option value="craft">Традиции и кухня</option>
+                  <option value="architecture">Архитектура</option>
+                </select>
+              </label>
+              <label>Формат путешествия
+                <select name="duration">
+                  <option value="day">Один день</option>
+                  <option value="weekend">Выходные</option>
+                  <option value="online">Онлайн</option>
+                </select>
+              </label>
+            </div>
+            <div class="form-actions">
+              <button class="button button-primary" id="submit" type="submit">Собрать карту исследования</button>
+              <span class="privacy-note">Семейные сведения можно оставить пустыми.</span>
+            </div>
+            <p id="error" role="alert" hidden></p>
+          </div>
+        </form>
+      </section>
+
+      <section id="result" class="result" aria-labelledby="result-title" hidden>
+        <div class="result-heading">
+          <div>
+            <h2 id="result-title" tabindex="-1">Ваша карта исследования</h2>
+            <p id="result-context"></p>
+          </div>
+          <button class="button button-outline" type="button" id="download">Скачать план</button>
+        </div>
+        <div class="research-columns">
+          <section id="known-panel" aria-labelledby="known-title">
+            <h3 id="known-title">Со слов семьи</h3>
+            <div id="known"></div>
+          </section>
+          <section aria-labelledby="steps-title">
+            <h3 id="steps-title">Что проверить</h3>
+            <ol id="steps" class="steps"></ol>
+          </section>
+          <section aria-labelledby="sources-title">
+            <h3 id="sources-title">Где искать</h3>
+            <ul id="sources" class="sources"></ul>
+          </section>
+        </div>
+        <section class="route" aria-labelledby="route-title">
+          <h3 id="route-title">Маршрут по Татарстану</h3>
+          <p id="route-note"></p>
+          <div id="route-days"></div>
+        </section>
+      </section>
+
+      <section class="how" id="how" aria-labelledby="how-title">
+        <h2 id="how-title">Как это работает</h2>
+        <div class="how-grid">
+          <div><h3>Начните с подсказки</h3><p>Укажите фамилию, место или то, что запомнили из семейного разговора.</p></div>
+          <div><h3>Сверьте с источниками</h3><p>Локальная модель подбирает шаг поиска по подсказке. В карте есть ссылки на архивные каталоги и музейные коллекции.</p></div>
+          <div><h3>Запланируйте поездку</h3><p>Соберите маршрут по Татарстану на день, выходные или для самостоятельного знакомства онлайн.</p></div>
+        </div>
+      </section>
+    </main>
+    <footer><span>Первоисточник</span><span>Пилотный регион — Татарстан</span></footer>
+  </div>
+</body>
+</html>

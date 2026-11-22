@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Интерактивная карта культурных мест Старой Ладоги, семейный проводник и маршруты.">
+  <title>Первоисточник — народы России</title>
+  <link rel="icon" href="/assets/oak-emblem.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/atlas.css">
+  <script defer src="/atlas.js"></script>
+</head>
+<body class="atlas-page">
+  <header class="atlas-header">
+    <div class="atlas-shell header-inner">
+      <a class="wordmark" href="/" aria-label="Первоисточник, главная">
+        <img src="/assets/oak-emblem.svg" width="44" height="44" alt=""><span>Первоисточник</span>
+      </a>
+      <div class="mode-switch" role="group" aria-label="Возрастной режим">
+        <button type="button" data-mode="child" aria-pressed="false">Детский</button>
+        <button type="button" data-mode="adult" aria-pressed="true">Взрослый</button>
+      </div>
+      <nav aria-label="Основная навигация" class="atlas-nav">
+        <a href="#map" aria-current="page"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#map"/></svg>Карта</a>
+        <button type="button" id="nav-guide"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#guide"/></svg>Проводник</button>
+        <button type="button" id="nav-experts" aria-haspopup="dialog"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#experts"/></svg>Чат с экспертами</button>
+        <button type="button" id="nav-roots"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#roots"/></svg>Родословная</button>
+        <button type="button" id="nav-route"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#star"/></svg>Маршруты</button>
+        <button type="button" id="nav-chronicle"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#book"/></svg>Летопись</button>
+      </nav>
+      <button type="button" id="nav-account" class="account-chip"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#profile"/></svg> Профиль</button>
+    </div>
+  </header>
+
+  <main class="atlas-shell" id="atlas">
+    <h1 id="atlas-title" class="visually-hidden">Первоисточник — народы России</h1>
+    <p id="atlas-status" class="loading" role="status">Загружаем карту…</p>
+    <div class="atlas-grid" id="atlas-grid" hidden>
+      <section class="atlas-map-area" aria-labelledby="map-title">
+        <h2 class="visually-hidden" id="map-title">Интерактивная карта</h2>
+        <div class="atlas-map" id="map" aria-label="Иллюстрированная карта России">
+          <div class="overview-map" id="overview-map">
+            <svg class="map-filters" width="0" height="0" aria-hidden="true" focusable="false">
+              <defs>
+                <filter id="map-ink" color-interpolation-filters="sRGB">
+                  <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  .16 .17 .67 0 0"/>
+                  <feComponentTransfer><feFuncA type="linear" slope="22" intercept="-.24"/></feComponentTransfer>
+                </filter>
+              </defs>
+            </svg>
+            <div class="overview-layer" id="overview-layer">
+              <img src="/assets/russia-illustration.jpg" alt="Тёмно-синяя иллюстрация карты России с золотым контуром" width="1774" height="887">
+              <div id="russia-markers" aria-label="Подписанные места России"></div>
+            </div>
+          </div>
+          <div class="local-map" id="local-map" hidden>
+            <img class="map-background" src="/assets/ladoga-map.svg" alt="" width="960" height="640">
+            <div id="markers" class="map-markers" aria-label="Места на карте Старой Ладоги"></div>
+          </div>
+          <div class="map-controls" role="group" aria-label="Управление картой">
+            <button type="button" id="zoom-in" aria-label="Увеличить карту">+</button>
+            <button type="button" id="zoom-out" aria-label="Уменьшить карту">−</button>
+            <button type="button" id="zoom-reset" aria-label="Сбросить масштаб">⌖</button>
+          </div>
+          <button type="button" class="map-scope" id="map-scope">Точки Старой Ладоги</button>
+        </div>
+        <p id="map-note" class="map-note" role="status" hidden></p>
+        <div id="place-list" class="place-list" aria-label="Места в Старой Ладоге" hidden></div>
+        <p id="map-credit" class="visually-hidden">Схема Старой Ладоги показывает примерное расположение мест. Общая карта — иллюстрация проекта.</p>
+      </section>
+      <aside class="place-panel" aria-labelledby="place-title" id="place-panel">
+        <button type="button" class="back-link" id="back-map">‹ К карте России</button>
+        <div class="place-lead">
+        <figure class="place-photo" id="place-photo">
+          <img id="place-image" src="/assets/staraya-ladoga.jpg" width="960" height="480" alt="">
+          <figcaption id="photo-caption" hidden></figcaption>
+        </figure>
+        <div class="place-copy">
+          <p class="place-locality" id="place-locality"></p>
+          <h2 id="place-title" tabindex="-1"></h2>
+          <p class="place-description" id="place-description"></p>
+          <a id="place-source" class="source" target="_blank" rel="noopener noreferrer">Источник</a>
+        </div>
+        </div>
+        <div class="place-body">
+          <div class="content-types" role="group" aria-label="Виды материалов">
+            <button type="button" data-type="story" aria-pressed="true">Сказки и мифы</button>
+            <button type="button" data-type="film" aria-pressed="false">Фильмы</button>
+            <button type="button" data-type="character" aria-pressed="false">Персонажи</button>
+          </div>
+          <div id="place-content" class="place-content"></div>
+          <div class="place-actions">
+            <button type="button" class="button atlas-outline" id="open-guide">Спросить проводника</button>
+            <button type="button" class="button atlas-primary" id="build-route">Собрать маршрут</button>
+          </div>
+        </div>
+      </aside>
+      <section class="media-board" aria-label="Культурные материалы">
+        <div id="media-cards" class="media-cards"></div>
+      </section>
+      <aside class="atlas-rail" aria-label="Проводник и семейное путешествие">
+  <section id="guide-dialog" class="guide-panel" aria-labelledby="guide-title">
+    <div class="dialog-header">
+      <div><p class="dialog-kicker" id="guide-place"></p><h2 id="guide-title">Проводник</h2></div>
+    </div>
+    <p id="guide-intro">Демонстрационный режим с автоматическим ответом.</p>
+    <div class="prompt-list" id="guide-prompts" aria-label="Примеры вопросов"></div>
+    <div class="messages" id="guide-messages" role="log" aria-label="Переписка" aria-live="polite"></div>
+    <form id="guide-form">
+      <label for="guide-message" class="visually-hidden">Ваш вопрос</label>
+      <div class="form-inline"><input id="guide-message" name="message" required maxlength="600" placeholder="Что можно здесь увидеть?"><button type="submit" class="button atlas-primary" aria-label="Спросить">➤</button></div>
+      <label id="guide-cloud" class="guide-cloud" hidden><input name="allowCloud" type="checkbox">Отправлять вопросы в ЯндексGPT</label>
+      <p id="guide-status" class="form-hint" role="status" hidden></p>
+      <p id="guide-error" class="form-error" role="alert" hidden></p>
+    </form>
+  </section>
+
+        <section class="rail-card" aria-labelledby="quick-route-title">
+          <h2 id="quick-route-title"><svg class="section-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#star"/></svg>Ваш маршрут</h2>
+          <p id="quick-route-summary">Соберите маршрут по выбранному месту и сохраните его в семейном кабинете.</p>
+          <button id="quick-route" type="button" class="button atlas-outline">Собрать маршрут</button>
+        </section>
+        <section class="rail-card genealogy-card" aria-labelledby="genealogy-title">
+          <div><h2 id="genealogy-title"><svg class="section-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#roots"/></svg>Ваша родословная</h2><p>Добавьте место, где жили предки, чтобы найти культурный контекст.</p></div>
+          <button id="quick-family" type="button" class="button atlas-outline">География семьи</button>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="atlas-footer">
+    <div class="atlas-shell footer-inner">
+      <a class="wordmark" href="/"><img src="/assets/oak-emblem.svg" width="36" height="36" alt=""><span>Первоисточник</span></a>
+      <div class="footer-links"><a href="https://ladogamuseum.com/" target="_blank" rel="noopener noreferrer">Музей-заповедник «Старая Ладога»</a></div>
+    </div>
+  </footer>
+
+  <dialog id="experts-dialog" class="atlas-dialog experts-dialog" aria-labelledby="experts-title">
+    <div class="dialog-header">
+      <h2 id="experts-title">Чат с экспертами</h2>
+      <form method="dialog"><button class="close-button" aria-label="Закрыть чат">×</button></form>
+    </div>
+    <p class="form-hint">Демонстрационный чат с автоматическим ответом.</p>
+    <div id="experts-messages" class="messages" role="log" aria-label="Переписка с экспертами"></div>
+    <form id="experts-form" class="form-inline">
+      <label for="experts-message" class="visually-hidden">Ваше сообщение</label>
+      <input id="experts-message" name="message" required maxlength="600" placeholder="Напишите сообщение" autofocus>
+      <button type="submit" class="button atlas-primary">Отправить</button>
+    </form>
+  </dialog>
+
+  <dialog id="video-dialog" class="atlas-dialog video-dialog" aria-labelledby="video-title">
+    <div class="dialog-header">
+      <div><p class="dialog-kicker" id="video-kind"></p><h2 id="video-title"></h2></div>
+      <form method="dialog"><button class="close-button" aria-label="Закрыть видео">×</button></form>
+    </div>
+    <div id="video-player" class="video-player"></div>
+    <p id="video-source"></p>
+  </dialog>
+
+  <dialog id="route-dialog" class="atlas-dialog" aria-labelledby="route-title">
+    <div class="dialog-header">
+      <div><p class="dialog-kicker" id="route-place"></p><h2 id="route-title">Мой маршрут</h2></div>
+      <form method="dialog"><button class="close-button" aria-label="Закрыть маршрут">×</button></form>
+    </div>
+    <form id="route-form" class="route-form">
+      <label>Формат<select name="format"><option value="day">Один день</option><option value="weekend">Выходные</option><option value="online">Онлайн</option></select></label>
+      <label>Интерес<select name="interest"><option value="">Удивите меня</option><option>История</option><option>Архитектура</option><option>Музеи</option><option>Сказки и легенды</option></select></label>
+      <button type="submit" class="button atlas-primary">Подобрать места</button>
+    </form>
+    <p class="form-error" id="route-error" role="alert" hidden></p>
+    <div id="route-result" class="route-result" hidden></div>
+    <div id="route-actions" class="dialog-actions" hidden>
+      <button type="button" class="button atlas-outline" id="save-route">Сохранить маршрут</button>
+      <p class="form-hint" id="route-status" role="status"></p>
+    </div>
+  </dialog>
+
+  <dialog id="account-dialog" class="atlas-dialog" aria-labelledby="account-title">
+    <div class="dialog-header">
+      <h2 id="account-title">Семейный кабинет</h2>
+      <form method="dialog"><button class="close-button" aria-label="Закрыть кабинет">×</button></form>
+    </div>
+    <section id="auth-panel">
+      <div class="mode-switch auth-switch" role="group" aria-label="Доступ в кабинет">
+        <button type="button" data-auth="login" aria-pressed="true">Войти</button>
+        <button type="button" data-auth="register" aria-pressed="false">Создать профиль</button>
+      </div>
+      <form id="auth-form" class="stack-form">
+        <label id="register-name" hidden>Имя семьи <input name="name" maxlength="80" autocomplete="name" disabled></label>
+        <label>Электронная почта <input name="email" type="email" maxlength="160" autocomplete="email" required></label>
+        <label>Пароль <input name="password" type="password" maxlength="256" autocomplete="current-password" required></label>
+        <button type="submit" class="button atlas-primary">Войти</button>
+      </form>
+      <p class="form-hint">Профиль хранится на этом компьютере.</p>
+    </section>
+    <section id="profile-panel" hidden>
+      <form id="profile-form" class="stack-form">
+        <label>Имя семьи <input name="name" maxlength="80" required></label>
+        <label>Возраст ребёнка <input name="childAge" type="number" min="0" max="18" inputmode="numeric"></label>
+        <label>География предков <input name="ancestorPlace" maxlength="160" placeholder="Например, Старая Ладога"></label>
+        <div class="dialog-actions"><button type="submit" class="button atlas-outline">Сохранить профиль</button><button type="button" id="logout" class="text-control">Выйти</button></div>
+      </form>
+      <p class="form-hint" id="account-status" role="status"></p>
+      <section class="saved-routes" aria-labelledby="saved-title"><h3 id="saved-title">Сохранённые маршруты</h3><div id="saved-routes"></div></section>
+      <button type="button" class="button atlas-outline" id="print-chronicle" hidden>Открыть семейную летопись</button>
+    </section>
+    <p class="form-error" id="account-error" role="alert" hidden></p>
+  </dialog>
+
+  <dialog id="chronicle-dialog" class="atlas-dialog" aria-labelledby="chronicle-title">
+    <div class="dialog-header"><h2 id="chronicle-title">Семейная летопись</h2><form method="dialog"><button class="close-button" aria-label="Закрыть летопись">×</button></form></div>
+    <div id="chronicle-notes"></div>
+    <button type="button" class="button atlas-outline" id="print">Напечатать или сохранить PDF</button>
+  </dialog>
+</body>
+</html>
