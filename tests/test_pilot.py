@@ -169,6 +169,12 @@ class PilotTest(unittest.TestCase):
             ):
                 self.assertEqual(self.guide("Кто такой Зилант?", allowCloud=True), expected)
 
+    def test_cloud_can_answer_questions_outside_the_catalog(self):
+        os.environ.update(YANDEX_API_KEY="test-secret", YANDEX_FOLDER_ID="test-folder")
+        with patch.object(pilot, "urlopen", return_value=cloud_response("Восемь.", [])):
+            result = self.guide("Сколько будет три плюс пять?", allowCloud=True)
+        self.assertEqual(result, {"answer": "Восемь.", "sources": [], "engine": "yandex"})
+
     def test_day_route_stays_at_the_selected_locality(self):
         result = self.route()
         self.assertEqual(result["format"], "day")

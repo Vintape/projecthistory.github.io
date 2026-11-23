@@ -1,7 +1,6 @@
 """Run the local Perovoistochnik web application."""
 
 import argparse
-from datetime import datetime
 from functools import partial
 from getpass import getpass
 from hashlib import sha256
@@ -10,14 +9,10 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
 from pathlib import Path
-import re
-import secrets
 import ssl
 import sys
 from tempfile import NamedTemporaryFile
-from threading import Lock
 from urllib.parse import urlsplit
-from zoneinfo import ZoneInfo
 
 from cultures import EXHIBITS, recommend_exhibit
 from pilot import answer_guide, cloud_available, get_catalog, plan_route
@@ -29,33 +24,6 @@ PUBLIC = ROOT / "public"
 YANDEX_CONFIG = ROOT / ".runtime" / "yandex.json"
 YANDEX_ENV = ("YANDEX_FOLDER_ID", "YANDEX_API_KEY")
 SESSION_COOKIE = "pervoistochnik_session"
-GUEST_COOKIE = "pervoistochnik_guest"
-GUEST_DAILY_LIMIT = 3
-
-
-class GuestQuota:
-    def __init__(self):
-        self.lock = Lock()
-        self.date = None
-        self.counts = {}
-
-    def acquire(self, cookie):
-        guest = cookie if re.fullmatch(r"[A-Za-z0-9_-]{24}", cookie) else secrets.token_urlsafe(18)
-        today = datetime.now(ZoneInfo("Europe/Moscow")).date()
-        with self.lock:
-            if self.date != today:
-                self.date = today
-                self.counts.clear()
-            used = self.counts.get(guest, 0)
-            if used >= GUEST_DAILY_LIMIT:
-                return guest, None
-            self.counts[guest] = used + 1
-            return guest, GUEST_DAILY_LIMIT - used - 1
-
-    def refund(self, guest):
-        with self.lock:
-            if self.counts.get(guest):
-                self.counts[guest] -= 1
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -107,7 +75,7 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_json(403, {"error": "Откройте приложение по локальному адресу."})
             return
         if path == "/api/atlas":
-            self.send_json(200, {**get_catalog(), "cloudAvailable": cloud_available(), "guestLimit": GUEST_DAILY_LIMIT})
+            self.send_json(200, {**get_catalog(), "cloudAvailable": cloud_available()})
         elif path == "/api/profile":
             self.send_json(200, {"profile": self.server.accounts.get(self.cookie(SESSION_COOKIE))})
         elif path == "/api/exhibits":
@@ -172,7 +140,7 @@ class Handler(SimpleHTTPRequestHandler):
         elif path == "/api/routes/remove":
             self.send_json(200, {"profile": accounts.remove_route(token, data.get("id"))})
         elif path == "/api/guide":
-            self.handle_guide(data, profile)
+            self.send_json(200, answer_guide(data))
         elif path == "/api/recommend":
             interest = data.get("interest")
             self.send_json(200, {"id": recommend_exhibit(interest[:180]) if isinstance(interest, str) else None})
@@ -180,25 +148,6 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_json(200, build_research(data))
         else:
             self.send_json(404, {"error": "Страница не найдена."})
-
-    def handle_guide(self, data, profile):
-        guest, remaining, cookie = None, None, None
-        if data.get("mode") == "child":
-            data = {**data, "allowCloud": False}
-        if not profile and data.get("allowCloud") is True and cloud_available():
-            guest, remaining = self.server.quota.acquire(self.cookie(GUEST_COOKIE))
-            cookie = (GUEST_COOKIE, guest, 86_400)
-            if remaining is None:
-                self.send_json(429, {"error": "На сегодня вопросы гостя закончились. Войдите в семейный кабинет, чтобы продолжить.", "remaining": 0}, cookie)
-                return
-        try:
-            answer = answer_guide(data)
-        except ValueError:
-            if guest:
-                self.server.quota.refund(guest)
-            raise
-        self.send_json(200, {**answer, "remaining": remaining}, cookie)
-
 
 def configure_yandex():
     if not sys.stdin.isatty():
@@ -254,7 +203,6 @@ def main():
         port = server.server_port
         server.allowed_hosts = {f"127.0.0.1:{port}", f"localhost:{port}"}
         server.accounts = Accounts(database)
-        server.quota = GuestQuota()
         print(f"Первоисточник · http://127.0.0.1:{port}", flush=True)
         try:
             server.serve_forever()

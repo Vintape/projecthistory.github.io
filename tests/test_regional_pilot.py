@@ -74,12 +74,15 @@ class RegionalPilotTest(unittest.TestCase):
                 self.assertIn("семь", result["answer"].lower())
             network.assert_not_called()
 
-    def test_regional_child_guide_uses_catalog_with_cloud_enabled(self):
-        with patch.object(pilot, "_yandex_credentials", return_value=("key", "folder")), patch.object(pilot, "urlopen") as network:
-            result = self.guide("Расскажи о Северном крае", regionId="north", allowCloud=True)
-            self.assertEqual(result["sources"], [source("north")])
-            self.assertEqual(result["engine"], "catalog")
-            network.assert_not_called()
+    def test_cloud_uses_place_from_question_and_filters_child_material(self):
+        reply = {"answer": "Здесь можно узнать о городе Нагорье.", "sources": [source("second")], "engine": "yandex"}
+        with patch.object(pilot, "_yandex_credentials", return_value=("key", "folder")), patch.object(pilot, "_yandex_answer", return_value=reply) as model:
+            for question, expected_context in (("Расскажи о Нагорье", "second"), ("Расскажи об Озерске", "outside")):
+                with self.subTest(question=question):
+                    self.assertEqual(self.guide(question, pointId="first", allowCloud=True), reply)
+                    message, context, mode, *_ = model.call_args.args
+                    self.assertEqual((message, context["id"], mode), (question, expected_context, "child"))
+                    self.assertNotIn("film", [item["id"] for item in context["content"]])
 
     def test_all_route_formats_respect_manual_pick_order(self):
         for route_format in ("day", "weekend", "online"):

@@ -2,7 +2,6 @@ import {AccountError, Accounts} from "./accounts.ts";
 import {answerGuide, CatalogError, cloudAvailable, getCatalog, planRoute} from "./catalog.ts";
 
 const allowedOrigin = Deno.env.get("PERVOISTOCHNIK_FRONTEND_ORIGIN") || "https://vintape.github.io";
-const guestLimit = 3;
 const maxRequestBytes = 16_384;
 const encoder = new TextEncoder();
 
@@ -101,7 +100,7 @@ async function handle(request: Request) {
   const authHeader = request.headers.get("authorization");
   const token = /^Bearer ([\w-]{43})$/.exec(authHeader || "")?.[1] || "";
   if (request.method === "GET" && path === "atlas") {
-    return response({...getCatalog(), cloudAvailable: cloudAvailable(), guestLimit});
+    return response({...getCatalog(), cloudAvailable: cloudAvailable()});
   }
   if (request.method !== "GET" && request.method !== "POST") {
     return response({error: "Метод запроса не поддерживается."}, 405);
@@ -146,17 +145,11 @@ async function handle(request: Request) {
     return response({profile: await accounts.saveRoute(token, {...route, id})});
   }
   if (path === "guide") {
-    if (payload.mode === "child") payload.allowCloud = false;
-    const usesCloud = payload.allowCloud === true && cloudAvailable();
-    const profile = usesCloud && token ? await accounts.get(token) : null;
-    const remaining = usesCloud && !profile ? await consumeLimit(request, "guide_guest") : null;
-    if (remaining !== null && remaining < 0) {
-      return response({error: "На сегодня вопросы гостя закончились. Войдите в семейный кабинет, чтобы продолжить.", remaining: 0}, 429);
-    }
-    if (usesCloud && await consumeLimit(request, "guide_cloud") < 0) {
-      payload.allowCloud = false;
-    }
-    return response({...await answerGuide(payload), remaining});
+    return response(await answerGuide(payload, async () => {
+      if (await consumeLimit(request, "guide_cloud") < 0) {
+        throw new AccountError(429, "Дневной лимит ЯндексGPT исчерпан. Спросите завтра.");
+      }
+    }));
   }
   return response({error: "Страница не найдена."}, 404);
 }
