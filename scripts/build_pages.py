@@ -11,6 +11,7 @@ PUBLIC = Path(__file__).resolve().parents[1] / "public"
 MVP_FILES = (
     "atlas.css",
     "atlas.js",
+    "map-view.js",
     "style.css",
     "assets/atlas-icons.svg",
     "assets/chevron.svg",
@@ -25,10 +26,14 @@ MVP_FILES = (
     "assets/fonts/pt-serif-italic-cyr.woff2",
     "assets/ladoga-credits.md",
     "assets/ladoga-map.svg",
+    "assets/meshkov-house.jpg",
     "assets/oak-emblem.svg",
     "assets/oleg-vasnetsov.jpg",
+    "assets/peter-paul-fortress.jpg",
     "assets/russia-illustration.jpg",
     "assets/staraya-ladoga.jpg",
+    "assets/taltsy.jpg",
+    "assets/volkonsky-house.jpg",
 )
 CONFIG_MARKER = "  <!-- pages-config -->"
 

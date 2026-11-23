@@ -4,14 +4,16 @@
   <meta charset="utf-8">
   <!-- pages-config -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Интерактивная карта культурных мест Старой Ладоги, семейный проводник и маршруты.">
+  <meta name="description" content="Культурный атлас России с интерактивной картой, семейной летописью, ИИ-ассистентом и маршрутами.">
   <title>Первоисточник — народы России</title>
   <link rel="icon" href="assets/slide-466/logo.png" type="image/png">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="atlas.css?v=yandex-guide">
-  <script defer src="atlas.js?v=general-guide"></script>
+  <link rel="stylesheet" href="atlas.css?v=atlas-polish">
+  <script defer src="map-view.js?v=atlas-polish"></script>
+  <script defer src="atlas.js?v=atlas-polish"></script>
 </head>
 <body class="atlas-page">
+  <a class="skip-link" href="#atlas">К содержанию</a>
   <header class="atlas-header atlas-shell">
     <div class="header-inner">
       <a class="wordmark" href="./" aria-label="Первоисточник, главная">
@@ -21,14 +23,18 @@
         <button type="button" data-mode="child" aria-pressed="false"><img src="assets/slide-466/child.svg" alt="">Детский</button>
         <button type="button" data-mode="adult" aria-pressed="true"><img src="assets/slide-466/adult.svg" alt="">Взрослый</button>
       </div>
-      <nav aria-label="Основная навигация" class="atlas-nav">
+      <button type="button" id="menu-toggle" class="menu-toggle" aria-expanded="false" aria-controls="atlas-nav">Меню <span aria-hidden="true">☰</span></button>
+      <nav aria-label="Основная навигация" class="atlas-nav" id="atlas-nav">
         <a href="#map" aria-current="page"><img src="assets/slide-466/pin.svg" width="32" height="40" alt="">Карта</a>
         <button type="button" id="nav-guide" aria-controls="guide-panel" aria-expanded="true"><img src="assets/slide-466/chat.svg" width="48" height="41" alt="">ИИ-Ассистент</button>
         <button type="button" id="nav-roots" aria-haspopup="dialog"><img src="assets/slide-466/tree.svg" width="43" height="48" alt="">Родословная</button>
         <button type="button" id="nav-route" aria-haspopup="dialog"><img src="assets/slide-466/star.svg" width="40" height="40" alt="">Рекомендации</button>
         <button type="button" id="nav-chronicle" aria-haspopup="dialog"><img src="assets/slide-466/chronicle.svg" width="36" height="40" alt="">Летопись</button>
+        <button type="button" class="mobile-nav-item" id="mobile-experts" aria-haspopup="dialog">Обратиться к экспертам</button>
+        <button type="button" class="mobile-nav-item" id="mobile-subscription" aria-haspopup="dialog">Подписка</button>
       </nav>
       <button type="button" class="button experts-trigger" id="nav-experts" aria-haspopup="dialog">Обратиться к экспертам</button>
+      <a class="telegram-link" href="https://t.me/DynastiyaRussiaQuizBot" target="_blank" rel="noopener noreferrer" aria-label="Тест в Telegram"><span class="telegram-icon" aria-hidden="true">➤</span><span class="telegram-short" aria-hidden="true">Тест</span><span class="telegram-full" aria-hidden="true">Тест в Telegram</span></a>
     </div>
   </header>
 
@@ -38,10 +44,10 @@
     <div class="atlas-grid" id="atlas-grid" hidden>
       <section class="atlas-map-area" aria-labelledby="map-title">
         <h2 class="visually-hidden" id="map-title">Интерактивная карта</h2>
-        <div class="atlas-map" id="map" aria-label="Иллюстрированная карта России">
+        <div class="atlas-map" id="map" role="region" tabindex="0" aria-label="Иллюстрированная карта России" aria-describedby="map-credit map-help">
           <div class="overview-map" id="overview-map">
             <div class="overview-layer" id="overview-layer">
-              <img src="assets/slide-466/map.png" alt="Тёмно-синяя иллюстрация карты России с золотым контуром" width="1024" height="512">
+              <img src="assets/slide-466/map.png" alt="Тёмно-синяя иллюстрация карты России с золотым контуром" width="1024" height="512" fetchpriority="high" draggable="false">
               <div id="russia-markers" aria-label="Подписанные места России"></div>
             </div>
           </div>
@@ -49,16 +55,23 @@
             <img class="map-background" src="assets/ladoga-map.svg" alt="" width="960" height="640">
             <div id="markers" class="map-markers" aria-label="Места на карте Старой Ладоги"></div>
           </div>
-          <div class="map-controls" role="group" aria-label="Управление картой">
-            <button type="button" id="zoom-in" aria-label="Увеличить карту">+</button>
-            <button type="button" id="zoom-out" aria-label="Уменьшить карту">−</button>
-            <button type="button" id="zoom-reset" aria-label="Сбросить масштаб">⌖</button>
-          </div>
+        </div>
+        <div class="map-toolbar">
+          <label class="visually-hidden" for="map-region">Выбрать регион</label>
+          <select id="map-region" aria-controls="place-panel"></select>
           <button type="button" class="map-scope" id="map-scope" aria-controls="overview-map local-map">Точки Старой Ладоги</button>
+          <div class="map-controls" role="group" aria-label="Управление картой">
+            <button type="button" id="zoom-out" aria-label="Уменьшить карту">−</button>
+            <output id="map-scale" aria-label="Масштаб карты">100%</output>
+            <button type="button" id="zoom-in" aria-label="Увеличить карту">+</button>
+            <button type="button" id="zoom-reset" aria-label="Сбросить масштаб" title="Вернуть исходный вид"><span aria-hidden="true">↺</span></button>
+          </div>
         </div>
         <p id="map-note" class="map-note" role="status" hidden></p>
-        <div id="place-list" class="place-list" aria-label="Места в Старой Ладоге" hidden></div>
+        <div id="place-list" class="place-list" role="group" aria-label="Места в регионе" hidden></div>
+        <details id="map-index" class="map-index"><summary>Все метки карты</summary><div id="map-index-list" class="place-list" role="group" aria-label="Все места на карте"></div></details>
         <p id="map-credit" class="visually-hidden">Схема Старой Ладоги показывает примерное расположение мест. Общая карта — иллюстрация проекта.</p>
+        <p id="map-help" class="visually-hidden">Для масштаба используйте плюс и минус, колёсико с Ctrl или жест двумя пальцами. Увеличенную карту можно двигать мышью, пальцем или клавишами со стрелками. Home сбрасывает вид.</p>
       </section>
 
       <aside class="place-panel" aria-labelledby="place-title" id="place-panel">
@@ -80,6 +93,7 @@
             <button type="button" data-type="film" aria-pressed="true"><img src="assets/slide-466/film.svg" alt="">Фильмы</button>
             <button type="button" data-type="story" aria-pressed="false"><img src="assets/slide-466/story.svg" alt="">Сказки и мифы</button>
             <button type="button" data-type="character" aria-pressed="false"><img src="assets/slide-466/character.svg" alt="">Персонажи</button>
+            <button type="button" data-type="history" aria-pressed="false" hidden><img src="assets/slide-466/chronicle.svg" alt="">История</button>
           </div>
           <div id="place-content" class="place-content"></div>
           <div class="place-actions">
@@ -126,7 +140,7 @@
         <article class="demo-card subscription-card" aria-labelledby="subscription-heading">
           <img src="assets/slide-466/star.svg" width="40" height="40" alt="">
           <h2 id="subscription-heading">Подписка на «Первоисточник»</h2>
-          <button type="button" class="button atlas-primary" id="buy-subscription" aria-haspopup="dialog">Купить подписку</button>
+          <button type="button" class="button atlas-primary" id="buy-subscription" aria-haspopup="dialog">Смотреть подписку</button>
         </article>
         <article class="demo-card demo-analysis">
           <h2>Обработка запроса ИИ</h2>
@@ -138,10 +152,10 @@
             </div>
             <figure class="demo-chart">
               <div class="demo-pie" role="img" aria-label="Условное распределение из макета. Русские 42%, украинцы 21%, белорусы 17%, езиды 13%, вепсы 7%">
-                <img src="assets/slide-466/pie.png" alt="">
+                <img src="assets/slide-466/pie.png" alt="" loading="lazy" decoding="async">
                 <span aria-hidden="true">42%<small>русский</small></span><span aria-hidden="true">21%<small>украинец</small></span><span aria-hidden="true">17%<small>белорус</small></span><span aria-hidden="true">13%<small>езид</small></span><span aria-hidden="true">7%<small>вепс</small></span>
               </div>
-              <figcaption>Демо · условные данные</figcaption>
+              <figcaption>Пример интерфейса · условные данные</figcaption>
             </figure>
           </div>
         </article>
@@ -152,7 +166,7 @@
             <p class="demo-ancestor-description">Основатель петербургской купеческой династии Елисеевых. Открыл лавку на Невском проспекте.</p>
             <a class="button demo-visit" href="https://www.kupetzeliseevs.ru/jekskursija/" target="_blank" rel="noopener noreferrer">Посетить магазин купцов Елисеевых</a>
           </div>
-          <img class="demo-portrait" src="assets/slide-466/eliseev.png" width="372" height="537" alt="Исторический портрет Петра Елисеева">
+          <img class="demo-portrait" src="assets/slide-466/eliseev.png" width="372" height="537" loading="lazy" decoding="async" alt="Исторический портрет Петра Елисеева">
         </article>
       </section>
     </div>
@@ -165,12 +179,19 @@
     </div>
   </footer>
 
-  <dialog id="subscription-dialog" class="atlas-dialog" aria-labelledby="subscription-title" aria-describedby="subscription-status">
+  <dialog id="subscription-dialog" class="atlas-dialog subscription-dialog" aria-labelledby="subscription-title" aria-describedby="subscription-status">
     <div class="dialog-header">
-      <h2 id="subscription-title">Подписка</h2>
+      <h2 id="subscription-title">Подписка на «Первоисточник»</h2>
       <form method="dialog"><button class="close-button" aria-label="Закрыть информацию о подписке">×</button></form>
     </div>
-    <p id="subscription-status">Оплата подписки пока недоступна.</p>
+    <div class="subscription-plan">
+      <img src="assets/slide-466/star.svg" width="30" height="30" alt="">
+      <h3>Семейный доступ</h3>
+      <p>Откройте семейный кабинет, сохраните интересные маршруты и соберите их в летопись.</p>
+      <ul><li>Профиль семьи и география предков</li><li>Сохранённые маршруты по регионам</li><li>Семейная летопись с экспортом в PDF</li></ul>
+      <p id="subscription-status">Сейчас кабинет доступен бесплатно. Продажи подписки ещё не открыты.</p>
+      <button type="button" class="button atlas-primary" id="subscription-account">Открыть семейный кабинет</button>
+    </div>
   </dialog>
 
   <dialog id="legend-dialog" class="atlas-dialog" aria-labelledby="legend-title">
@@ -235,7 +256,8 @@
       <form id="auth-form" class="stack-form">
         <label id="register-name" hidden>Имя семьи <input name="name" maxlength="80" autocomplete="name" disabled></label>
         <label>Электронная почта <input name="email" type="email" maxlength="160" autocomplete="email" required></label>
-        <label>Пароль <input name="password" type="password" maxlength="256" autocomplete="current-password" required></label>
+        <label for="auth-password">Пароль</label>
+        <div class="password-field"><input id="auth-password" name="password" type="password" maxlength="256" autocomplete="current-password" required><button type="button" id="toggle-password" aria-controls="auth-password" aria-pressed="false">Показать</button></div>
         <button type="submit" class="button atlas-primary">Войти</button>
       </form>
       <p class="form-hint" id="profile-storage">Профиль хранится на этом компьютере.</p>
