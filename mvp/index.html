@@ -45,9 +45,21 @@
           <div class="overview-map" id="overview-map">
             <svg class="map-filters" width="0" height="0" aria-hidden="true" focusable="false">
               <defs>
-                <filter id="map-ink" color-interpolation-filters="sRGB">
+                <filter id="map-ink" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB">
                   <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  .16 .17 .67 0 0"/>
-                  <feComponentTransfer><feFuncA type="linear" slope="22" intercept="-.24"/></feComponentTransfer>
+                  <feComponentTransfer result="ink"><feFuncA type="linear" slope="22" intercept="-.24"/></feComponentTransfer>
+                  <!-- The original contains a gray haze between the northern islands. -->
+                  <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1 0 1 0 0" result="blue"/>
+                  <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1 0 -1 0 0" result="gold"/>
+                  <feComposite in="blue" in2="gold" operator="lighter"/>
+                  <feComponentTransfer result="colorKey"><feFuncA type="linear" slope="18" intercept="-.39"/></feComponentTransfer>
+                  <feGaussianBlur stdDeviation=".001 .002" result="colorEdge"/>
+                  <feComposite in="colorKey" in2="colorEdge" operator="over" result="color"/>
+                  <feFlood x=".30" y=".11" width=".28" height=".32" flood-color="white" result="northernArea"/>
+                  <feComposite in="ink" in2="northernArea" operator="in"/>
+                  <feComposite in2="color" operator="in" result="northernInk"/>
+                  <feComposite in="ink" in2="northernArea" operator="out" result="otherInk"/>
+                  <feMerge><feMergeNode in="otherInk"/><feMergeNode in="northernInk"/></feMerge>
                 </filter>
               </defs>
             </svg>
