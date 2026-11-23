@@ -2,33 +2,34 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
+  <!-- pages-config -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Интерактивная карта культурных мест Старой Ладоги, семейный проводник и маршруты.">
   <title>Первоисточник — народы России</title>
-  <link rel="icon" href="/assets/oak-emblem.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/atlas.css">
-  <script defer src="/atlas.js"></script>
+  <link rel="icon" href="assets/oak-emblem.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="atlas.css">
+  <script defer src="atlas.js"></script>
 </head>
 <body class="atlas-page">
   <header class="atlas-header">
     <div class="atlas-shell header-inner">
-      <a class="wordmark" href="/" aria-label="Первоисточник, главная">
-        <img src="/assets/oak-emblem.svg" width="44" height="44" alt=""><span>Первоисточник</span>
+      <a class="wordmark" href="./" aria-label="Первоисточник, главная">
+        <img src="assets/oak-emblem.svg" width="44" height="44" alt=""><span>Первоисточник</span>
       </a>
       <div class="mode-switch" role="group" aria-label="Возрастной режим">
         <button type="button" data-mode="child" aria-pressed="false">Детский</button>
         <button type="button" data-mode="adult" aria-pressed="true">Взрослый</button>
       </div>
       <nav aria-label="Основная навигация" class="atlas-nav">
-        <a href="#map" aria-current="page"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#map"/></svg>Карта</a>
-        <button type="button" id="nav-guide"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#guide"/></svg>Проводник</button>
-        <button type="button" id="nav-experts" aria-haspopup="dialog"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#experts"/></svg>Чат с экспертами</button>
-        <button type="button" id="nav-roots"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#roots"/></svg>Родословная</button>
-        <button type="button" id="nav-route"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#star"/></svg>Маршруты</button>
-        <button type="button" id="nav-chronicle"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#book"/></svg>Летопись</button>
+        <a href="#map" aria-current="page"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="assets/atlas-icons.svg#map"/></svg>Карта</a>
+        <button type="button" id="nav-guide"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="assets/atlas-icons.svg#guide"/></svg>Проводник</button>
+        <button type="button" id="nav-experts" aria-haspopup="dialog"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="assets/atlas-icons.svg#experts"/></svg>Чат с экспертами</button>
+        <button type="button" id="nav-roots"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="assets/atlas-icons.svg#roots"/></svg>Родословная</button>
+        <button type="button" id="nav-route"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="assets/atlas-icons.svg#star"/></svg>Маршруты</button>
+        <button type="button" id="nav-chronicle"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="assets/atlas-icons.svg#book"/></svg>Летопись</button>
       </nav>
-      <button type="button" id="nav-account" class="account-chip"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#profile"/></svg> Профиль</button>
+      <button type="button" id="nav-account" class="account-chip"><svg class="nav-icon" aria-hidden="true" focusable="false"><use href="assets/atlas-icons.svg#profile"/></svg> Профиль</button>
     </div>
   </header>
 
@@ -49,12 +50,12 @@
               </defs>
             </svg>
             <div class="overview-layer" id="overview-layer">
-              <img src="/assets/russia-illustration.jpg" alt="Тёмно-синяя иллюстрация карты России с золотым контуром" width="1774" height="887">
+              <img src="assets/russia-illustration.jpg" alt="Тёмно-синяя иллюстрация карты России с золотым контуром" width="1774" height="887">
               <div id="russia-markers" aria-label="Подписанные места России"></div>
             </div>
           </div>
           <div class="local-map" id="local-map" hidden>
-            <img class="map-background" src="/assets/ladoga-map.svg" alt="" width="960" height="640">
+            <img class="map-background" src="assets/ladoga-map.svg" alt="" width="960" height="640">
             <div id="markers" class="map-markers" aria-label="Места на карте Старой Ладоги"></div>
           </div>
           <div class="map-controls" role="group" aria-label="Управление картой">
@@ -72,7 +73,7 @@
         <button type="button" class="back-link" id="back-map">‹ К карте России</button>
         <div class="place-lead">
         <figure class="place-photo" id="place-photo">
-          <img id="place-image" src="/assets/staraya-ladoga.jpg" width="960" height="480" alt="">
+          <img id="place-image" src="assets/staraya-ladoga.jpg" width="960" height="480" alt="">
           <figcaption id="photo-caption" hidden></figcaption>
         </figure>
         <div class="place-copy">
@@ -116,12 +117,12 @@
   </section>
 
         <section class="rail-card" aria-labelledby="quick-route-title">
-          <h2 id="quick-route-title"><svg class="section-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#star"/></svg>Ваш маршрут</h2>
+          <h2 id="quick-route-title"><svg class="section-icon" aria-hidden="true" focusable="false"><use href="assets/atlas-icons.svg#star"/></svg>Ваш маршрут</h2>
           <p id="quick-route-summary">Соберите маршрут по выбранному месту и сохраните его в семейном кабинете.</p>
           <button id="quick-route" type="button" class="button atlas-outline">Собрать маршрут</button>
         </section>
         <section class="rail-card genealogy-card" aria-labelledby="genealogy-title">
-          <div><h2 id="genealogy-title"><svg class="section-icon" aria-hidden="true" focusable="false"><use href="/assets/atlas-icons.svg#roots"/></svg>Ваша родословная</h2><p>Добавьте место, где жили предки, чтобы найти культурный контекст.</p></div>
+          <div><h2 id="genealogy-title"><svg class="section-icon" aria-hidden="true" focusable="false"><use href="assets/atlas-icons.svg#roots"/></svg>Ваша родословная</h2><p>Добавьте место, где жили предки, чтобы найти культурный контекст.</p></div>
           <button id="quick-family" type="button" class="button atlas-outline">География семьи</button>
         </section>
       </aside>
@@ -130,7 +131,7 @@
 
   <footer class="atlas-footer">
     <div class="atlas-shell footer-inner">
-      <a class="wordmark" href="/"><img src="/assets/oak-emblem.svg" width="36" height="36" alt=""><span>Первоисточник</span></a>
+      <a class="wordmark" href="./"><img src="assets/oak-emblem.svg" width="36" height="36" alt=""><span>Первоисточник</span></a>
       <div class="footer-links"><a href="https://ladogamuseum.com/" target="_blank" rel="noopener noreferrer">Музей-заповедник «Старая Ладога»</a></div>
     </div>
   </footer>
@@ -192,7 +193,7 @@
         <label>Пароль <input name="password" type="password" maxlength="256" autocomplete="current-password" required></label>
         <button type="submit" class="button atlas-primary">Войти</button>
       </form>
-      <p class="form-hint">Профиль хранится на этом компьютере.</p>
+      <p class="form-hint" id="profile-storage">Профиль хранится на этом компьютере.</p>
     </section>
     <section id="profile-panel" hidden>
       <form id="profile-form" class="stack-form">

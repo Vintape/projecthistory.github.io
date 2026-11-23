@@ -10,6 +10,22 @@ python3 app.py
 
 Откройте [приложение](http://127.0.0.1:8765/). Нужен Python 3.10 или новее. Для другого порта используйте `python3 app.py --port 8766`.
 
+## Публикация
+
+[Открыть MVP на GitHub Pages](https://vintape.github.io/projecthistory.github.io/mvp/). Папка `mvp/` в ветке `main` содержит только сборку интерфейса. Исходники публикуются в ветке `codex/pervoistochnik-mvp`.
+
+На GitHub Pages семейные профили и маршруты хранятся в отдельном проекте Supabase. Для работы с сайтом нужно создать семейный профиль онлайн. Локальный запуск использует SQLite.
+
+```sh
+supabase link --project-ref mkseudrxstywbmzxgenl
+supabase db push
+cp pilot_catalog.json supabase/functions/atlas/pilot_catalog.json
+supabase functions deploy atlas
+python3 scripts/build_pages.py --api-url https://mkseudrxstywbmzxgenl.supabase.co/functions/v1/atlas --output .runtime/pages/mvp
+```
+
+Для облачного ЯндексGPT задайте `YANDEX_API_KEY` и `YANDEX_FOLDER_ID` в настройках секретов Edge Functions. Без них онлайн-«Проводник» работает в демонстрационном режиме.
+
 ## Что можно показать
 
 1. На обзорной карте выберите Ленинградскую область, затем одну из точек Старой Ладоги. Переключите детский и взрослый режимы, чтобы сравнить описания.

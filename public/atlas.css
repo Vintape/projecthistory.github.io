@@ -93,7 +93,7 @@
 .stack-form { display: grid; gap: 11px; }
 .atlas-dialog label { display: grid; gap: 5px; font-weight: 500; }
 .atlas-dialog input:not([type='checkbox']), .atlas-dialog select { min-width: 0; min-height: 44px; width: 100%; padding: 8px 10px; border: 1px solid #988f7f; border-radius: 7px; background: #fffbf3; color: var(--ink); }
-.atlas-dialog select { appearance: none; background: #fffbf3 url('/assets/chevron.svg') right 10px center / 15px no-repeat; padding-right: 30px; }
+.atlas-dialog select { appearance: none; background: #fffbf3 url('assets/chevron.svg') right 10px center / 15px no-repeat; padding-right: 30px; }
 .form-hint, .form-error { margin-top: 7px; font-size: .9rem; }
 .form-hint { color: var(--secondary); }
 .form-error { color: #8a2e1b; }

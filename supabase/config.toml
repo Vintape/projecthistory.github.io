@@ -1,0 +1,4 @@
+project_id = "pervoistochnik"
+
+[functions.atlas]
+verify_jwt = false

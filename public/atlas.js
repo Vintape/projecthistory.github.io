@@ -12,6 +12,9 @@ const routeForm = $('#route-form');
 const authForm = $('#auth-form');
 const profileForm = $('#profile-form');
 const guideMessages = $('#guide-messages');
+const hostedApi = $('meta[name="atlas-api"]')?.content;
+const apiBase = hostedApi || '/api';
+const sessionStorageKey = `pervoistochnik.session:${apiBase}`;
 const markerButtons = [];
 const emptyContent = {
   story: 'Для этой точки пока нет отдельной истории.',
@@ -24,6 +27,7 @@ let point;
 let mode = 'adult';
 let contentType = 'story';
 let profile = null;
+let sessionToken = hostedApi ? readSessionToken() : null;
 let routePoint = null;
 let guidePointId = null;
 let routePayload = null;
@@ -58,20 +62,47 @@ function externalLink(title, url) {
   return link;
 }
 
+function readSessionToken() {
+  try {
+    return sessionStorage.getItem(sessionStorageKey);
+  } catch {
+    return null;
+  }
+}
+
+function setSessionToken(token) {
+  sessionToken = token;
+  try {
+    if (token) sessionStorage.setItem(sessionStorageKey, token);
+    else sessionStorage.removeItem(sessionStorageKey);
+  } catch {
+    // The current page can still use the session if browser storage is disabled.
+  }
+}
+
 async function api(path, data) {
-  const response = await fetch(`/api/${path}`, data === undefined ? {} : {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(data),
-    signal: AbortSignal.timeout(16000),
-  });
-  const json = await response.json();
+  const requestToken = ['atlas', 'register', 'login'].includes(path) ? null : sessionToken;
+  const options = {headers: new Headers()};
+  if (hostedApi) {
+    options.credentials = 'omit';
+    options.redirect = 'error';
+  }
+  if (requestToken) options.headers.set('Authorization', `Bearer ${requestToken}`);
+  if (data !== undefined) {
+    options.method = 'POST';
+    options.headers.set('Content-Type', 'application/json');
+    options.body = JSON.stringify(data);
+    options.signal = AbortSignal.timeout(16000);
+  }
+  const response = await fetch(`${apiBase}/${path}`, options);
   if (!response.ok) {
-    const error = new Error(json.error || 'Запрос не выполнен.');
+    if (response.status === 401 && requestToken && requestToken === sessionToken) clearSession();
+    const json = await response.json().catch(() => null);
+    const error = new Error(json?.error || 'Запрос не выполнен.');
     error.status = response.status;
     throw error;
   }
-  return json;
+  return response.json();
 }
 
 function showError(id, error) {
@@ -127,9 +158,9 @@ function renderPoint() {
   $('#place-photo').hidden = !point.photo;
   const caption = $('#photo-caption');
   if (point.photo) {
-    image.src = `/assets/${point.photo.file}`;
+    image.src = `assets/${point.photo.file}`;
     image.alt = point.photo.alt;
-    caption.replaceChildren(externalLink(point.photo.credit, '/assets/ladoga-credits.md'));
+    caption.replaceChildren(externalLink(point.photo.credit, 'assets/ladoga-credits.md'));
     caption.hidden = false;
   }
   for (const button of markerButtons) {
@@ -170,7 +201,7 @@ function renderMedia() {
     const cover = create('div', undefined, 'media-art');
     if (entry.image) {
       const img = create('img');
-      img.src = `/assets/${entry.image}`;
+      img.src = `assets/${entry.image}`;
       img.alt = 'Иллюстрация Виктора Васнецова к балладе об Олеге';
       cover.append(img);
     } else {
@@ -530,6 +561,14 @@ function renderAccount() {
   $('#print-chronicle').hidden = !routes.length;
 }
 
+function clearSession() {
+  if (hostedApi) setSessionToken(null);
+  profile = null;
+  $('#account-status').textContent = '';
+  setAuth('login');
+  renderAccount();
+}
+
 function openAccount(fromRoute = false) {
   if (!fromRoute) returnToRoute = false;
   showError('#account-error', null);
@@ -544,7 +583,12 @@ async function authenticate(event) {
   submit.disabled = true;
   showError('#account-error', null);
   try {
-    profile = (await api(authMode, Object.fromEntries(new FormData(authForm)))).profile;
+    const result = await api(authMode, Object.fromEntries(new FormData(authForm)));
+    if (hostedApi) {
+      if (typeof result.token !== 'string' || !result.token) throw new Error('Не удалось начать сеанс.');
+      setSessionToken(result.token);
+    }
+    profile = result.profile;
     authForm.reset();
     renderAccount();
     if (returnToRoute) {
@@ -615,6 +659,7 @@ $('#nav-chronicle').addEventListener('click', () => {
 });
 $('#nav-route').addEventListener('click', () => { if (atlas) openRoute(null); });
 $('#nav-account').addEventListener('click', () => openAccount());
+if (hostedApi) $('#profile-storage').textContent = 'Профиль и маршруты хранятся в семейном кабинете онлайн.';
 $('#save-route').addEventListener('click', saveRoute);
 $('#print').addEventListener('click', () => window.print());
 videoDialog.addEventListener('close', () => {
@@ -623,15 +668,16 @@ videoDialog.addEventListener('close', () => {
 });
 $('#print-chronicle').addEventListener('click', showChronicle);
 $('#logout').addEventListener('click', async () => {
+  const button = $('#logout');
+  button.disabled = true;
   showError('#account-error', null);
   try {
     await api('logout', {});
-    profile = null;
-    $('#account-status').textContent = '';
-    setAuth('login');
-    renderAccount();
+    clearSession();
   } catch (error) {
     showError('#account-error', error);
+  } finally {
+    button.disabled = false;
   }
 });
 guideForm.addEventListener('submit', askGuide);
@@ -652,7 +698,9 @@ api('atlas').then(data => {
   if (accountDialog.open) renderAccount();
   if (activeRoutes().length) $('#quick-route-summary').textContent = activeRoutes()[0].title;
 }).catch(() => { $('#atlas-status').textContent = 'Карта не загрузилась. Обновите страницу и попробуйте ещё раз.'; });
+const initialSessionToken = sessionToken;
 api('profile').then(data => {
+  if (!data.profile || profile || sessionToken !== initialSessionToken) return;
   profile = data.profile;
   if (accountDialog.open) renderAccount();
   if (activeRoutes().length) $('#quick-route-summary').textContent = activeRoutes()[0].title;
