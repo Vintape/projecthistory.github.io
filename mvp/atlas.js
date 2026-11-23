@@ -686,6 +686,7 @@ $('#close-guide').addEventListener('click', () => {
 $('#guide-films').addEventListener('click', () => setContentType('film', true));
 $('#guide-stories').addEventListener('click', () => setContentType('story', true));
 $('#guide-route').addEventListener('click', () => openRoute(localMap ? point : null));
+$('#buy-subscription').addEventListener('click', () => $('#subscription-dialog').showModal());
 $('#nav-experts').addEventListener('click', () => expertsDialog.showModal());
 $('#zoom-in').addEventListener('click', () => setZoom(mapLevel + 1));
 $('#zoom-out').addEventListener('click', () => setZoom(mapLevel - 1));

@@ -10,8 +10,8 @@
   <title>Первоисточник — народы России</title>
   <link rel="icon" href="assets/slide-466/logo.png" type="image/png">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="atlas.css?v=slide-466">
-  <script defer src="atlas.js?v=slide-466"></script>
+  <link rel="stylesheet" href="atlas.css?v=subscription">
+  <script defer src="atlas.js?v=subscription"></script>
 </head>
 <body class="atlas-page">
   <header class="atlas-header atlas-shell">
@@ -125,13 +125,11 @@
         </div>
       </aside>
 
-      <section class="research-demo" aria-label="Демонстрационный пример исследования семьи">
-        <article class="demo-card demo-question">
-          <h2>Запрос пользователя</h2>
-          <div class="demo-question-body">
-            <div class="demo-avatar" aria-hidden="true"><img src="assets/slide-466/avatar.png" alt=""></div>
-            <p>Меня зовут Антон Елисеев, я живу в Питере, мои родители, если что, тоже отсюда, найди культуру моих предков</p>
-          </div>
+      <section class="research-demo" aria-label="Подписка и пример семейного исследования">
+        <article class="demo-card subscription-card" aria-labelledby="subscription-heading">
+          <img src="assets/slide-466/star.svg" width="40" height="40" alt="">
+          <h2 id="subscription-heading">Подписка на «Первоисточник»</h2>
+          <button type="button" class="button atlas-primary" id="buy-subscription" aria-haspopup="dialog">Купить подписку</button>
         </article>
         <article class="demo-card demo-analysis">
           <h2>Обработка запроса ИИ</h2>
@@ -169,6 +167,14 @@
       <div class="footer-links"><a href="https://ladogamuseum.com/" target="_blank" rel="noopener noreferrer">Музей-заповедник «Старая Ладога»</a><a href="assets/ladoga-credits.md" target="_blank" rel="noopener noreferrer">Источники иллюстраций</a><button type="button" id="nav-account" aria-haspopup="dialog">Семейный кабинет</button></div>
     </div>
   </footer>
+
+  <dialog id="subscription-dialog" class="atlas-dialog" aria-labelledby="subscription-title" aria-describedby="subscription-status">
+    <div class="dialog-header">
+      <h2 id="subscription-title">Подписка</h2>
+      <form method="dialog"><button class="close-button" aria-label="Закрыть информацию о подписке">×</button></form>
+    </div>
+    <p id="subscription-status">Оплата подписки пока недоступна.</p>
+  </dialog>
 
   <dialog id="legend-dialog" class="atlas-dialog" aria-labelledby="legend-title">
     <div class="dialog-header">
