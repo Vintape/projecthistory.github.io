@@ -24,8 +24,13 @@ MVP_FILES = (
     "assets/ladoga-map.svg",
     "assets/oak-emblem.svg",
     "assets/oleg-vasnetsov.jpg",
+    "assets/meshkov-house.jpg",
+    "assets/peter-paul-fortress.jpg",
+    "assets/pilot-region-credits.md",
     "assets/russia-illustration.jpg",
     "assets/staraya-ladoga.jpg",
+    "assets/taltsy.jpg",
+    "assets/volkonsky-house.jpg",
 )
 CONFIG_MARKER = "  <!-- pages-config -->"
 

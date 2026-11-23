@@ -183,14 +183,14 @@ class Handler(SimpleHTTPRequestHandler):
 
     def handle_guide(self, data, profile):
         guest, remaining, cookie = None, None, None
-        if not profile:
+        if data.get("mode") == "child":
+            data = {**data, "allowCloud": False}
+        if not profile and data.get("allowCloud") is True and cloud_available():
             guest, remaining = self.server.quota.acquire(self.cookie(GUEST_COOKIE))
             cookie = (GUEST_COOKIE, guest, 86_400)
             if remaining is None:
                 self.send_json(429, {"error": "На сегодня вопросы гостя закончились. Войдите в семейный кабинет, чтобы продолжить.", "remaining": 0}, cookie)
                 return
-        if data.get("mode") == "child":
-            data = {**data, "allowCloud": False}
         try:
             answer = answer_guide(data)
         except ValueError:

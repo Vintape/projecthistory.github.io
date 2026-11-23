@@ -16,6 +16,10 @@ PASSWORD_ITERATIONS = 600_000
 EMAIL_PATTERN = re.compile(r"[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+")
 TOKEN_PATTERN = re.compile(r"[a-zA-Z0-9_-]{43}")
 ROUTE_FIELDS = ("id", "title", "overview", "stops", "format")
+JOURNAL_FIELDS = {
+    "familyNote": ("family_note", 1200, "Сократите семейную заметку до 1200 символов."),
+    "researchQuestion": ("research_question", 350, "Сократите вопрос до 350 символов."),
+}
 
 
 def _payload(value):
@@ -75,6 +79,21 @@ def _profile_fields(payload):
     return fields
 
 
+def _journal_fields(payload):
+    fields = {}
+    for key, (column, limit, error) in JOURNAL_FIELDS.items():
+        if key not in payload:
+            continue
+        value = payload[key]
+        if not isinstance(value, str):
+            raise ValueError(error)
+        text = unicodedata.normalize("NFC", "\n".join(" ".join(line.split()) for line in value.splitlines()).strip())
+        if len(text) > limit or any(char != "\n" and not char.isprintable() for char in text):
+            raise ValueError(error)
+        fields[column] = text
+    return fields
+
+
 def _token_hash(token):
     if isinstance(token, str) and TOKEN_PATTERN.fullmatch(token):
         return hashlib.sha256(token.encode("ascii")).digest()
@@ -111,6 +130,11 @@ class Accounts:
                     UNIQUE (account_id, route_id)
                 );
             """)
+            connection.execute("BEGIN IMMEDIATE")
+            columns = {row["name"] for row in connection.execute("PRAGMA table_info(accounts)")}
+            for column, limit, _ in JOURNAL_FIELDS.values():
+                if column not in columns:
+                    connection.execute(f"ALTER TABLE accounts ADD COLUMN {column} TEXT NOT NULL DEFAULT '' CHECK (length({column}) <= {limit})")
 
     @contextmanager
     def _connect(self):
@@ -129,6 +153,8 @@ class Accounts:
             "email": account["email"],
             "childAge": account["child_age"],
             "ancestorPlace": account["ancestor_place"],
+            "familyNote": account["family_note"],
+            "researchQuestion": account["research_question"],
             "routes": [json.loads(row["data"]) for row in routes],
         }
 
@@ -149,7 +175,7 @@ class Accounts:
         if token_hash is None:
             return None
         return connection.execute("""
-            SELECT accounts.id, name, email, child_age, ancestor_place
+            SELECT accounts.id, name, email, child_age, ancestor_place, family_note, research_question
             FROM sessions JOIN accounts ON accounts.id = sessions.account_id
             WHERE token_hash = ? AND expires_at > ?
         """, (token_hash, int(time.time()))).fetchone()
@@ -214,12 +240,14 @@ class Accounts:
 
     def update(self, token, payload):
         with self._authenticated_write(token) as (connection, account):
-            fields = _profile_fields(_payload(payload))
+            payload = _payload(payload)
+            fields = {**_profile_fields(payload), **_journal_fields(payload)}
             if fields:
                 account = {**dict(account), **fields}
                 connection.execute("""
-                    UPDATE accounts SET name = ?, child_age = ?, ancestor_place = ? WHERE id = ?
-                """, (account["name"], account["child_age"], account["ancestor_place"], account["id"]))
+                    UPDATE accounts SET name = :name, child_age = :child_age, ancestor_place = :ancestor_place,
+                        family_note = :family_note, research_question = :research_question WHERE id = :id
+                """, account)
             return self._public_profile(connection, account)
 
     def save_route(self, token, route):

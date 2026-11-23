@@ -31,6 +31,8 @@ export type Profile = {
   email: string;
   childAge: number | null;
   ancestorPlace: string;
+  familyNote: string;
+  researchQuestion: string;
   routes: Route[];
 };
 
@@ -131,6 +133,27 @@ function profileFields(data: Input): ProfileFields {
       160,
       "Укажите место предков длиной до 160 символов.",
     );
+  }
+  return fields;
+}
+
+function journalFields(data: Input) {
+  const fields: Record<string, string> = {};
+  for (
+    const [key, limit, message] of [
+      ["familyNote", 1200, "Сократите семейную заметку до 1200 символов."],
+      ["researchQuestion", 350, "Сократите вопрос до 350 символов."],
+    ] as const
+  ) {
+    if (!Object.hasOwn(data, key)) continue;
+    const value = data[key];
+    if (typeof value !== "string") throw new AccountError(400, message);
+    const normalized = value.replaceAll("\r\n", "\n").replaceAll("\r", "\n")
+      .split("\n").map((line) => normalizedText(line, limit, message)).join(
+        "\n",
+      ).trim();
+    if ([...normalized].length > limit) throw new AccountError(400, message);
+    fields[key] = normalized;
   }
   return fields;
 }
@@ -339,9 +362,10 @@ export class Accounts {
   }
 
   update(token: string, data: Input): Promise<Profile> {
+    data = input(data);
     return this.#mutate(
       token,
-      () => ({ p_fields: profileFields(input(data)) }),
+      () => ({ p_fields: { ...profileFields(data), ...journalFields(data) } }),
     );
   }
 

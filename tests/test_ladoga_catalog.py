@@ -5,13 +5,16 @@ import pilot
 
 
 class LadogaCatalogTest(unittest.TestCase):
-    def test_the_pilot_is_ladoga_and_all_stories_have_pdf_sources(self):
+    def test_ladoga_remains_the_legacy_default_and_its_stories_have_pdf_sources(self):
         catalog = pilot.get_catalog()
         self.assertEqual(catalog["region"]["name"], "Ленинградская область")
-        self.assertEqual({point["locality"] for point in catalog["points"]}, {"Старая Ладога"})
-        stories = [entry for point in catalog["points"] for entry in point["content"] if entry["type"] == "story"]
+        ladoga = [point for point in catalog["points"] if point["locality"] == "Старая Ладога"]
+        self.assertEqual({point["id"] for point in ladoga}, {"staraya-ladoga", "ladoga-mounds", "ladoga-monastery"})
+        stories = [entry for point in ladoga for entry in point["content"] if entry["type"] == "story"]
         self.assertTrue(stories)
         self.assertTrue(all(entry["source"]["url"].endswith(".pdf") for entry in stories))
+        route = pilot.plan_route({"format": "day", "mode": "adult"})
+        self.assertEqual(route["stops"][0]["id"], "staraya-ladoga")
 
     def test_the_guide_answers_with_a_source_even_with_multiple_points_in_ladoga(self):
         with patch.object(pilot, "_yandex_credentials", return_value=("", "")):

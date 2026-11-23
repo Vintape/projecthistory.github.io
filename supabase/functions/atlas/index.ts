@@ -146,13 +146,14 @@ async function handle(request: Request) {
     return response({profile: await accounts.saveRoute(token, {...route, id})});
   }
   if (path === "guide") {
-    const profile = token ? await accounts.get(token) : null;
-    const remaining = profile ? null : await consumeLimit(request, "guide_guest");
+    if (payload.mode === "child") payload.allowCloud = false;
+    const usesCloud = payload.allowCloud === true && cloudAvailable();
+    const profile = usesCloud && token ? await accounts.get(token) : null;
+    const remaining = usesCloud && !profile ? await consumeLimit(request, "guide_guest") : null;
     if (remaining !== null && remaining < 0) {
       return response({error: "На сегодня вопросы гостя закончились. Войдите в семейный кабинет, чтобы продолжить.", remaining: 0}, 429);
     }
-    if (payload.mode === "child") payload.allowCloud = false;
-    if (payload.allowCloud === true && cloudAvailable() && await consumeLimit(request, "guide_cloud") < 0) {
+    if (usesCloud && await consumeLimit(request, "guide_cloud") < 0) {
       payload.allowCloud = false;
     }
     return response({...await answerGuide(payload), remaining});

@@ -26,6 +26,8 @@ class AccountsTest(unittest.TestCase):
             'email': 'семья@example.com',
             'childAge': None,
             'ancestorPlace': '',
+            'familyNote': '',
+            'researchQuestion': '',
             'routes': [],
         })
         self.assertEqual(Accounts(self.database).get(token), profile)
@@ -95,3 +97,18 @@ class AccountsTest(unittest.TestCase):
         self.assertCountEqual(self.accounts.get(token)['routes'], routes)
         self.assertEqual(self.accounts.remove_route(other_token, 'kazan')['routes'], [])
         self.assertEqual(self.accounts.remove_route(token, 'kazan')['routes'], [routes[1]])
+
+    def test_journal_carries_memories_and_questions_across_sessions(self):
+        _, token = self.register()
+        _, other = self.accounts.register({**self.credentials, 'name': 'Другая семья', 'email': 'other@example.com'})
+        self.accounts.update(token, {
+            'familyNote': ' Дедушка жил в Перми.\r\n\r\nТак рассказывала бабушка. ',
+            'researchQuestion': 'В каком году семья переехала?',
+        })
+        loaded, _ = Accounts(self.database).login(self.credentials)
+        self.assertEqual(loaded['familyNote'], 'Дедушка жил в Перми.\n\nТак рассказывала бабушка.')
+        self.assertEqual(loaded['researchQuestion'], 'В каком году семья переехала?')
+        self.assertEqual(self.accounts.get(other)['familyNote'], '')
+        with self.assertRaises(ValueError):
+            self.accounts.update(token, {'researchQuestion': 'я' * 351})
+        self.assertEqual(self.accounts.get(token), loaded)
