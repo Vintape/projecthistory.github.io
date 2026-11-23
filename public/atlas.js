@@ -30,7 +30,8 @@ let showFeature = true;
 let profile = null;
 let sessionToken = hostedApi ? readSessionToken() : null;
 let routePoint = null;
-let guidePointId = null;
+let guideContextId = null;
+let guideRevision = 0;
 let routePayload = null;
 let routeOrigin;
 let authMode = 'login';
@@ -114,7 +115,7 @@ function showError(id, error) {
 
 function setMode(nextMode) {
   if (mode !== nextMode) {
-    guideMessages.replaceChildren();
+    resetGuideConversation();
   }
   mode = nextMode;
   for (const control of $$('[data-mode]')) control.setAttribute('aria-pressed', String(control.dataset.mode === mode));
@@ -345,18 +346,17 @@ function addMarkers() {
 
 function syncGuide() {
   if (!point) return;
-  const contextId = localMap ? point.id : atlas.points[0].id;
-  if (guidePointId !== contextId) {
-    guidePointId = contextId;
-    guideMessages.replaceChildren();
+  const defaultPoint = atlas.points[0];
+  const contextId = localMap ? point.id : defaultPoint.regionId || defaultPoint.id;
+  if (guideContextId !== contextId) {
+    guideContextId = contextId;
+    resetGuideConversation();
   }
   $('#guide-example').hidden = localMap || mode === 'child' || guideMessages.hasChildNodes();
   $('#guide-place').hidden = !localMap;
   $('#guide-place').textContent = point.title;
   $('#guide-prompts').hidden = !localMap;
   guideForm.elements.message.placeholder = localMap ? 'Что можно здесь увидеть?' : 'Спросите о народах или регионе…';
-  $('#guide-cloud').hidden = mode !== 'adult' || !atlas.cloudAvailable;
-  if ($('#guide-cloud').hidden) guideForm.elements.allowCloud.checked = false;
   syncGuideIntro();
   const prompts = (point.questions ?? []).map(item => typeof item === 'string' ? item : item.question).filter(Boolean);
   $('#guide-prompts').replaceChildren(...(prompts.length ? prompts.slice(0, 3) : ['Чем интересно это место?', 'Что здесь посмотреть?', 'Какие здесь есть истории?']).map(prompt => {
@@ -370,12 +370,23 @@ function syncGuide() {
   }));
 }
 
+function resetGuideConversation() {
+  guideRevision += 1;
+  guideMessages.replaceChildren();
+  showError('#guide-error', null);
+  $('#guide-status').hidden = true;
+}
+
+function guideUsesCloud() {
+  return mode === 'adult' && atlas.cloudAvailable === true;
+}
+
 function syncGuideIntro() {
   const intro = $('#guide-intro');
-  intro.hidden = !localMap && !guideForm.elements.allowCloud.checked && !guideMessages.hasChildNodes();
-  intro.textContent = guideForm.elements.allowCloud.checked
-    ? 'ЯндексGPT отвечает по материалам выбранного места и показывает источники.'
-    : 'Демонстрационный режим с автоматическим ответом.';
+  intro.hidden = !guideUsesCloud() && !localMap && !guideMessages.hasChildNodes();
+  intro.textContent = guideUsesCloud()
+    ? 'Вопросы обрабатывает ЯндексGPT. Указывайте только сведения о регионе или месте.'
+    : 'Ответы по материалам каталога.';
 }
 
 function openGuide() {
@@ -442,27 +453,25 @@ async function askGuide(event) {
   const submit = guideForm.querySelector('button[type="submit"]');
   if (submit.disabled) return;
   showError('#guide-error', null);
-  if ($('#guide-cloud').hidden || !guideForm.elements.allowCloud.checked) {
-    sendDemoMessage(event, guideMessages);
-    return;
-  }
 
   const input = guideForm.elements.message;
   const message = input.value.trim();
   if (!message) return;
-  const questionPoint = guidePointId;
+  const revision = guideRevision;
+  const context = !localMap && atlas.points[0].regionId ? {regionId: guideContextId} : {pointId: guideContextId};
+  const allowCloud = guideUsesCloud();
   const status = $('#guide-status');
   submit.disabled = true;
-  status.textContent = 'ЯндексGPT готовит ответ…';
+  status.textContent = allowCloud ? 'ЯндексGPT готовит ответ…' : 'Ищем ответ в каталоге…';
   status.hidden = false;
   try {
-    const reply = await api('guide', {message, pointId: questionPoint, mode: 'adult', allowCloud: true});
-    if (mode === 'adult' && questionPoint === guidePointId) {
+    const reply = await api('guide', {message, ...context, mode, allowCloud});
+    if (revision === guideRevision) {
       appendChatExchange(guideMessages, message, reply);
       if (input.value.trim() === message) input.value = '';
     }
   } catch (error) {
-    if (mode === 'adult' && questionPoint === guidePointId) showError('#guide-error', error);
+    if (revision === guideRevision) showError('#guide-error', error);
   } finally {
     submit.disabled = false;
     status.hidden = true;
@@ -726,7 +735,6 @@ $('#logout').addEventListener('click', async () => {
   }
 });
 guideForm.addEventListener('submit', askGuide);
-guideForm.elements.allowCloud.addEventListener('change', syncGuideIntro);
 $('#experts-form').addEventListener('submit', event => sendDemoMessage(event, expertsMessages));
 routeForm.addEventListener('submit', buildRoute);
 authForm.addEventListener('submit', authenticate);

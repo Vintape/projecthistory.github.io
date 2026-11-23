@@ -24,7 +24,7 @@ supabase functions deploy atlas
 python3 scripts/build_pages.py --api-url https://mkseudrxstywbmzxgenl.supabase.co/functions/v1/atlas --output .runtime/pages/mvp
 ```
 
-Для облачного ЯндексGPT задайте `YANDEX_API_KEY` и `YANDEX_FOLDER_ID` в настройках секретов Edge Functions. Текущий интерфейс использует демонстрационный ответ, когда отправка вопроса в ЯндексGPT выключена.
+Задайте `YANDEX_API_KEY` и `YANDEX_FOLDER_ID` в секретах Edge Functions, чтобы ИИ-ассистент во взрослом режиме отвечал через ЯндексGPT. Детский режим и запросы без доступного облачного ответа используют каталог.
 
 ## Что можно показать
 
