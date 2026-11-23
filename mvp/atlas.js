@@ -10,34 +10,40 @@ const videoDialog = $('#video-dialog');
 const guideForm = $('#guide-form');
 const routeForm = $('#route-form');
 const authForm = $('#auth-form');
+const mapView = createMapView($('#map'), {
+  zoomIn: $('#zoom-in'), zoomOut: $('#zoom-out'), reset: $('#zoom-reset'), display: $('#map-scale'),
+});
 const profileForm = $('#profile-form');
 const guideMessages = $('#guide-messages');
 const hostedApi = $('meta[name="atlas-api"]')?.content;
 const apiBase = hostedApi || '/api';
 const sessionStorageKey = `pervoistochnik.session:${apiBase}`;
-const markerButtons = [];
 const emptyContent = {
   story: 'Для этой точки пока нет отдельной истории.',
   film: 'Для этой точки пока нет видео.',
   character: 'Для этой точки пока нет персонажей.',
+  history: 'Для этой точки пока нет материалов по истории.',
 };
 
 let atlas;
+let region;
 let point;
 let mode = 'adult';
 let contentType = 'film';
 let showFeature = true;
 let profile = null;
 let sessionToken = hostedApi ? readSessionToken() : null;
-let routePoint = null;
+let routeTarget;
 let guideContextId = null;
 let guideRevision = 0;
 let routePayload = null;
 let routeOrigin;
 let authMode = 'login';
 let returnToRoute = false;
-let mapLevel = 0;
+let returnToChronicle = false;
 let localMap = false;
+const ladogaRegionId = 'leningrad-oblast';
+const isLadoga = () => region.id === ladogaRegionId;
 
 const russiaPlaces = [
   ['Карелия', 23, 29.5], ['Ленинградская область', 17.5, 35.8],
@@ -48,6 +54,10 @@ const russiaPlaces = [
   ['Красноярск', 51.6, 62.1], ['Иркутск', 59.7, 73.8], ['Якутск', 67.8, 48],
   ['Петропавловск-Камчатский', 89.1, 48.1], ['Южно-Сахалинск', 88.5, 71.7], ['Владивосток', 84.8, 90.5],
 ];
+const regionPins = new Map([
+  ['Ленинградская область', ladogaRegionId], ['Иркутск', 'irkutsk-oblast'],
+  ['Санкт-Петербург', 'saint-petersburg'], ['Пермский край', 'perm-krai'],
+]);
 
 function create(tag, text, className) {
   const node = document.createElement(tag);
@@ -84,7 +94,7 @@ function setSessionToken(token) {
 
 async function api(path, data) {
   const requestToken = ['atlas', 'register', 'login'].includes(path) ? null : sessionToken;
-  const options = {headers: new Headers()};
+  const options = {headers: new Headers(), signal: AbortSignal.timeout(16000)};
   if (hostedApi) {
     options.credentials = 'omit';
     options.redirect = 'error';
@@ -94,7 +104,6 @@ async function api(path, data) {
     options.method = 'POST';
     options.headers.set('Content-Type', 'application/json');
     options.body = JSON.stringify(data);
-    options.signal = AbortSignal.timeout(16000);
   }
   const response = await fetch(`${apiBase}/${path}`, options);
   if (!response.ok) {
@@ -120,16 +129,19 @@ function setMode(nextMode) {
   mode = nextMode;
   for (const control of $$('[data-mode]')) control.setAttribute('aria-pressed', String(control.dataset.mode === mode));
   document.body.dataset.audience = mode;
-  if (point) {
+  if (region) {
     renderPoint();
     syncGuide();
   }
 }
 
 function renderContent() {
-  for (const button of $$('[data-type]')) button.setAttribute('aria-pressed', String(button.dataset.type === contentType));
+  for (const button of $$('[data-type]')) {
+    button.setAttribute('aria-pressed', String(button.dataset.type === contentType));
+    if (button.dataset.type === 'history') button.hidden = !contentForMode('history').length;
+  }
   const container = $('#place-content');
-  if (showFeature && !localMap && contentForMode('story').length) {
+  if (showFeature && isLadoga() && !point && contentForMode('story').length) {
     container.replaceChildren(renderLegendFeature());
     return;
   }
@@ -170,7 +182,8 @@ function renderLegendFeature() {
   const read = create('button', 'Читать', 'button feature-read');
   read.type = 'button';
   read.addEventListener('click', () => {
-    const stories = contentForMode('story').map(materialDetails);
+    const ladoga = regionPoints().find(place => place.id === 'staraya-ladoga');
+    const stories = materialsForMode(ladoga?.content ?? [], 'story').map(materialDetails);
     if (stories[0]) stories[0].open = true;
     $('#legend-content').replaceChildren(...stories);
     $('#legend-dialog').showModal();
@@ -187,37 +200,40 @@ function setContentType(type, moveFocus = false) {
 }
 
 function renderPoint() {
-  const selected = localMap ? point : atlas.points[0];
-  $('#place-locality').textContent = atlas.region.name;
-  $('#place-locality').hidden = !localMap;
-  $('#place-title').textContent = localMap ? selected.title : atlas.region.name;
-  $('#place-description').textContent = localMap ? selected[mode] : mode === 'child'
+  const selected = point ?? region;
+  $('#place-locality').textContent = region.name;
+  $('#place-locality').hidden = !point;
+  $('#place-title').textContent = point?.title ?? region.name;
+  $('#place-description').textContent = point || !isLadoga() ? selected[mode] : mode === 'child'
     ? 'Узнай, как жили русские, вепсы, ижоры, водь и финны. Начни путешествие со Старой Ладоги!'
     : 'Здесь жили и живут русские, вепсы, ижоры, водь и ингерманландские финны.';
-  $('#place-source').hidden = !localMap;
+  $('#place-source').hidden = !point && isLadoga();
   $('#place-source').href = selected.source.url;
   $('#place-source').textContent = `Источник · ${selected.source.title}`;
-  $('.place-actions').hidden = !localMap;
   const image = $('#place-image');
   $('#place-photo').hidden = !selected.photo;
   const caption = $('#photo-caption');
   if (selected.photo) {
     image.src = `assets/${selected.photo.file}`;
     image.alt = selected.photo.alt;
-    caption.replaceChildren(externalLink(selected.photo.credit, 'assets/ladoga-credits.md'));
+    caption.replaceChildren(externalLink(selected.photo.credit, selected.photo.creditUrl || 'assets/ladoga-credits.md'));
   }
-  caption.hidden = !localMap || !selected.photo;
-  for (const button of markerButtons) {
-    const selected = point.id === button.dataset.point;
+  caption.hidden = !selected.photo || (!point && isLadoga());
+  for (const button of $$('#markers button, #place-list button')) {
+    const selected = point?.id === button.dataset.point;
     button.setAttribute('aria-pressed', String(selected));
     button.classList.toggle('is-selected', selected);
   }
+  $('#back-map').hidden = !localMap && !point;
+  $('#back-map').textContent = localMap ? '‹ К карте России' : '‹ К карточке региона';
   renderContent();
 }
 
 function selectPoint(selected, moveFocus = false) {
   point = selected;
-  contentType = selected.content[0]?.type ?? 'story';
+  const first = selected.content[0]?.type;
+  contentType = first === 'book' || first === 'event' ? 'history' : first || 'story';
+  showFeature = false;
   renderPoint();
   syncGuide();
   if (moveFocus) {
@@ -227,8 +243,13 @@ function selectPoint(selected, moveFocus = false) {
 }
 
 function contentForMode(type) {
-  const selected = localMap ? point : atlas.points[0];
-  return selected.content.filter(entry => entry.type === type && (mode === 'adult' || (entry.minAge ?? 0) < 12));
+  const entries = point?.content ?? [...(region.content ?? []), ...regionPoints().flatMap(place => place.content)];
+  return materialsForMode([...new Map(entries.map(entry => [entry.id, entry])).values()], type);
+}
+
+function materialsForMode(entries, type) {
+  return entries.filter(entry => (type === 'history' ? ['book', 'event'].includes(entry.type) : entry.type === type) &&
+    (mode === 'adult' || (entry.minAge ?? 0) < 12));
 }
 
 function filmControl(entry, label = 'Смотреть') {
@@ -264,101 +285,149 @@ function filmControl(entry, label = 'Смотреть') {
   return button;
 }
 
-function setZoom(level) {
-  mapLevel = Math.max(0, Math.min(2, level));
-  const scale = String(1 + mapLevel * 0.25);
-  $('#overview-layer').style.scale = scale;
-  $('#local-map').style.scale = scale;
-  $('#zoom-in').disabled = mapLevel === 2;
-  $('#zoom-out').disabled = mapLevel === 0;
-}
-
 function setMapScope(showLocal) {
   localMap = showLocal;
-  if (showLocal) contentType = point.content[0]?.type ?? 'story';
-  else contentType = 'film';
-  showFeature = !showLocal;
+  point = showLocal ? regionPoints().find(place => place.id === 'staraya-ladoga') : null;
+  contentType = showLocal ? 'story' : isLadoga() ? 'film' : 'history';
+  showFeature = !showLocal && isLadoga();
   $('#map').classList.toggle('shows-local', showLocal);
   $('#overview-map').hidden = showLocal;
   $('#local-map').hidden = !showLocal;
-  $('#place-list').hidden = !showLocal;
-  $('#back-map').hidden = !showLocal;
   $('#map-note').hidden = true;
+  $('#map-index').hidden = showLocal;
+  $('#map-scope').hidden = !isLadoga();
   $('#map-scope').textContent = showLocal ? 'Карта России' : 'Точки Старой Ладоги';
   $('#map').setAttribute('aria-label', showLocal ? 'Схема Старой Ладоги' : 'Иллюстрированная карта России');
-  setZoom(0);
+  mapView.show($(showLocal ? '#local-map' : '#overview-layer'));
+  renderRegionPlaces();
   renderPoint();
   syncGuide();
 }
 
+function regionPoints() {
+  return atlas.points.filter(place => place.regionId === region.id);
+}
+
+function selectRegion(selected, openLocal = false) {
+  region = selected;
+  $('#map-region').value = region.id;
+  for (const marker of $$('#russia-markers [data-region]')) {
+    marker.setAttribute('aria-pressed', String(marker.dataset.region === region.id));
+  }
+  setMapScope(openLocal);
+}
+
 function addRussiaMarkers() {
   const markers = $('#russia-markers');
-  for (const [name, x, y] of russiaPlaces) {
-    const active = name === atlas.region.name;
-    const marker = create('button', undefined, `russia-marker${active ? ' russia-marker-active' : ''}`);
-    marker.type = 'button';
-    marker.setAttribute('aria-label', active ? `${name} — открыть Старую Ладогу` : name);
-    marker.title = name;
-    marker.style.left = `${x}%`;
-    marker.style.top = `${y}%`;
-    marker.addEventListener('click', () => {
-      if (active) {
-        point = atlas.points[0];
-        setMapScope(true);
-        $('#map-scope').focus({preventScroll: true});
-      } else {
-        const note = $('#map-note');
-        note.textContent = `${name} пока без материалов. Сейчас в атласе доступна Старая Ладога.`;
-        note.hidden = false;
-      }
-    });
-    markers.append(marker);
+  const index = $('#map-index-list');
+  markers.replaceChildren();
+  index.replaceChildren();
+  const places = [...russiaPlaces, ['Санкт-Петербург', 20.3, 36.7], ['Пермский край', 33.1, 50.5]];
+  for (const [name, x, y] of places) {
+    const target = atlas.regions.find(entry => entry.id === regionPins.get(name));
+    const entry = create('button', target?.name ?? name);
+    entry.type = 'button';
+    entry.addEventListener('click', () => openMapPlace(name, target));
+    index.append(entry);
+    if (target) {
+      const marker = create('button', undefined, 'russia-marker');
+      marker.type = 'button';
+      marker.setAttribute('aria-label', target.id === ladogaRegionId ? `${name} — открыть Старую Ладогу` : target.name);
+      marker.title = target.name;
+      marker.dataset.region = target.id;
+      marker.setAttribute('aria-controls', 'place-panel');
+      marker.style.left = `${x}%`;
+      marker.style.top = `${y}%`;
+      marker.addEventListener('click', () => openMapPlace(name, target));
+      markers.append(marker);
+    }
   }
+  markers.onclick = event => {
+    if (event.target.closest('button')) return;
+    const {left, top, width, height} = markers.getBoundingClientRect();
+    let closest;
+    let bestDistance = 19;
+    for (const [name, x, y] of places) {
+      const distance = Math.hypot(event.clientX - left - width * x / 100, event.clientY - top - height * y / 100);
+      if (distance >= bestDistance) continue;
+      closest = name;
+      bestDistance = distance;
+    }
+    if (closest) openMapPlace(closest, atlas.regions.find(entry => entry.id === regionPins.get(closest)));
+  };
+}
+
+function openMapPlace(name, target) {
+  if (target) {
+    const openLocal = target.id === ladogaRegionId;
+    selectRegion(target, openLocal);
+    if (openLocal) $('#map-scope').focus({preventScroll: true});
+    return;
+  }
+  const note = $('#map-note');
+  const ask = create('button', 'Спросить ИИ-ассистента', 'text-control');
+  ask.type = 'button';
+  ask.addEventListener('click', () => {
+    guideForm.elements.message.value = `Расскажи об этом месте: ${name}`;
+    openGuide();
+  });
+  note.replaceChildren(document.createTextNode(`${name} · Можно узнать больше в чате. `), ask);
+  note.hidden = false;
+  ask.focus({preventScroll: true});
 }
 
 function addMarkers() {
   const markers = $('#markers');
-  const list = $('#place-list');
+  markers.replaceChildren();
   // Approximate positions on the local schematic.
   const west = 32.275;
   const east = 32.332;
   const south = 59.986;
   const north = 60.019;
-  for (const selected of atlas.points) {
+  for (const selected of atlas.points.filter(place => place.locality === 'Старая Ладога')) {
     const marker = create('button', undefined, `map-marker marker-${selected.id}`);
     const pin = create('span', undefined, 'marker-pin');
     pin.setAttribute('aria-hidden', 'true');
     marker.append(pin, create('span', selected.mapLabel || selected.title, 'marker-label'));
     marker.style.left = `${100 * (selected.lon - west) / (east - west)}%`;
     marker.style.top = `${100 * (north - selected.lat) / (north - south)}%`;
-    const fallback = create('button', selected.mapLabel || selected.title);
-    for (const control of [marker, fallback]) {
-      control.type = 'button';
-      control.dataset.point = selected.id;
-      control.setAttribute('aria-controls', 'place-panel');
-      control.addEventListener('click', () => selectPoint(selected, matchMedia('(max-width: 800px)').matches));
-      markerButtons.push(control);
-    }
+    bindPlaceControl(marker, selected);
     markers.append(marker);
-    list.append(fallback);
   }
 }
 
+function bindPlaceControl(button, selected) {
+  button.type = 'button';
+  button.dataset.point = selected.id;
+  button.setAttribute('aria-controls', 'place-panel');
+  button.addEventListener('click', () => selectPoint(selected, matchMedia('(max-width: 920px)').matches));
+}
+
+function renderRegionPlaces() {
+  const list = $('#place-list');
+  const places = regionPoints().filter(place => !localMap || place.locality === 'Старая Ладога');
+  list.hidden = !places.length;
+  list.replaceChildren(...places.map(place => {
+    const button = create('button', place.mapLabel || place.title);
+    bindPlaceControl(button, place);
+    return button;
+  }));
+}
+
 function syncGuide() {
-  if (!point) return;
-  const defaultPoint = atlas.points[0];
-  const contextId = localMap ? point.id : defaultPoint.regionId || defaultPoint.id;
+  if (!region) return;
+  const contextId = point?.id ?? region.id;
   if (guideContextId !== contextId) {
     guideContextId = contextId;
     resetGuideConversation();
   }
-  $('#guide-example').hidden = localMap || mode === 'child' || guideMessages.hasChildNodes();
-  $('#guide-place').hidden = !localMap;
-  $('#guide-place').textContent = point.title;
-  $('#guide-prompts').hidden = !localMap;
-  guideForm.elements.message.placeholder = localMap ? 'Что можно здесь увидеть?' : 'Спросите о народах или регионе…';
+  $('#guide-example').hidden = !!point || !isLadoga() || mode === 'child' || guideMessages.hasChildNodes();
+  $('#guide-place').hidden = !point && isLadoga();
+  $('#guide-place').textContent = point?.title ?? region.name;
+  $('#guide-prompts').hidden = !point;
+  guideForm.elements.message.placeholder = point ? 'Что можно здесь увидеть?' : 'Спросите о народах или регионе…';
   syncGuideIntro();
-  const prompts = (point.questions ?? []).map(item => typeof item === 'string' ? item : item.question).filter(Boolean);
+  const prompts = (point?.questions ?? []).map(item => typeof item === 'string' ? item : item.question).filter(Boolean);
   $('#guide-prompts').replaceChildren(...(prompts.length ? prompts.slice(0, 3) : ['Чем интересно это место?', 'Что здесь посмотреть?', 'Какие здесь есть истории?']).map(prompt => {
     const button = create('button', prompt);
     button.type = 'button';
@@ -383,14 +452,14 @@ function guideUsesCloud() {
 
 function syncGuideIntro() {
   const intro = $('#guide-intro');
-  intro.hidden = !guideUsesCloud() && !localMap && !guideMessages.hasChildNodes();
+  intro.hidden = !guideUsesCloud() && !point && !guideMessages.hasChildNodes();
   intro.textContent = guideUsesCloud()
     ? 'Вопросы обрабатывает ЯндексGPT. Личные данные лучше оставить в семейном кабинете.'
     : 'Ответы по материалам каталога.';
 }
 
 function openGuide() {
-  if (!point) return;
+  if (!region) return;
   guidePanel.hidden = false;
   $('#nav-guide').setAttribute('aria-expanded', 'true');
   setGuideCollapsed(false);
@@ -458,7 +527,7 @@ async function askGuide(event) {
   const message = input.value.trim();
   if (!message) return;
   const revision = guideRevision;
-  const context = !localMap && atlas.points[0].regionId ? {regionId: guideContextId} : {pointId: guideContextId};
+  const context = point ? {pointId: guideContextId} : {regionId: guideContextId};
   const allowCloud = guideUsesCloud();
   const status = $('#guide-status');
   submit.disabled = true;
@@ -478,16 +547,19 @@ async function askGuide(event) {
   }
 }
 
-function openRoute(selected) {
-  const nextPoint = selected?.id ?? null;
-  if (routeOrigin !== nextPoint) {
+function openRoute(selected, useFamily = false) {
+  if (!region) return;
+  const familyPlace = useFamily && profile?.ancestorPlace;
+  const nextTarget = selected ? {pointId: selected.id} : familyPlace ? {} : {regionId: region.id};
+  const nextOrigin = nextTarget.pointId || nextTarget.regionId || `family:${familyPlace}`;
+  if (routeOrigin !== nextOrigin) {
     $('#route-result').hidden = true;
     $('#route-actions').hidden = true;
     routePayload = null;
   }
-  routeOrigin = nextPoint;
-  routePoint = selected;
-  $('#route-place').textContent = selected ? selected.title : profile?.ancestorPlace ? `География семьи · ${profile.ancestorPlace}` : atlas.region.name;
+  routeOrigin = nextOrigin;
+  routeTarget = nextTarget;
+  $('#route-place').textContent = selected?.title || (familyPlace ? `География семьи · ${familyPlace}` : region.name);
   showError('#route-error', null);
   routeDialog.showModal();
 }
@@ -518,12 +590,13 @@ function activeRoutes() {
 async function buildRoute(event) {
   event.preventDefault();
   const submit = routeForm.querySelector('button[type="submit"]');
-  const payload = {...Object.fromEntries(new FormData(routeForm)), mode, pointId: routePoint?.id};
+  const origin = routeOrigin;
+  const payload = {...Object.fromEntries(new FormData(routeForm)), mode, ...routeTarget};
   submit.disabled = true;
   showError('#route-error', null);
   try {
     const route = await api('route', payload);
-    if ((payload.pointId ?? null) !== routeOrigin) return;
+    if (origin !== routeOrigin) return;
     routePayload = payload;
     renderRoute(route);
   } catch (error) {
@@ -563,9 +636,17 @@ function setAuth(next) {
   authForm.elements.name.required = register;
   authForm.elements.password.minLength = register ? 8 : 1;
   authForm.elements.password.autocomplete = register ? 'new-password' : 'current-password';
+  showPassword(false);
   authForm.querySelector('button[type="submit"]').textContent = register ? 'Создать профиль' : 'Войти';
   for (const button of $$('[data-auth]')) button.setAttribute('aria-pressed', String(button.dataset.auth === next));
   showError('#account-error', null);
+}
+
+function showPassword(visible) {
+  authForm.elements.password.type = visible ? 'text' : 'password';
+  const toggle = $('#toggle-password');
+  toggle.setAttribute('aria-pressed', String(visible));
+  toggle.textContent = visible ? 'Скрыть' : 'Показать';
 }
 
 function renderAccount() {
@@ -601,7 +682,7 @@ function renderAccount() {
     saved.append(entry);
   }
   if (!routes.length) saved.append(create('p', 'Соберите маршрут на карте, чтобы сохранить его здесь.', 'form-hint'));
-  $('#print-chronicle').hidden = !routes.length;
+  $('#print-chronicle').hidden = false;
 }
 
 function clearSession() {
@@ -612,8 +693,9 @@ function clearSession() {
   renderAccount();
 }
 
-function openAccount(fromRoute = false) {
-  if (!fromRoute) returnToRoute = false;
+function openAccount(fromRoute = false, fromChronicle = false) {
+  returnToRoute = fromRoute;
+  returnToChronicle = fromChronicle;
   showError('#account-error', null);
   $('#account-status').textContent = '';
   renderAccount();
@@ -633,12 +715,16 @@ async function authenticate(event) {
     }
     profile = result.profile;
     authForm.reset();
+    showPassword(false);
     renderAccount();
     if (returnToRoute) {
       returnToRoute = false;
       accountDialog.close();
       routeDialog.showModal();
       await saveRoute();
+    } else if (returnToChronicle) {
+      returnToChronicle = false;
+      showChronicle();
     }
   } catch (error) {
     showError('#account-error', error);
@@ -667,11 +753,15 @@ async function updateProfile(event) {
 }
 
 function showChronicle() {
+  if (!profile) {
+    openAccount(false, true);
+    return;
+  }
   const routes = activeRoutes();
-  if (!routes.length) return;
   const notes = $('#chronicle-notes');
   notes.replaceChildren(create('h3', profile.name));
   if (profile.ancestorPlace) notes.append(create('p', `География семьи · ${profile.ancestorPlace}`));
+  if (!routes.length) notes.append(create('p', 'Сохраните первый маршрут, чтобы он появился в летописи.', 'form-hint'));
   for (const route of routes) {
     const chapter = create('article');
     chapter.append(create('h4', route.title), create('p', route.overview), routeStops(route));
@@ -679,6 +769,15 @@ function showChronicle() {
   }
   accountDialog.close();
   chronicleDialog.showModal();
+}
+
+function setMenu(open) {
+  $('#menu-toggle').setAttribute('aria-expanded', String(open));
+  $('#atlas-nav').classList.toggle('is-open', open);
+}
+
+function openSubscription() {
+  $('#subscription-dialog').showModal();
 }
 
 for (const control of $$('[data-mode]')) control.addEventListener('click', () => setMode(control.dataset.mode));
@@ -690,29 +789,42 @@ $('#minimize-guide').addEventListener('click', () => setGuideCollapsed(!$('#guid
 $('#close-guide').addEventListener('click', () => {
   guidePanel.hidden = true;
   $('#nav-guide').setAttribute('aria-expanded', 'false');
-  $('#nav-guide').focus();
+  $(matchMedia('(max-width: 560px)').matches ? '#menu-toggle' : '#nav-guide').focus();
 });
 $('#guide-films').addEventListener('click', () => setContentType('film', true));
 $('#guide-stories').addEventListener('click', () => setContentType('story', true));
-$('#guide-route').addEventListener('click', () => openRoute(localMap ? point : null));
-$('#buy-subscription').addEventListener('click', () => $('#subscription-dialog').showModal());
+$('#guide-route').addEventListener('click', () => openRoute(point));
+$('#buy-subscription').addEventListener('click', openSubscription);
+$('#mobile-subscription').addEventListener('click', openSubscription);
+$('#subscription-account').addEventListener('click', () => {
+  $('#subscription-dialog').close();
+  openAccount();
+});
 $('#nav-experts').addEventListener('click', () => expertsDialog.showModal());
-$('#zoom-in').addEventListener('click', () => setZoom(mapLevel + 1));
-$('#zoom-out').addEventListener('click', () => setZoom(mapLevel - 1));
-$('#zoom-reset').addEventListener('click', () => setZoom(0));
+$('#mobile-experts').addEventListener('click', () => expertsDialog.showModal());
+$('#map-region').addEventListener('change', event => selectRegion(atlas.regions.find(entry => entry.id === event.target.value)));
 $('#map-scope').addEventListener('click', () => setMapScope(!localMap));
 $('#back-map').addEventListener('click', () => {
   setMapScope(false);
-  $('#map-scope').focus({preventScroll: true});
+  $(isLadoga() ? '#map-scope' : '#map-region').focus({preventScroll: true});
 });
 $('#build-route').addEventListener('click', () => openRoute(point));
 $('#nav-roots').addEventListener('click', () => openAccount());
-$('#nav-chronicle').addEventListener('click', () => {
-  if (activeRoutes().length) showChronicle();
-  else openAccount();
-});
-$('#nav-route').addEventListener('click', () => { if (atlas) openRoute(null); });
+$('#nav-chronicle').addEventListener('click', showChronicle);
+$('#nav-route').addEventListener('click', () => openRoute(null, true));
 $('#nav-account').addEventListener('click', () => openAccount());
+$('#toggle-password').addEventListener('click', () => showPassword(authForm.elements.password.type === 'password'));
+$('#menu-toggle').addEventListener('click', event => setMenu(event.currentTarget.getAttribute('aria-expanded') !== 'true'));
+$('#atlas-nav').addEventListener('click', event => {
+  if (!event.target.closest('a, button') || $('#menu-toggle').getAttribute('aria-expanded') !== 'true') return;
+  setMenu(false);
+  $('#menu-toggle').focus();
+}, true);
+$('.atlas-header').addEventListener('keydown', event => {
+  if (event.key !== 'Escape' || $('#menu-toggle').getAttribute('aria-expanded') !== 'true') return;
+  setMenu(false);
+  $('#menu-toggle').focus();
+});
 if (hostedApi) $('#profile-storage').textContent = 'Профиль и маршруты хранятся в семейном кабинете онлайн.';
 $('#save-route').addEventListener('click', saveRoute);
 $('#print').addEventListener('click', () => window.print());
@@ -740,26 +852,32 @@ routeForm.addEventListener('submit', buildRoute);
 authForm.addEventListener('submit', authenticate);
 profileForm.addEventListener('submit', updateProfile);
 
-if (location.protocol === 'file:') {
-  const published = 'https://vintape.github.io/projecthistory.github.io/mvp/';
-  const link = create('a', 'Открыть «Первоисточник» онлайн', 'source');
-  link.href = published;
-  $('#atlas-status').replaceChildren(link);
-  location.replace(published);
-} else {
-  api('atlas').then(data => {
-    // The Staraya Ladoga schematic uses its own fixed coordinate bounds.
-    const points = data.points.filter(place => place.locality === 'Старая Ладога');
-    if (!points.length) throw new Error('В каталоге нет точек Старой Ладоги.');
-    atlas = {...data, points};
+async function loadAtlas() {
+  const status = $('#atlas-status');
+  status.textContent = 'Загружаем карту…';
+  try {
+    atlas = await api('atlas');
+    const initialRegion = atlas.regions.find(entry => entry.id === ladogaRegionId) ?? atlas.regions[0];
+    if (!initialRegion) throw new Error('Каталог регионов пуст.');
+    $('#map-region').replaceChildren(...atlas.regions.map(entry => new Option(entry.name, entry.id)));
     addRussiaMarkers();
     addMarkers();
-    point = atlas.points[0];
-    setMapScope(false);
-    $('#atlas-status').hidden = true;
+    selectRegion(initialRegion);
+    status.hidden = true;
     $('#atlas-grid').hidden = false;
     if (accountDialog.open) renderAccount();
-  }).catch(() => { $('#atlas-status').textContent = 'Карта не загрузилась. Обновите страницу и попробуйте ещё раз.'; });
+  } catch {
+    const retry = create('button', 'Повторить загрузку', 'button atlas-outline');
+    retry.type = 'button';
+    retry.addEventListener('click', loadAtlas);
+    status.replaceChildren(document.createTextNode('Не удалось загрузить карту. '), retry);
+  }
+}
+
+if (location.protocol === 'file:') {
+  location.replace('https://vintape.github.io/projecthistory.github.io/mvp/');
+} else {
+  loadAtlas();
   const initialSessionToken = sessionToken;
   api('profile').then(data => {
     if (!data.profile || profile || sessionToken !== initialSessionToken) return;
