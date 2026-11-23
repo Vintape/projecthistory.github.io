@@ -378,14 +378,14 @@ function resetGuideConversation() {
 }
 
 function guideUsesCloud() {
-  return mode === 'adult' && atlas.cloudAvailable === true;
+  return atlas.cloudAvailable === true;
 }
 
 function syncGuideIntro() {
   const intro = $('#guide-intro');
   intro.hidden = !guideUsesCloud() && !localMap && !guideMessages.hasChildNodes();
   intro.textContent = guideUsesCloud()
-    ? 'Вопросы обрабатывает ЯндексGPT. Указывайте только сведения о регионе или месте.'
+    ? 'Вопросы обрабатывает ЯндексGPT. Личные данные лучше оставить в семейном кабинете.'
     : 'Ответы по материалам каталога.';
 }
 
