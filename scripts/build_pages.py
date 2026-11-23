@@ -15,9 +15,12 @@ MVP_FILES = (
     "assets/atlas-icons.svg",
     "assets/chevron.svg",
     "assets/fonts/Golos-OFL.txt",
+    "assets/fonts/Montserrat-OFL.txt",
     "assets/fonts/PT-Serif-OFL.txt",
     "assets/fonts/golos-cyr.woff2",
     "assets/fonts/golos-lat.woff2",
+    "assets/fonts/montserrat-cyr.woff2",
+    "assets/fonts/montserrat-lat.woff2",
     "assets/fonts/pt-serif-cyr.woff2",
     "assets/fonts/pt-serif-italic-cyr.woff2",
     "assets/ladoga-credits.md",
@@ -62,6 +65,12 @@ def render_index(base):
     return template.replace(CONFIG_MARKER, config)
 
 
+def copy_mvp_file(filename, output):
+    destination = output / filename
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    copy2(PUBLIC / filename, destination)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--api-url", required=True, type=api_url, help="public Edge Function base URL")
@@ -75,9 +84,10 @@ def main():
 
     index = render_index(args.api_url)
     for filename in MVP_FILES:
-        destination = output / filename
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        copy2(PUBLIC / filename, destination)
+        copy_mvp_file(filename, output)
+    for asset in sorted((PUBLIC / "assets" / "slide-466").iterdir()):
+        if asset.is_file():
+            copy_mvp_file(asset.relative_to(PUBLIC), output)
     (output / "index.html").write_text(index, encoding="utf-8")
 
 
