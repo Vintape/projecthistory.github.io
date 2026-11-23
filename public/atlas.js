@@ -8,7 +8,9 @@ const accountDialog = $('#account-dialog');
 const chronicleDialog = $('#chronicle-dialog');
 const videoDialog = $('#video-dialog');
 const guideForm = $('#guide-form');
+const guideSubmit = guideForm.querySelector('button[type="submit"]');
 const routeForm = $('#route-form');
+const routeSubmit = routeForm.querySelector('button[type="submit"]');
 const authForm = $('#auth-form');
 const mapView = createMapView($('#map'), {
   zoomIn: $('#zoom-in'), zoomOut: $('#zoom-out'), reset: $('#zoom-reset'), display: $('#map-scale'),
@@ -38,6 +40,7 @@ let guideContextId = null;
 let guideRevision = 0;
 let routePayload = null;
 let routeOrigin;
+let routeRevision = 0;
 let authMode = 'login';
 let returnToRoute = false;
 let returnToChronicle = false;
@@ -119,12 +122,14 @@ async function api(path, data) {
 function showError(id, error) {
   const target = $(id);
   target.hidden = !error;
-  target.textContent = error ? error instanceof TypeError ? 'Связь прервалась. Попробуйте ещё раз.' : error.message : '';
+  const connectionFailed = error instanceof TypeError || error?.name === 'TimeoutError';
+  target.textContent = connectionFailed ? 'Связь прервалась. Попробуйте ещё раз.' : error?.message ?? '';
 }
 
 function setMode(nextMode) {
   if (mode !== nextMode) {
     resetGuideConversation();
+    invalidateRoute();
   }
   mode = nextMode;
   for (const control of $$('[data-mode]')) control.setAttribute('aria-pressed', String(control.dataset.mode === mode));
@@ -264,12 +269,16 @@ function filmControl(entry, label = 'Смотреть') {
   button.addEventListener('click', () => {
     $('#video-kind').textContent = entry.kind;
     $('#video-title').textContent = entry.title;
+    $('#video-error').hidden = true;
     const player = create(hasVideo ? 'video' : 'iframe');
     if (hasVideo) {
       player.controls = true;
       player.playsInline = true;
       player.preload = 'metadata';
       player.setAttribute('aria-label', entry.title);
+      player.addEventListener('error', () => {
+        if (videoDialog.open && player.parentElement === $('#video-player')) $('#video-error').hidden = false;
+      });
       player.src = entry.videoUrl;
     } else {
       player.title = entry.title;
@@ -444,6 +453,7 @@ function resetGuideConversation() {
   guideMessages.replaceChildren();
   showError('#guide-error', null);
   $('#guide-status').hidden = true;
+  guideSubmit.disabled = false;
 }
 
 function guideUsesCloud() {
@@ -519,8 +529,7 @@ function appendChatExchange(messages, text, {answer, sources, engine}) {
 
 async function askGuide(event) {
   event.preventDefault();
-  const submit = guideForm.querySelector('button[type="submit"]');
-  if (submit.disabled) return;
+  if (guideSubmit.disabled) return;
   showError('#guide-error', null);
 
   const input = guideForm.elements.message;
@@ -530,7 +539,7 @@ async function askGuide(event) {
   const context = point ? {pointId: guideContextId} : {regionId: guideContextId};
   const allowCloud = guideUsesCloud();
   const status = $('#guide-status');
-  submit.disabled = true;
+  guideSubmit.disabled = true;
   status.textContent = allowCloud ? 'ЯндексGPT готовит ответ…' : 'Ищем ответ в каталоге…';
   status.hidden = false;
   try {
@@ -542,8 +551,10 @@ async function askGuide(event) {
   } catch (error) {
     if (revision === guideRevision) showError('#guide-error', error);
   } finally {
-    submit.disabled = false;
-    status.hidden = true;
+    if (revision === guideRevision) {
+      guideSubmit.disabled = false;
+      status.hidden = true;
+    }
   }
 }
 
@@ -552,16 +563,22 @@ function openRoute(selected, useFamily = false) {
   const familyPlace = useFamily && profile?.ancestorPlace;
   const nextTarget = selected ? {pointId: selected.id} : familyPlace ? {} : {regionId: region.id};
   const nextOrigin = nextTarget.pointId || nextTarget.regionId || `family:${familyPlace}`;
-  if (routeOrigin !== nextOrigin) {
-    $('#route-result').hidden = true;
-    $('#route-actions').hidden = true;
-    routePayload = null;
-  }
+  if (routeOrigin !== nextOrigin) invalidateRoute();
   routeOrigin = nextOrigin;
   routeTarget = nextTarget;
   $('#route-place').textContent = selected?.title || (familyPlace ? `География семьи · ${familyPlace}` : region.name);
   showError('#route-error', null);
   routeDialog.showModal();
+}
+
+function invalidateRoute() {
+  routeRevision += 1;
+  routePayload = null;
+  routeSubmit.disabled = false;
+  $('#route-result').hidden = true;
+  $('#route-actions').hidden = true;
+  $('#route-progress').hidden = true;
+  showError('#route-error', null);
 }
 
 function routeStops(route) {
@@ -589,20 +606,24 @@ function activeRoutes() {
 
 async function buildRoute(event) {
   event.preventDefault();
-  const submit = routeForm.querySelector('button[type="submit"]');
-  const origin = routeOrigin;
+  if (routeSubmit.disabled) return;
+  invalidateRoute();
+  const revision = routeRevision;
   const payload = {...Object.fromEntries(new FormData(routeForm)), mode, ...routeTarget};
-  submit.disabled = true;
-  showError('#route-error', null);
+  routeSubmit.disabled = true;
+  $('#route-progress').hidden = false;
   try {
     const route = await api('route', payload);
-    if (origin !== routeOrigin) return;
+    if (revision !== routeRevision) return;
     routePayload = payload;
     renderRoute(route);
   } catch (error) {
-    showError('#route-error', error);
+    if (revision === routeRevision) showError('#route-error', error);
   } finally {
-    submit.disabled = false;
+    if (revision === routeRevision) {
+      routeSubmit.disabled = false;
+      $('#route-progress').hidden = true;
+    }
   }
 }
 
@@ -615,16 +636,19 @@ async function saveRoute() {
     return;
   }
   const button = $('#save-route');
+  const revision = routeRevision;
   button.disabled = true;
   showError('#route-error', null);
   try {
     const result = await api('routes', routePayload);
     profile = result.profile;
     renderAccount();
-    $('#route-status').textContent = 'Маршрут сохранён в семейном кабинете.';
+    if (revision === routeRevision) $('#route-status').textContent = 'Маршрут сохранён в семейном кабинете.';
   } catch (error) {
-    button.disabled = false;
-    showError('#route-error', error);
+    if (revision === routeRevision) {
+      button.disabled = false;
+      showError('#route-error', error);
+    }
   }
 }
 
@@ -647,6 +671,11 @@ function showPassword(visible) {
   const toggle = $('#toggle-password');
   toggle.setAttribute('aria-pressed', String(visible));
   toggle.textContent = visible ? 'Скрыть' : 'Показать';
+}
+
+function clearPassword() {
+  authForm.elements.password.value = '';
+  showPassword(false);
 }
 
 function renderAccount() {
@@ -672,6 +701,7 @@ function renderAccount() {
       showError('#account-error', null);
       try {
         profile = (await api('routes/remove', {id: route.id})).profile;
+        invalidateRoute();
         renderAccount();
       } catch (error) {
         remove.disabled = false;
@@ -696,6 +726,7 @@ function clearSession() {
 function openAccount(fromRoute = false, fromChronicle = false) {
   returnToRoute = fromRoute;
   returnToChronicle = fromChronicle;
+  clearPassword();
   showError('#account-error', null);
   $('#account-status').textContent = '';
   renderAccount();
@@ -705,6 +736,7 @@ function openAccount(fromRoute = false, fromChronicle = false) {
 async function authenticate(event) {
   event.preventDefault();
   const submit = authForm.querySelector('button[type="submit"]');
+  if (submit.disabled) return;
   submit.disabled = true;
   showError('#account-error', null);
   try {
@@ -717,12 +749,12 @@ async function authenticate(event) {
     authForm.reset();
     showPassword(false);
     renderAccount();
-    if (returnToRoute) {
+    if (accountDialog.open && returnToRoute) {
       returnToRoute = false;
       accountDialog.close();
       routeDialog.showModal();
       await saveRoute();
-    } else if (returnToChronicle) {
+    } else if (accountDialog.open && returnToChronicle) {
       returnToChronicle = false;
       showChronicle();
     }
@@ -832,6 +864,13 @@ videoDialog.addEventListener('close', () => {
   $('#video-player video')?.pause();
   $('#video-player').replaceChildren();
 });
+accountDialog.addEventListener('close', () => {
+  if (!accountDialog.open) {
+    clearPassword();
+    returnToRoute = false;
+    returnToChronicle = false;
+  }
+});
 $('#print-chronicle').addEventListener('click', showChronicle);
 $('#logout').addEventListener('click', async () => {
   const button = $('#logout');
@@ -840,6 +879,7 @@ $('#logout').addEventListener('click', async () => {
   try {
     await api('logout', {});
     clearSession();
+    invalidateRoute();
   } catch (error) {
     showError('#account-error', error);
   } finally {
@@ -849,6 +889,7 @@ $('#logout').addEventListener('click', async () => {
 guideForm.addEventListener('submit', askGuide);
 $('#experts-form').addEventListener('submit', event => sendDemoMessage(event, expertsMessages));
 routeForm.addEventListener('submit', buildRoute);
+routeForm.addEventListener('change', invalidateRoute);
 authForm.addEventListener('submit', authenticate);
 profileForm.addEventListener('submit', updateProfile);
 

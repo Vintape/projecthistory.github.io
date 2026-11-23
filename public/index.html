@@ -8,9 +8,9 @@
   <title>Первоисточник — народы России</title>
   <link rel="icon" href="assets/slide-466/logo.png" type="image/png">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="atlas.css?v=atlas-polish">
+  <link rel="stylesheet" href="atlas.css?v=atlas-audit">
   <script defer src="map-view.js?v=atlas-polish"></script>
-  <script defer src="atlas.js?v=atlas-polish"></script>
+  <script defer src="atlas.js?v=atlas-audit"></script>
 </head>
 <body class="atlas-page">
   <a class="skip-link" href="#atlas">К содержанию</a>
@@ -222,6 +222,7 @@
       <form method="dialog"><button class="close-button" aria-label="Закрыть видео">×</button></form>
     </div>
     <div id="video-player" class="video-player"></div>
+    <p id="video-error" class="form-hint" role="status" hidden>Видео не загрузилось. Ниже есть ссылка на оригинал.</p>
     <p id="video-source"></p>
   </dialog>
 
@@ -235,6 +236,7 @@
       <label>Интерес<select name="interest"><option value="">Удивите меня</option><option>История</option><option>Архитектура</option><option>Музеи</option><option>Сказки и легенды</option></select></label>
       <button type="submit" class="button atlas-primary">Подобрать места</button>
     </form>
+    <p class="form-hint" id="route-progress" role="status" hidden>Подбираем места для маршрута…</p>
     <p class="form-error" id="route-error" role="alert" hidden></p>
     <div id="route-result" class="route-result" hidden></div>
     <div id="route-actions" class="dialog-actions" hidden>
