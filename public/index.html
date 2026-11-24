@@ -8,9 +8,9 @@
   <title>Первоисточник — народы России</title>
   <link rel="icon" href="assets/slide-466/logo.png" type="image/png">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="atlas.css?v=atlas-audit">
+  <link rel="stylesheet" href="atlas.css?v=catalog-search">
   <script defer src="map-view.js?v=atlas-polish"></script>
-  <script defer src="atlas.js?v=atlas-audit"></script>
+  <script defer src="atlas.js?v=catalog-search"></script>
 </head>
 <body class="atlas-page">
   <a class="skip-link" href="#atlas">К содержанию</a>
@@ -60,6 +60,7 @@
           <label class="visually-hidden" for="map-region">Выбрать регион</label>
           <select id="map-region" aria-controls="place-panel"></select>
           <button type="button" class="map-scope" id="map-scope" aria-controls="overview-map local-map">Точки Старой Ладоги</button>
+          <button type="button" class="map-scope" id="map-search" aria-haspopup="dialog" aria-controls="search-dialog">Найти материалы</button>
           <div class="map-controls" role="group" aria-label="Управление картой">
             <button type="button" id="zoom-out" aria-label="Уменьшить карту">−</button>
             <output id="map-scale" aria-label="Масштаб карты">100%</output>
@@ -178,6 +179,24 @@
       <div class="footer-links"><a href="https://ladogamuseum.com/" target="_blank" rel="noopener noreferrer">Музей-заповедник «Старая Ладога»</a><a href="assets/ladoga-credits.md" target="_blank" rel="noopener noreferrer">Источники иллюстраций</a><button type="button" id="nav-account" aria-haspopup="dialog">Семейный кабинет</button></div>
     </div>
   </footer>
+
+  <dialog id="search-dialog" class="atlas-dialog search-dialog" aria-labelledby="search-title">
+    <div class="dialog-header">
+      <h2 id="search-title">Поиск материалов</h2>
+      <form method="dialog"><button class="close-button" aria-label="Закрыть поиск">×</button></form>
+    </div>
+    <form id="search-form" role="search" aria-label="Поиск материалов каталога">
+      <label>Название или тема<input type="search" name="query" placeholder="Вепсы, Вещий Олег, Байкал" maxlength="100" autofocus></label>
+      <div class="search-filters">
+        <label>Регион<select name="region"><option value="">Все регионы</option></select></label>
+        <label>Народ<select name="people"><option value="">Все народы</option></select></label>
+        <label>Тип материала<select name="type"><option value="">Все материалы</option></select></label>
+      </div>
+      <button type="reset" class="text-control">Сбросить поиск и фильтры</button>
+    </form>
+    <p id="search-status" class="form-hint" role="status"></p>
+    <ul id="search-results" class="search-results" aria-label="Найденные материалы"></ul>
+  </dialog>
 
   <dialog id="subscription-dialog" class="atlas-dialog subscription-dialog" aria-labelledby="subscription-title" aria-describedby="subscription-status">
     <div class="dialog-header">

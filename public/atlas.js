@@ -7,6 +7,8 @@ const routeDialog = $('#route-dialog');
 const accountDialog = $('#account-dialog');
 const chronicleDialog = $('#chronicle-dialog');
 const videoDialog = $('#video-dialog');
+const searchDialog = $('#search-dialog');
+const searchForm = $('#search-form');
 const guideForm = $('#guide-form');
 const guideSubmit = guideForm.querySelector('button[type="submit"]');
 const routeForm = $('#route-form');
@@ -26,8 +28,14 @@ const emptyContent = {
   character: 'Для этой точки пока нет персонажей.',
   history: 'Для этой точки пока нет материалов по истории.',
 };
+const materialLabels = {
+  film: 'Фильм', story: 'Сказка, легенда или рассказ', character: 'Персонаж', book: 'Книга', event: 'Историческое событие',
+};
+const searchStopWords = new Set(['и', 'в', 'во', 'о', 'об', 'из', 'на', 'по', 'про', 'для', 'с', 'со', 'у', 'от', 'к', 'ко']);
+const byRussianName = new Intl.Collator('ru');
 
 let atlas;
+let materialIndex = [];
 let region;
 let point;
 let mode = 'adult';
@@ -160,6 +168,7 @@ function renderContent() {
 
 function materialDetails(entry) {
   const details = create('details');
+  details.dataset.material = entry.id;
   details.append(create('summary', entry.title));
   if (entry.kind) details.append(create('p', entry.kind, 'content-kind'));
   details.append(create('p', entry[mode]));
@@ -236,8 +245,7 @@ function renderPoint() {
 
 function selectPoint(selected, moveFocus = false) {
   point = selected;
-  const first = selected.content[0]?.type;
-  contentType = first === 'book' || first === 'event' ? 'history' : first || 'story';
+  contentType = selected.content.length ? materialTab(selected.content[0]) : 'story';
   showFeature = false;
   renderPoint();
   syncGuide();
@@ -253,8 +261,95 @@ function contentForMode(type) {
 }
 
 function materialsForMode(entries, type) {
-  return entries.filter(entry => (type === 'history' ? ['book', 'event'].includes(entry.type) : entry.type === type) &&
-    (mode === 'adult' || (entry.minAge ?? 0) < 12));
+  return entries.filter(entry => materialTab(entry) === type && materialAvailable(entry));
+}
+
+function materialTab(entry) {
+  return entry.type === 'book' || entry.type === 'event' ? 'history' : entry.type;
+}
+
+function materialAvailable(entry) {
+  return mode === 'adult' || (entry.minAge ?? 0) < 12;
+}
+
+function searchWords(text) {
+  const words = (text.normalize('NFKC').toLowerCase().replaceAll('ё', 'е').match(/[\p{L}\p{N}]+/gu) ?? []);
+  return [...new Set(words.filter(word => !searchStopWords.has(word)).map(word => {
+    const stem = word.replace(/(?:иями|ями|ами|ого|его|ому|ему|ыми|ими|ая|яя|ое|ее|ый|ий|ой|ые|ие|ов|ев|ей|ах|ях|ам|ям|[аеёиоуыэюяь])$/u, '');
+    return word.length >= 5 && stem.length >= 4 ? stem : word;
+  }))];
+}
+
+function buildMaterialIndex() {
+  const records = [];
+  for (const area of atlas.regions) {
+    const added = new Set();
+    const add = (entry, place = null) => {
+      if (added.has(entry.id) || !materialLabels[entry.type]) return;
+      added.add(entry.id);
+      const metadata = [area.name, area.locality, ...(area.aliases ?? []), place?.title, place?.locality,
+        entry.kind, materialLabels[entry.type], ...(entry.peoples ?? []), ...(entry.keywords ?? [])];
+      records.push({entry, area, place, titleWords: searchWords(entry.title), metadataWords: searchWords(metadata.join(' ')),
+        descriptionWords: {adult: searchWords(entry.adult ?? ''), child: searchWords(entry.child ?? '')}});
+    };
+    for (const entry of (area.content ?? [])) add(entry);
+    for (const place of atlas.points.filter(candidate => candidate.regionId === area.id)) {
+      for (const entry of place.content) add(entry, place);
+    }
+  }
+  materialIndex = records;
+  const {region: regionFilter, people, type} = searchForm.elements;
+  regionFilter.replaceChildren(new Option('Все регионы', ''), ...atlas.regions.map(area => new Option(area.name, area.id)));
+  const names = [...new Set(records.flatMap(record => record.entry.peoples ?? []))].sort(byRussianName.compare);
+  people.replaceChildren(new Option('Все народы', ''), ...names.map(name => new Option(name, name)));
+  type.replaceChildren(new Option('Все материалы', ''), ...Object.entries(materialLabels).map(([id, label]) => new Option(label, id)));
+}
+
+function wordMatches(words, term) {
+  if (words.includes(term)) return 2;
+  return term.length >= 3 && words.some(word => word.startsWith(term)) ? 1 : 0;
+}
+
+function openSearchResult({area, place, entry}) {
+  searchDialog.close('material');
+  selectRegion(area, area.id === ladogaRegionId && place?.locality === 'Старая Ладога');
+  if (place) selectPoint(place);
+  setContentType(materialTab(entry));
+  const detail = $$('#place-content details').find(card => card.dataset.material === entry.id);
+  if (detail) {
+    detail.open = true;
+    detail.querySelector('summary').focus({preventScroll: true});
+    detail.scrollIntoView({block: 'nearest'});
+  }
+}
+
+function renderSearch() {
+  const filters = Object.fromEntries(new FormData(searchForm));
+  const terms = searchWords(filters.query);
+  const matches = [];
+  for (const record of materialIndex) {
+    const {entry, area, titleWords, metadataWords, descriptionWords} = record;
+    if (!materialAvailable(entry) || (filters.region && filters.region !== area.id) ||
+      (filters.people && !entry.peoples?.includes(filters.people)) || (filters.type && filters.type !== entry.type)) continue;
+    const scores = terms.map(term => 6 * wordMatches(titleWords, term) + 3 * wordMatches(metadataWords, term) +
+      wordMatches(descriptionWords[mode], term));
+    if (scores.every(Boolean)) matches.push({record, score: scores.reduce((total, score) => total + score, 0)});
+  }
+  matches.sort((first, second) => second.score - first.score ||
+    Number(second.record.area.id === region.id) - Number(first.record.area.id === region.id) ||
+    byRussianName.compare(first.record.entry.title, second.record.entry.title));
+  $('#search-status').textContent = matches.length ? `Найдено материалов — ${matches.length}` :
+    'Ничего не найдено. Попробуйте другой запрос или снимите фильтр.';
+  $('#search-results').replaceChildren(...matches.map(({record}) => {
+    const row = create('li');
+    const button = create('button', undefined, 'search-result');
+    button.type = 'button';
+    button.append(create('strong', record.entry.title), create('span',
+      [materialLabels[record.entry.type], record.area.name, record.place?.title].filter(Boolean).join(' · ')));
+    button.addEventListener('click', () => openSearchResult(record));
+    row.append(button);
+    return row;
+  }));
 }
 
 function filmControl(entry, label = 'Смотреть') {
@@ -845,6 +940,24 @@ $('#nav-roots').addEventListener('click', () => openAccount());
 $('#nav-chronicle').addEventListener('click', showChronicle);
 $('#nav-route').addEventListener('click', () => openRoute(null, true));
 $('#nav-account').addEventListener('click', () => openAccount());
+$('#map-search').addEventListener('click', () => {
+  renderSearch();
+  searchDialog.returnValue = '';
+  searchDialog.showModal();
+  searchForm.elements.query.focus();
+});
+searchDialog.addEventListener('close', () => {
+  if (!searchDialog.open && searchDialog.returnValue !== 'material') $('#map-search').focus({preventScroll: true});
+});
+searchDialog.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !event.isComposing) {
+    event.preventDefault();
+    searchDialog.close();
+  }
+});
+searchForm.addEventListener('input', renderSearch);
+searchForm.addEventListener('reset', () => requestAnimationFrame(renderSearch));
+searchForm.addEventListener('submit', event => event.preventDefault());
 $('#toggle-password').addEventListener('click', () => showPassword(authForm.elements.password.type === 'password'));
 $('#menu-toggle').addEventListener('click', event => setMenu(event.currentTarget.getAttribute('aria-expanded') !== 'true'));
 $('#atlas-nav').addEventListener('click', event => {
@@ -903,6 +1016,7 @@ async function loadAtlas() {
     $('#map-region').replaceChildren(...atlas.regions.map(entry => new Option(entry.name, entry.id)));
     addRussiaMarkers();
     addMarkers();
+    buildMaterialIndex();
     selectRegion(initialRegion);
     status.hidden = true;
     $('#atlas-grid').hidden = false;

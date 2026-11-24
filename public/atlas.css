@@ -257,6 +257,15 @@
 .atlas-dialog::backdrop { background: #281b3e9e; }
 .atlas-dialog h2 { font-family: var(--sans); font-weight: 650; font-size: clamp(1.48rem, 3vw, 2.35rem); }
 .atlas-dialog input:not([type='checkbox']), .atlas-dialog select { border-color: #aea2c5; background-color: #fcfaff; }
+.search-dialog { width: min(94%, 720px); }
+#search-form { display: grid; gap: 10px; }
+#search-form > button { justify-self: start; padding-inline: 0; font-size: .88rem; }
+.search-filters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.search-filters label { font-size: .83rem; }
+.search-results { display: grid; gap: 6px; padding: 0; margin: 10px 0 0; list-style: none; }
+.search-result { display: grid; gap: 4px; width: 100%; padding: 10px 12px; color: var(--atlas-navy); text-align: start; background: #faf7ff; border: 1px solid #e3d8f6; border-radius: 12px; }
+.search-result:hover { background: #efe7fc; }
+.search-result span { color: var(--secondary); font-size: .8rem; overflow-wrap: anywhere; }
 .experts-dialog .form-hint { margin: 0 0 14px; }
 .experts-dialog .message { border-color: var(--atlas-gold); background: #f4effb; }
 .experts-dialog .message-question { background: #e6ddf6; }
@@ -313,6 +322,9 @@
   .atlas-map-area, .place-panel, .guide-panel, .demo-ancestor { grid-area: auto; }
   .atlas-map { aspect-ratio: 1.78; }
   .map-toolbar select { flex: 1 1 100%; }
+  #map-search { min-height: 44px; }
+  .search-filters { grid-template-columns: minmax(0, 1fr); }
+  #search-form input, #search-form select { font-size: 1rem; }
   .map-toolbar select, .map-scope { min-height: 44px; }
   .map-controls button { width: 43px; height: 43px; }
   .russia-marker[data-region='saint-petersburg'] { margin-top: -33px; }
