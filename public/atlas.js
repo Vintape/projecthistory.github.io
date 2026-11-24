@@ -38,7 +38,6 @@ let atlas;
 let materialIndex = [];
 let region;
 let point;
-let mode = 'adult';
 let contentType = 'film';
 let showFeature = true;
 let profile = null;
@@ -134,31 +133,17 @@ function showError(id, error) {
   target.textContent = connectionFailed ? 'Связь прервалась. Попробуйте ещё раз.' : error?.message ?? '';
 }
 
-function setMode(nextMode) {
-  if (mode !== nextMode) {
-    resetGuideConversation();
-    invalidateRoute();
-  }
-  mode = nextMode;
-  for (const control of $$('[data-mode]')) control.setAttribute('aria-pressed', String(control.dataset.mode === mode));
-  document.body.dataset.audience = mode;
-  if (region) {
-    renderPoint();
-    syncGuide();
-  }
-}
-
 function renderContent() {
   for (const button of $$('[data-type]')) {
     button.setAttribute('aria-pressed', String(button.dataset.type === contentType));
-    if (button.dataset.type === 'history') button.hidden = !contentForMode('history').length;
+    if (button.dataset.type === 'history') button.hidden = !contentForType('history').length;
   }
   const container = $('#place-content');
-  if (showFeature && isLadoga() && !point && contentForMode('story').length) {
+  if (showFeature && isLadoga() && !point && contentForType('story').length) {
     container.replaceChildren(renderLegendFeature());
     return;
   }
-  const entries = contentForMode(contentType);
+  const entries = contentForType(contentType);
   if (!entries.length) {
     container.replaceChildren(create('p', emptyContent[contentType], 'content-empty'));
     return;
@@ -171,7 +156,7 @@ function materialDetails(entry) {
   details.dataset.material = entry.id;
   details.append(create('summary', entry.title));
   if (entry.kind) details.append(create('p', entry.kind, 'content-kind'));
-  details.append(create('p', entry[mode]));
+  details.append(create('p', entry.adult));
   if (entry.type === 'film') details.append(filmControl(entry));
   else details.append(externalLink(entry.source.title, entry.source.url));
   if (entry.relatedSource) {
@@ -197,7 +182,7 @@ function renderLegendFeature() {
   read.type = 'button';
   read.addEventListener('click', () => {
     const ladoga = regionPoints().find(place => place.id === 'staraya-ladoga');
-    const stories = materialsForMode(ladoga?.content ?? [], 'story').map(materialDetails);
+    const stories = (ladoga?.content ?? []).filter(entry => entry.type === 'story').map(materialDetails);
     if (stories[0]) stories[0].open = true;
     $('#legend-content').replaceChildren(...stories);
     $('#legend-dialog').showModal();
@@ -218,8 +203,7 @@ function renderPoint() {
   $('#place-locality').textContent = region.name;
   $('#place-locality').hidden = !point;
   $('#place-title').textContent = point?.title ?? region.name;
-  $('#place-description').textContent = point || !isLadoga() ? selected[mode] : mode === 'child'
-    ? 'Узнай, как жили русские, вепсы, ижоры, водь и финны. Начни путешествие со Старой Ладоги!'
+  $('#place-description').textContent = point || !isLadoga() ? selected.adult
     : 'Здесь жили и живут русские, вепсы, ижоры, водь и ингерманландские финны.';
   $('#place-source').hidden = !point && isLadoga();
   $('#place-source').href = selected.source.url;
@@ -255,21 +239,13 @@ function selectPoint(selected, moveFocus = false) {
   }
 }
 
-function contentForMode(type) {
+function contentForType(type) {
   const entries = point?.content ?? [...(region.content ?? []), ...regionPoints().flatMap(place => place.content)];
-  return materialsForMode([...new Map(entries.map(entry => [entry.id, entry])).values()], type);
-}
-
-function materialsForMode(entries, type) {
-  return entries.filter(entry => materialTab(entry) === type && materialAvailable(entry));
+  return [...new Map(entries.filter(entry => materialTab(entry) === type).map(entry => [entry.id, entry])).values()];
 }
 
 function materialTab(entry) {
   return entry.type === 'book' || entry.type === 'event' ? 'history' : entry.type;
-}
-
-function materialAvailable(entry) {
-  return mode === 'adult' || (entry.minAge ?? 0) < 12;
 }
 
 function searchWords(text) {
@@ -290,7 +266,7 @@ function buildMaterialIndex() {
       const metadata = [area.name, area.locality, ...(area.aliases ?? []), place?.title, place?.locality,
         entry.kind, materialLabels[entry.type], ...(entry.peoples ?? []), ...(entry.keywords ?? [])];
       records.push({entry, area, place, titleWords: searchWords(entry.title), metadataWords: searchWords(metadata.join(' ')),
-        descriptionWords: {adult: searchWords(entry.adult ?? ''), child: searchWords(entry.child ?? '')}});
+        descriptionWords: searchWords(entry.adult ?? '')});
     };
     for (const entry of (area.content ?? [])) add(entry);
     for (const place of atlas.points.filter(candidate => candidate.regionId === area.id)) {
@@ -329,10 +305,10 @@ function renderSearch() {
   const matches = [];
   for (const record of materialIndex) {
     const {entry, area, titleWords, metadataWords, descriptionWords} = record;
-    if (!materialAvailable(entry) || (filters.region && filters.region !== area.id) ||
+    if ((filters.region && filters.region !== area.id) ||
       (filters.people && !entry.peoples?.includes(filters.people)) || (filters.type && filters.type !== entry.type)) continue;
     const scores = terms.map(term => 6 * wordMatches(titleWords, term) + 3 * wordMatches(metadataWords, term) +
-      wordMatches(descriptionWords[mode], term));
+      wordMatches(descriptionWords, term));
     if (scores.every(Boolean)) matches.push({record, score: scores.reduce((total, score) => total + score, 0)});
   }
   matches.sort((first, second) => second.score - first.score ||
@@ -525,7 +501,7 @@ function syncGuide() {
     guideContextId = contextId;
     resetGuideConversation();
   }
-  $('#guide-example').hidden = !!point || !isLadoga() || mode === 'child' || guideMessages.hasChildNodes();
+  $('#guide-example').hidden = !!point || !isLadoga() || guideMessages.hasChildNodes();
   $('#guide-place').hidden = !point && isLadoga();
   $('#guide-place').textContent = point?.title ?? region.name;
   $('#guide-prompts').hidden = !point;
@@ -638,7 +614,7 @@ async function askGuide(event) {
   status.textContent = allowCloud ? 'ЯндексGPT готовит ответ…' : 'Ищем ответ в каталоге…';
   status.hidden = false;
   try {
-    const reply = await api('guide', {message, ...context, mode, allowCloud});
+    const reply = await api('guide', {message, ...context, mode: 'adult', allowCloud});
     if (revision === guideRevision) {
       appendChatExchange(guideMessages, message, reply);
       if (input.value.trim() === message) input.value = '';
@@ -704,7 +680,7 @@ async function buildRoute(event) {
   if (routeSubmit.disabled) return;
   invalidateRoute();
   const revision = routeRevision;
-  const payload = {...Object.fromEntries(new FormData(routeForm)), mode, ...routeTarget};
+  const payload = {...Object.fromEntries(new FormData(routeForm)), mode: 'adult', ...routeTarget};
   routeSubmit.disabled = true;
   $('#route-progress').hidden = false;
   try {
@@ -907,7 +883,6 @@ function openSubscription() {
   $('#subscription-dialog').showModal();
 }
 
-for (const control of $$('[data-mode]')) control.addEventListener('click', () => setMode(control.dataset.mode));
 for (const control of $$('[data-type]')) control.addEventListener('click', () => setContentType(control.dataset.type));
 for (const control of $$('[data-auth]')) control.addEventListener('click', () => setAuth(control.dataset.auth));
 $('#open-guide').addEventListener('click', openGuide);
