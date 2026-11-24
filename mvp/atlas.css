@@ -48,9 +48,6 @@
 .mode-switch { display: flex; width: max-content; gap: clamp(5px, .78vw, 15px); }
 .mode-switch button { border: 0; border-radius: 30px; background: #98ace9; color: #111128; padding: 5px clamp(10px, 1.4vw, 27px); min-height: clamp(35px, 2.35vw, 45px); font-weight: 500; white-space: nowrap; }
 .mode-switch button[aria-pressed='true'] { background: var(--atlas-navy); color: #fff; font-weight: 600; }
-.header-inner .mode-switch button { display: flex; gap: clamp(5px, .62vw, 12px); justify-content: center; align-items: center; font-size: clamp(.76rem, .96vw, 1.15rem); }
-.header-inner .mode-switch img { width: clamp(17px, 1.29vw, 25px); height: clamp(17px, 1.29vw, 25px); object-fit: contain; filter: brightness(0); }
-.header-inner .mode-switch button[aria-pressed='true'] img { filter: brightness(0) invert(1); }
 .atlas-nav { display: flex; justify-content: space-around; flex: 1; align-items: center; gap: clamp(7px, .95vw, 18px); }
 .atlas-nav a, .atlas-nav button { display: grid; justify-items: center; align-items: center; gap: 4px; padding: 0; border: 0; background: none; color: #06098e; font-size: clamp(.62rem, .74vw, .89rem); font-weight: 500; text-decoration: none; white-space: nowrap; }
 .atlas-nav img { display: block; width: auto; height: clamp(23px, 2.1vw, 41px); max-width: 100%; object-fit: contain; }
@@ -270,7 +267,6 @@
 @media (max-width: 1180px) {
   .atlas-shell { width: min(95%, 1762px); }
   .header-inner { gap: 10px; }
-  .header-inner .mode-switch button { padding-inline: 9px; }
   .experts-trigger { width: auto; }
   .atlas-grid { grid-template-columns: minmax(212px, 20.9fr) minmax(0, 55.1fr) minmax(203px, 20.2fr); column-gap: 1%; }
 }
@@ -294,11 +290,9 @@
 @media (max-width: 560px) {
   .atlas-page { --ui-text: .87rem; background-size: auto, auto 100%; }
   .atlas-header { margin-top: 9px; }
-  .header-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: 'brand telegram menu' 'mode mode mode' 'navigation navigation navigation'; padding: 8px; gap: 8px; }
+  .header-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: 'brand telegram menu' 'navigation navigation navigation'; padding: 8px; gap: 8px; }
   .header-inner .wordmark { grid-area: brand; gap: 4px; }
   .header-inner .wordmark img { width: 31px; }
-  .header-inner .mode-switch { grid-area: mode; justify-self: start; }
-  .header-inner .mode-switch button { min-height: 44px; }
   .menu-toggle { grid-area: menu; display: inline-flex; align-items: center; gap: 4px; min-height: 44px; background: #efeaff; color: var(--atlas-navy); border: 1px solid #dacfef; border-radius: 12px; padding-inline: 8px; font-size: .77rem; font-weight: 650; }
   .telegram-link { grid-area: telegram; gap: 4px; padding: 3px 7px; box-shadow: none; }
   .telegram-full { display: none; }
